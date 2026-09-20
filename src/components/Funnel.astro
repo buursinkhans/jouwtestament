@@ -1,0 +1,364 @@
+---
+// Stappenplan voor de smoketest. Niets van wat hier wordt ingevuld (situatie,
+// wensen, naam, e-mail, telefoon) wordt verstuurd of opgeslagen — het leeft
+// alleen tijdelijk in de browser, precies zoals bij de quiz. Alleen het
+// e-mailadres in de laatste stap (optioneel) wordt echt verstuurd, voor wie
+// een seintje wil zodra dit wel kan.
+import {
+  BookOpen,
+  Users,
+  ListChecks,
+  IdCard,
+  Landmark,
+  CreditCard,
+  Mail,
+} from '@lucide/astro';
+import { notarisKantoren } from '../data/notarissen';
+
+interface Props {
+  id: string;
+  productLabel: string;
+  introHeading: string;
+  introParagraphs: string[];
+  wishOptions: string[];
+}
+
+const { id, productLabel, introHeading, introParagraphs, wishOptions } = Astro.props;
+---
+
+<div class="funnel" data-funnel id={id}>
+  <div class="funnel-progress-bar">
+    <div class="funnel-progress-fill" data-funnel-fill></div>
+  </div>
+  <p class="funnel-progress-text" data-funnel-progress></p>
+
+  <div class="funnel-steps">
+    <div class="funnel-step" data-funnel-step>
+      <h3><BookOpen class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{introHeading}</h3>
+      {introParagraphs.map((p) => <p>{p}</p>)}
+      <div class="funnel-actions">
+        <button type="button" class="button" data-funnel-next>Volgende stap</button>
+        <button type="button" class="funnel-skip" data-funnel-next>Ik weet dit al, ga verder &rarr;</button>
+      </div>
+    </div>
+
+    <div class="funnel-step" data-funnel-step hidden>
+      <h3><Users class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Wat is jouw situatie?</h3>
+      <div class="form-field">
+        <label>Burgerlijke staat</label>
+        <label class="radio-label"><input type="radio" name={`${id}-staat`} value="getrouwd" /> Getrouwd of geregistreerd partnerschap</label>
+        <label class="radio-label"><input type="radio" name={`${id}-staat`} value="samenwonend" /> Samenwonend</label>
+        <label class="radio-label"><input type="radio" name={`${id}-staat`} value="alleenstaand" /> Alleenstaand</label>
+      </div>
+      <div class="form-field">
+        <label for={`${id}-kinderen`}>Heb je kinderen? Zo ja, hoeveel?</label>
+        <input type="number" min="0" id={`${id}-kinderen`} name={`${id}-kinderen`} placeholder="Bijvoorbeeld: 2" />
+      </div>
+      <div class="funnel-actions">
+        <button type="button" class="button-secondary" data-funnel-back>Vorige stap</button>
+        <button type="button" class="button" data-funnel-next>Volgende stap</button>
+      </div>
+    </div>
+
+    <div class="funnel-step" data-funnel-step hidden>
+      <h3><ListChecks class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Wat zijn jouw wensen?</h3>
+      <p>Kies wat op jou van toepassing is. Je kunt meerdere opties kiezen.</p>
+      <div class="form-field">
+        {wishOptions.map((wish, i) => (
+          <label class="checkbox-label">
+            <input type="checkbox" name={`${id}-wens-${i}`} /> {wish}
+          </label>
+        ))}
+        <label class="checkbox-label">
+          <input type="checkbox" name={`${id}-wens-anders`} /> Anders, namelijk:
+        </label>
+        <input type="text" class="funnel-text-input" placeholder="Beschrijf je wens in het kort" />
+      </div>
+      <div class="funnel-actions">
+        <button type="button" class="button-secondary" data-funnel-back>Vorige stap</button>
+        <button type="button" class="button" data-funnel-next>Volgende stap</button>
+      </div>
+    </div>
+
+    <div class="funnel-step" data-funnel-step hidden>
+      <h3><IdCard class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Wat zijn je gegevens?</h3>
+      <div class="form-field">
+        <label for={`${id}-naam`}>Naam</label>
+        <input type="text" id={`${id}-naam`} autocomplete="name" />
+      </div>
+      <div class="form-field">
+        <label for={`${id}-email`}>E-mailadres</label>
+        <input type="email" id={`${id}-email`} data-funnel-email autocomplete="email" />
+      </div>
+      <div class="form-field">
+        <label for={`${id}-telefoon`}>Telefoonnummer (optioneel)</label>
+        <input type="tel" id={`${id}-telefoon`} autocomplete="tel" />
+      </div>
+      <div class="funnel-actions">
+        <button type="button" class="button-secondary" data-funnel-back>Vorige stap</button>
+        <button type="button" class="button" data-funnel-next>Volgende stap</button>
+      </div>
+    </div>
+
+    <div class="funnel-step" data-funnel-step hidden>
+      <h3><Landmark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Kies een notaris bij jou in de buurt</h3>
+      <div class="funnel-notary-list">
+        {notarisKantoren.map((kantoor) => (
+          <label class="radio-label">
+            <input type="radio" name={`${id}-notaris`} value={kantoor.name} />
+            {kantoor.name}
+          </label>
+        ))}
+      </div>
+      <div class="funnel-actions">
+        <button type="button" class="button-secondary" data-funnel-back>Vorige stap</button>
+        <button type="button" class="button" data-funnel-next>Volgende stap</button>
+      </div>
+    </div>
+
+    <div class="funnel-step" data-funnel-step hidden>
+      <div class="funnel-apology">
+        <CreditCard size={28} stroke-width={1.5} aria-hidden="true" class="funnel-apology-icon" />
+        <h3>Excuses, hier kunnen we je nog niet verder helpen</h3>
+        <p>
+          jouwtestament is nog in ontwikkeling. Je kunt je {productLabel} hier
+          op dit moment nog niet afronden of betalen. We testen dit
+          stappenplan om te ontdekken wat mensen echt nodig hebben, voordat we
+          live gaan.
+        </p>
+        <p>
+          Herken je een bijzondere situatie, en wil je niet wachten? Mail ons
+          op <a href="mailto:info@jouwtestament.nl">info@jouwtestament.nl</a>.
+          We bekijken dan of maatwerk mogelijk is, in samenwerking met een
+          notaris en tegen een ander tarief.
+        </p>
+
+        <form
+          name="interesse"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="funnel-interest-form"
+          data-funnel-interest-form
+        >
+          <input type="hidden" name="form-name" value="interesse" />
+          <p class="visually-hidden">
+            <label>Niet invullen als je een mens bent: <input name="bot-field" /></label>
+          </p>
+          <input type="hidden" name="product" value={productLabel} />
+          <div class="form-field">
+            <label for={`${id}-interesse-email`}>Wil je een seintje zodra dit kan?</label>
+            <input type="email" id={`${id}-interesse-email`} name="email" placeholder="jouw@email.nl" data-funnel-interest-email required />
+          </div>
+          <button type="submit" class="button">
+            <Mail size={18} stroke-width={1.75} aria-hidden="true" />
+            Hou me op de hoogte
+          </button>
+        </form>
+        <div class="funnel-interest-success" data-funnel-interest-success hidden>
+          <p class="disclaimer-box">Bedankt! We laten je weten zodra je verder kunt.</p>
+        </div>
+      </div>
+      <div class="funnel-actions">
+        <button type="button" class="button-secondary" data-funnel-back>Vorige stap</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-funnel]').forEach((funnel) => {
+    const stepEls = Array.from(funnel.querySelectorAll<HTMLElement>('[data-funnel-step]'));
+    const progressText = funnel.querySelector<HTMLElement>('[data-funnel-progress]');
+    const progressFill = funnel.querySelector<HTMLElement>('[data-funnel-fill]');
+    const stepLabels = ['Nut en noodzaak', 'Jouw situatie', 'Jouw wensen', 'Jouw gegevens', 'Notaris kiezen', 'Betalen'];
+
+    function showStep(index: number) {
+      stepEls.forEach((step, i) => {
+        step.hidden = i !== index;
+      });
+      if (progressText) {
+        progressText.textContent = `Stap ${index + 1} van ${stepEls.length}: ${stepLabels[index] ?? ''}`;
+      }
+      if (progressFill) {
+        progressFill.style.width = `${((index + 1) / stepEls.length) * 100}%`;
+      }
+      funnel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    stepEls.forEach((step, index) => {
+      step.querySelectorAll<HTMLButtonElement>('[data-funnel-next]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (index + 1 < stepEls.length) showStep(index + 1);
+        });
+      });
+      step.querySelectorAll<HTMLButtonElement>('[data-funnel-back]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (index > 0) showStep(index - 1);
+        });
+      });
+    });
+
+    // Vul het e-mailadres van stap 4 vast in bij het interesse-formulier in de laatste stap.
+    const emailInput = funnel.querySelector<HTMLInputElement>('[data-funnel-email]');
+    const interestEmail = funnel.querySelector<HTMLInputElement>('[data-funnel-interest-email]');
+    emailInput?.addEventListener('change', () => {
+      if (interestEmail && !interestEmail.value) interestEmail.value = emailInput.value;
+    });
+
+    const interestForm = funnel.querySelector<HTMLFormElement>('[data-funnel-interest-form]');
+    const interestSuccess = funnel.querySelector<HTMLElement>('[data-funnel-interest-success]');
+    interestForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(interestForm);
+      const body = new URLSearchParams();
+      formData.forEach((value, key) => body.append(key, String(value)));
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+        });
+      } catch {
+        // Stil falen: dit werkt alleen op Netlify. Toon in beide gevallen dank,
+        // zodat de smoketest-flow niet vastloopt op een foutmelding.
+      }
+      interestForm.hidden = true;
+      interestSuccess?.removeAttribute('hidden');
+    });
+
+    showStep(0);
+  });
+</script>
+
+<style>
+  .funnel {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
+    padding: 1.75rem;
+    margin: 1.5rem 0;
+    scroll-margin-top: 1rem;
+  }
+
+  .funnel-progress-bar {
+    background: var(--color-secondary);
+    border-radius: 999px;
+    height: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+  }
+
+  .funnel-progress-fill {
+    background: var(--color-primary);
+    height: 100%;
+    transition: width 0.2s ease;
+  }
+
+  .funnel-progress-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    margin: 0 0 1.25rem;
+  }
+
+  .funnel-step h3 {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-field {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .form-field > label:first-child {
+    font-weight: 600;
+  }
+
+  .form-field input[type='text'],
+  .form-field input[type='email'],
+  .form-field input[type='tel'],
+  .form-field input[type='number'] {
+    font: inherit;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    max-width: 22rem;
+  }
+
+  .radio-label,
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 400;
+  }
+
+  .funnel-notary-list {
+    display: grid;
+    gap: 0.5rem;
+    max-height: 16rem;
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .funnel-text-input {
+    margin-top: 0.25rem;
+  }
+
+  .funnel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .funnel-skip {
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+  }
+
+  .funnel-apology {
+    text-align: left;
+  }
+
+  .funnel-apology-icon {
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .funnel-interest-form {
+    display: grid;
+    gap: 1rem;
+    max-width: 24rem;
+    margin-top: 1.25rem;
+  }
+
+  .funnel-interest-form button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: start;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+</style>

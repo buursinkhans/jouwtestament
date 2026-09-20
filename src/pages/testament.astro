@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Quiz from '../components/Quiz.astro';
+import Funnel from '../components/Funnel.astro';
 import { useTranslations } from '../i18n/utils';
-import { Info, ShieldCheck, Baby, Users, Coins, CircleQuestionMark, PenLine, BookOpen, MessagesSquare } from '@lucide/astro';
+import { Info, ShieldCheck, Baby, Users, Coins, CircleQuestionMark } from '@lucide/astro';
 
 const lang = 'nl' as const;
 const t = useTranslations(lang);
@@ -53,6 +54,13 @@ const quizAQuestions = [
   },
 ];
 
+const wishOptions = [
+  'Ik wil zelf bepalen wie er van mij erft',
+  'Ik wil voogdij regelen voor mijn kinderen',
+  'Ik wil mijn partner of stiefkinderen beschermen',
+  'Ik wil een goed doel opnemen in mijn testament',
+];
+
 const faqItems = [
   {
     question: 'Is een testament verplicht?',
@@ -89,7 +97,7 @@ const faqItems = [
 
 <Layout
   title="Waarom heb je een testament nodig?"
-  description="Zonder testament bepaalt de wet wie erft. Lees wat je met een testament kunt regelen, en hoe je het aanpakt."
+  description="Zonder testament bepaalt de wet wie erft. Doorloop het stappenplan en lees wat je met een testament kunt regelen."
   pageKey="testament"
   datePublished="2026-09-19"
   dateModified="2026-09-20"
@@ -109,18 +117,17 @@ const faqItems = [
       <p>{t('disclaimer.short')}</p>
     </div>
 
-    <h2>Wat gebeurt er als je geen testament hebt?</h2>
-    <p>
-      Zonder testament geldt het wettelijk erfrecht. De wet wijst dan je
-      erfgenamen aan: de mensen die volgens de wet mogen erven. Eerst zijn dat
-      je partner en kinderen. Daarna komen ouders, broers en zussen aan de
-      beurt.
-    </p>
-    <p>
-      Woon je ongetrouwd samen, zonder samenlevingscontract en zonder
-      testament? Dan erft je partner in dat geval niets. Hetzelfde geldt voor
-      stiefkinderen: zij erven nooit automatisch mee.
-    </p>
+    <Funnel
+      id="funnel-testament"
+      productLabel="testament"
+      introHeading="Waarom is een testament belangrijk?"
+      introParagraphs={[
+        'Zonder testament geldt het wettelijk erfrecht. De wet wijst dan je erfgenamen aan: eerst je partner en kinderen, daarna ouders, broers en zussen.',
+        'Woon je ongetrouwd samen? Dan erft je partner in dat geval niets. Hetzelfde geldt voor stiefkinderen: zij erven nooit automatisch mee.',
+        'Met een testament bepaal je dit zelf: wie erft, wie voogd wordt over je kinderen, en hoe je jouw partner en gezin beschermt.',
+      ]}
+      wishOptions={wishOptions}
+    />
 
     <h2>Wat kun je allemaal in een testament regelen?</h2>
     <p>
@@ -178,25 +185,6 @@ const faqItems = [
       tenzij je dit vastlegt in een testament.
     </p>
 
-    <h2>Hoe stel je een testament op?</h2>
-    <ol class="steps">
-      <li>
-        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Denk na over je wensen.</strong> Wie moet erven, wie wordt
-        voogd, en heb je bijzondere wensen?
-      </li>
-      <li>
-        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Maak een afspraak bij een notaris.</strong> De notaris legt de
-        mogelijkheden aan je uit in een persoonlijk gesprek.
-      </li>
-      <li>
-        <PenLine class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Bespreek en onderteken het concept.</strong> Pas het testament
-        aan waar nodig, en onderteken de akte bij de notaris.
-      </li>
-    </ol>
-
     <Quiz
       id="quiz-testament"
       title="Wat regelt de wet voor je gezin als je niets vastlegt?"
@@ -209,8 +197,8 @@ const faqItems = [
         'Wat je partner erft als je niet getrouwd bent',
       ]}
       workBlock="Je bereidt je testament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
-      ctaHref="/wachtlijst"
-      ctaLabel="Schrijf je in voor de wachtlijst"
+      ctaHref="#funnel-testament"
+      ctaLabel="Start het stappenplan"
     />
 
     <h2>{t('related.heading')}</h2>
@@ -263,7 +251,7 @@ const faqItems = [
     <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
 
     <p class="cta-row">
-      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button" href="#funnel-testament">Start het stappenplan</a>
       <a class="button-secondary" href="/">{t('cta.back_home')}</a>
     </p>
   </article>

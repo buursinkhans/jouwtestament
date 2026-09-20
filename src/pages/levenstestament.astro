@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Quiz from '../components/Quiz.astro';
+import Funnel from '../components/Funnel.astro';
 import { useTranslations } from '../i18n/utils';
-import { Info, ScrollText, Baby, CircleQuestionMark, BookOpen, MessagesSquare, PenLine } from '@lucide/astro';
+import { Info, ScrollText, Baby, CircleQuestionMark } from '@lucide/astro';
 
 const lang = 'nl' as const;
 const t = useTranslations(lang);
@@ -49,6 +50,13 @@ const quizBQuestions = [
   },
 ];
 
+const wishOptions = [
+  'Ik wil iemand aanwijzen die mijn financiën regelt als ik dat niet meer kan',
+  'Ik wil vastleggen wie medische beslissingen voor mij mag nemen',
+  'Ik wil voorkomen dat de kantonrechter een bewindvoerder aanwijst',
+  'Ik wil mijn wensen over wonen en zorg vastleggen',
+];
+
 const faqItems = [
   {
     question: 'Is een levenstestament hetzelfde als een testament?',
@@ -75,7 +83,7 @@ const faqItems = [
 
 <Layout
   title="Wat is een levenstestament?"
-  description="Een levenstestament regelt wie voor je beslist als je dat zelf niet meer kunt. Lees wat het regelt, voor wie het belangrijk is en hoe je het aanpakt."
+  description="Een levenstestament regelt wie voor je beslist als je dat zelf niet meer kunt. Doorloop het stappenplan en lees wat het regelt."
   pageKey="levenstestament"
   datePublished="2026-09-20"
   dateModified="2026-09-20"
@@ -94,6 +102,18 @@ const faqItems = [
       <Info size={20} stroke-width={1.75} />
       <p>{t('disclaimer.short')}</p>
     </div>
+
+    <Funnel
+      id="funnel-levenstestament"
+      productLabel="levenstestament"
+      introHeading="Waarom is een levenstestament belangrijk?"
+      introParagraphs={[
+        'Zonder levenstestament beslist niemand automatisch voor je, ook je partner niet. Je familie moet dan naar de kantonrechter voor bewind of mentorschap.',
+        'De rechter kiest dan wie dit mag doen, en dat hoeft niet je partner of kind te zijn.',
+        'Met een levenstestament wijs je zelf iemand aan die voor je beslist, over je geld en over je zorg, zolang je dat zelf niet meer kunt.',
+      ]}
+      wishOptions={wishOptions}
+    />
 
     <h2>Wat regel je in een levenstestament?</h2>
     <p>
@@ -117,19 +137,6 @@ const faqItems = [
         behandeling.
       </li>
     </ul>
-
-    <h2>Wat gebeurt er zonder levenstestament?</h2>
-    <p>
-      Zonder levenstestament beslist niemand automatisch voor je, ook je
-      partner niet. Je familie moet dan naar de kantonrechter voor bewind of
-      mentorschap.
-    </p>
-    <p>
-      Bewind betekent: de rechter wijst iemand aan die je geld en
-      bezittingen beheert. Mentorschap betekent: de rechter wijst iemand aan
-      die beslist over je verzorging en behandeling. De rechter kiest wie dit
-      mag doen, en dat hoeft niet je partner of kind te zijn.
-    </p>
 
     <h2>Voor wie is een levenstestament belangrijk?</h2>
     <p>
@@ -157,25 +164,6 @@ const faqItems = [
     </ul>
     <p>Veel mensen laten beide tegelijk opstellen bij de notaris.</p>
 
-    <h2>Hoe regel je een levenstestament?</h2>
-    <ol class="steps">
-      <li>
-        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Kies je gevolmachtigde(n).</strong> Denk na over wie je
-        vertrouwt om voor je te beslissen.
-      </li>
-      <li>
-        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Bespreek je wensen met de notaris.</strong> De notaris legt
-        de mogelijkheden uit en stelt een concept op.
-      </li>
-      <li>
-        <PenLine class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Onderteken de akte.</strong> Na ondertekening kan je
-        levenstestament direct worden gebruikt wanneer nodig.
-      </li>
-    </ol>
-
     <Quiz
       id="quiz-levenstestament"
       title="Wie regelt jouw zaken als je dat zelf niet meer kunt?"
@@ -188,8 +176,8 @@ const faqItems = [
         'Wanneer de volmacht ingaat',
       ]}
       workBlock="Je bereidt je levenstestament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
-      ctaHref="/wachtlijst"
-      ctaLabel="Schrijf je in voor de wachtlijst"
+      ctaHref="#funnel-levenstestament"
+      ctaLabel="Start het stappenplan"
     />
 
     <h2>{t('related.heading')}</h2>
@@ -229,7 +217,7 @@ const faqItems = [
     <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
 
     <p class="cta-row">
-      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button" href="#funnel-levenstestament">Start het stappenplan</a>
       <a class="button-secondary" href="/">{t('cta.back_home')}</a>
     </p>
   </article>

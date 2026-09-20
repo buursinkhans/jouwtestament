@@ -23,7 +23,7 @@ export const ui = {
     'nav.menu': 'Menu',
     'site.title': 'jouwtestament',
     'site.tagline': 'Jouw testament regelen: eenvoudig, snel en betaalbaar.',
-    'cta.next_step': 'Bekijk de volgende stap',
+    'cta.next_step': 'Start het stappenplan',
     'cta.back_home': 'Terug naar home',
     'cta.view_all_faq': 'Bekijk alle veelgestelde vragen',
     'faq.heading': 'Veelgestelde vragen',
@@ -31,9 +31,9 @@ export const ui = {
     'related.heading': 'Gerelateerde onderwerpen',
     'lastchecked.label': 'Laatst gecontroleerd',
     'disclaimer.short':
-      'Deze informatie is algemeen en geen juridisch advies. Voor jouw persoonlijke situatie verwijzen we je naar een notaris.',
+      'Deze informatie is algemeen. Herken je een bijzondere situatie? Dan bieden we maatwerk, in samenwerking met een notaris en tegen een ander tarief.',
     'disclaimer.footer':
-      'jouwtestament geeft algemene informatie over testamenten en levenstestamenten en helpt je bij de voorbereiding. Wij zijn geen notaris. Een testament wordt opgemaakt door een notaris en de akte is in het Nederlands. De informatie is met zorg samengesteld, maar kan afwijken van jouw persoonlijke situatie of gewijzigd zijn. Vraag altijd advies aan een notaris voordat je beslissingen neemt.',
+      'jouwtestament geeft algemene informatie over testamenten en levenstestamenten en helpt je bij de voorbereiding. Wij zijn geen notaris. Een testament wordt opgemaakt door een notaris en de akte is in het Nederlands. De informatie is met zorg samengesteld, maar kan afwijken van jouw persoonlijke situatie of gewijzigd zijn.',
   },
   en: {
     'nav.home': 'Home',
@@ -47,7 +47,7 @@ export const ui = {
     'nav.menu': 'Menu',
     'site.title': 'jouwtestament',
     'site.tagline': 'Arranging your will: simple, fast and affordable.',
-    'cta.next_step': 'See the next step',
+    'cta.next_step': 'Start the step-by-step plan',
     'cta.back_home': 'Back to home',
     'cta.view_all_faq': 'See all frequently asked questions',
     'faq.heading': 'Frequently asked questions',
@@ -55,8 +55,8 @@ export const ui = {
     'related.heading': 'Related topics',
     'lastchecked.label': 'Last checked',
     'disclaimer.short':
-      'This information is general and not legal advice. For your personal situation, please consult a civil-law notary.',
+      'This information is general. Is your situation unusual? We offer a tailored service, together with a notary and at a different rate.',
     'disclaimer.footer':
-      'jouwtestament provides general information about wills and living wills and helps you prepare. We are not a notary. A will is drawn up by a civil-law notary and the deed is drafted in Dutch. This information is compiled with care but may differ from your personal situation or have since changed. Always seek advice from a notary before making decisions.',
+      'jouwtestament provides general information about wills and living wills and helps you prepare. We are not a notary. A will is drawn up by a civil-law notary and the deed is drafted in Dutch. This information is compiled with care but may differ from your personal situation or have since changed.',
   },
 } as const;

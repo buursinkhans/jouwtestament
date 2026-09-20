@@ -1,0 +1,36 @@
+// Lijst voor de notariskeuze-stap in het stappenplan (smoketest), op alfabet
+// van de plaats. Bewust generiek en plaatsnaam-gebaseerd, geen bestaande
+// kantoren nabootsen: dit suggereert geen samenwerking die er nog niet is.
+// Zie CLAUDE.md: geen partner noemen zolang er geen contract is.
+export const notarisKantoren = [
+  'Alkmaar',
+  'Almere',
+  'Amersfoort',
+  'Amstelveen',
+  'Amsterdam',
+  'Apeldoorn',
+  'Arnhem',
+  'Breda',
+  'Delft',
+  'Den Haag',
+  'Deventer',
+  'Dordrecht',
+  'Eindhoven',
+  'Enschede',
+  'Groningen',
+  'Haarlem',
+  "'s-Hertogenbosch",
+  'Hilversum',
+  'Hoofddorp',
+  'Leeuwarden',
+  'Leiden',
+  'Maastricht',
+  'Nijmegen',
+  'Rotterdam',
+  'Tilburg',
+  'Utrecht',
+  'Venlo',
+  'Zaanstad',
+  'Zoetermeer',
+  'Zwolle',
+].map((city) => ({ name: `Notariskantoor ${city}`, city }));

@@ -11,7 +11,6 @@ export const translatedPaths: Record<string, Partial<Record<LangCode, string>>> 
   samengesteldGezin: { nl: '/samengesteld-gezin' },
   kosten: { nl: '/kosten-van-een-testament' },
   faq: { nl: '/veelgestelde-vragen' },
-  wachtlijst: { nl: '/wachtlijst' },
   overOns: { nl: '/over-ons' },
 };
 
