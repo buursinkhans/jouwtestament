@@ -117,6 +117,22 @@ const faqItems = [
       <p>{t('disclaimer.short')}</p>
     </div>
 
+    <Quiz
+      id="quiz-testament"
+      title="Wat regelt de wet voor je gezin als je niets vastlegt?"
+      intro="Drie korte vragen. Ontdek wat er gebeurt als je geen testament hebt. Het duurt ongeveer een minuut. Wij bewaren je antwoorden niet."
+      questions={quizAQuestions}
+      resultIntro="Dit kun je regelen"
+      resultPoints={[
+        'Wat je partner en kinderen erven',
+        'Wie voor je kinderen zorgt',
+        'Wat je partner erft als je niet getrouwd bent',
+      ]}
+      workBlock="Je bereidt je testament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
+      ctaHref="#funnel-testament"
+      ctaLabel="Start het stappenplan"
+    />
+
     <Funnel
       id="funnel-testament"
       productLabel="testament"
@@ -184,22 +200,6 @@ const faqItems = [
       automatisch van jou. Je partner en stiefkinderen krijgen dan niets,
       tenzij je dit vastlegt in een testament.
     </p>
-
-    <Quiz
-      id="quiz-testament"
-      title="Wat regelt de wet voor je gezin als je niets vastlegt?"
-      intro="Drie korte vragen. Ontdek wat er gebeurt als je geen testament hebt. Het duurt ongeveer een minuut. Wij bewaren je antwoorden niet."
-      questions={quizAQuestions}
-      resultIntro="Dit kun je regelen"
-      resultPoints={[
-        'Wat je partner en kinderen erven',
-        'Wie voor je kinderen zorgt',
-        'Wat je partner erft als je niet getrouwd bent',
-      ]}
-      workBlock="Je bereidt je testament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
-      ctaHref="#funnel-testament"
-      ctaLabel="Start het stappenplan"
-    />
 
     <h2>{t('related.heading')}</h2>
     <div class="card-grid">

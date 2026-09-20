@@ -103,6 +103,22 @@ const faqItems = [
       <p>{t('disclaimer.short')}</p>
     </div>
 
+    <Quiz
+      id="quiz-levenstestament"
+      title="Wie regelt jouw zaken als je dat zelf niet meer kunt?"
+      intro="Drie korte vragen. Ontdek wat er gebeurt als je ziek wordt en je zaken niet meer kunt regelen. Het duurt ongeveer een minuut. Wij bewaren je antwoorden niet."
+      questions={quizBQuestions}
+      resultIntro="Dit kun je regelen"
+      resultPoints={[
+        'Wie je geldzaken regelt',
+        'Wie beslissingen neemt over je zorg en persoonlijke zaken',
+        'Wanneer de volmacht ingaat',
+      ]}
+      workBlock="Je bereidt je levenstestament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
+      ctaHref="#funnel-levenstestament"
+      ctaLabel="Start het stappenplan"
+    />
+
     <Funnel
       id="funnel-levenstestament"
       productLabel="levenstestament"
@@ -163,22 +179,6 @@ const faqItems = [
       </li>
     </ul>
     <p>Veel mensen laten beide tegelijk opstellen bij de notaris.</p>
-
-    <Quiz
-      id="quiz-levenstestament"
-      title="Wie regelt jouw zaken als je dat zelf niet meer kunt?"
-      intro="Drie korte vragen. Ontdek wat er gebeurt als je ziek wordt en je zaken niet meer kunt regelen. Het duurt ongeveer een minuut. Wij bewaren je antwoorden niet."
-      questions={quizBQuestions}
-      resultIntro="Dit kun je regelen"
-      resultPoints={[
-        'Wie je geldzaken regelt',
-        'Wie beslissingen neemt over je zorg en persoonlijke zaken',
-        'Wanneer de volmacht ingaat',
-      ]}
-      workBlock="Je bereidt je levenstestament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
-      ctaHref="#funnel-levenstestament"
-      ctaLabel="Start het stappenplan"
-    />
 
     <h2>{t('related.heading')}</h2>
     <div class="card-grid">
