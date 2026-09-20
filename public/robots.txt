@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jouwtestament.nl/sitemap-index.xml

@@ -1,0 +1,270 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Quiz from '../components/Quiz.astro';
+import { useTranslations } from '../i18n/utils';
+import { Info, ShieldCheck, Baby, Users, Coins, CircleQuestionMark, PenLine, BookOpen, MessagesSquare } from '@lucide/astro';
+
+const lang = 'nl' as const;
+const t = useTranslations(lang);
+
+// Quiz A uit stijlgids.md, sectie 7: "Gezin met kinderen (testament)".
+const quizAQuestions = [
+  {
+    note: 'Voor gehuwden en geregistreerde partners',
+    prompt: 'Je bent getrouwd en hebt kinderen. Je overlijdt en hebt geen testament. Wie krijgt de erfenis?',
+    options: [
+      { label: 'Je kinderen krijgen alles.', correct: false },
+      {
+        label: 'Je partner krijgt alles. Je kinderen krijgen een geldvordering die ze later kunnen opeisen.',
+        correct: true,
+      },
+      { label: 'Je partner en je kinderen delen de bezittingen.', correct: false },
+    ],
+    explanation:
+      'De wet regelt dit automatisch. Je partner krijgt alle bezittingen, maar ook de schulden. Je kinderen krijgen geen bezittingen, maar een vordering in geld. Meestal kunnen ze die pas opeisen als je partner overlijdt, of bij een faillissement of schuldsanering.',
+    meaning:
+      'Voor veel gezinnen werkt dit goed. Maar het past niet altijd bij je wensen, bijvoorbeeld als je partner later hertrouwt. In een testament kun je dit anders regelen.',
+  },
+  {
+    prompt:
+      'Beide ouders overlijden. De kinderen zijn nog minderjarig en er is niets geregeld. Wie beslist dan wie voor de kinderen zorgt?',
+    options: [
+      { label: "De opa's en oma's, automatisch.", correct: false },
+      { label: 'De kantonrechter benoemt een voogd.', correct: true },
+      { label: 'De oudste broer of zus van de ouders, automatisch.', correct: false },
+    ],
+    explanation:
+      'Zonder regeling kiest de rechter een voogd. De Raad voor de Kinderbescherming adviseert daarbij. Je weet vooraf niet wie het wordt.',
+    meaning:
+      'Je kunt zelf een voogd en een reservevoogd aanwijzen. Dat kan in een testament, en ook via het gezagsregister van de rechtbank. In een testament kun je dit samen met andere wensen regelen, zoals het beheer van het geld van je kinderen.',
+  },
+  {
+    note: 'Voor ongehuwd samenwonenden',
+    prompt: 'Je woont samen, maar bent niet getrouwd. Je overlijdt en hebt geen testament. Wat erft je partner?',
+    options: [
+      { label: 'Alles, net als bij getrouwde partners.', correct: false },
+      { label: 'De helft van de erfenis.', correct: false },
+      { label: 'Niets. Je partner is dan geen erfgenaam.', correct: true },
+    ],
+    explanation:
+      'De regels voor getrouwde partners gelden niet voor samenwonenden. Zonder testament erft je partner niet automatisch. Zijn er kinderen, dan erven zij.',
+    meaning: 'Wil je dat je partner goed verzorgd achterblijft? Dan moet je dat in een testament vastleggen.',
+    skipLabel: 'Deze vraag geldt niet voor mij (ik ben getrouwd)',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Is een testament verplicht?',
+    answer:
+      'Nee, een testament is niet verplicht. Zonder testament bepaalt de wet wie erft, en dat is niet altijd wat je wilt.',
+  },
+  {
+    question: 'Wat is het verschil tussen een testament en een levenstestament?',
+    answer:
+      'Een testament regelt wat er na je overlijden gebeurt met je bezittingen. Een levenstestament regelt wie voor je beslist als je dat zelf niet meer kunt, bijvoorbeeld door ziekte.',
+  },
+  {
+    question: 'Kan ik mijn testament later nog wijzigen?',
+    answer:
+      'Je kunt je testament laten aanpassen bij de notaris, bijvoorbeeld na een verhuizing, scheiding of geboorte.',
+  },
+  {
+    question: 'Wat is een executeur?',
+    answer:
+      'Een executeur is de persoon die na je overlijden je nalatenschap afwikkelt: rekeningen opzeggen, schulden betalen en bezittingen verdelen. Je wijst deze persoon zelf aan in je testament.',
+  },
+  {
+    question: 'Wat is een legaat?',
+    answer:
+      'Een legaat is een vast bedrag, voorwerp of recht dat je aan een specifiek persoon of goed doel nalaat, los van de rest van je nalatenschap.',
+  },
+  {
+    question: 'Moet ik en mijn partner allebei een apart testament maken?',
+    answer:
+      'Ja, een testament is persoonlijk. Ben je getrouwd of heb je een geregistreerd partnerschap? Dan maak je allebei een eigen testament, vaak wel in hetzelfde gesprek met de notaris.',
+  },
+];
+---
+
+<Layout
+  title="Waarom heb je een testament nodig?"
+  description="Zonder testament bepaalt de wet wie erft. Lees wat je met een testament kunt regelen, en hoe je het aanpakt."
+  pageKey="testament"
+  datePublished="2026-09-19"
+  dateModified="2026-09-20"
+  faqItems={faqItems}
+>
+  <article>
+    <h1>Waarom heb je een testament nodig?</h1>
+
+    <p class="lead">
+      Zonder testament bepaalt de wet wie erft. Dat is niet altijd wat je
+      wilt. Met een testament regel je dit zelf, en bescherm je je partner en
+      kinderen.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>Wat gebeurt er als je geen testament hebt?</h2>
+    <p>
+      Zonder testament geldt het wettelijk erfrecht. De wet wijst dan je
+      erfgenamen aan: de mensen die volgens de wet mogen erven. Eerst zijn dat
+      je partner en kinderen. Daarna komen ouders, broers en zussen aan de
+      beurt.
+    </p>
+    <p>
+      Woon je ongetrouwd samen, zonder samenlevingscontract en zonder
+      testament? Dan erft je partner in dat geval niets. Hetzelfde geldt voor
+      stiefkinderen: zij erven nooit automatisch mee.
+    </p>
+
+    <h2>Wat kun je allemaal in een testament regelen?</h2>
+    <p>
+      Een testament is meer dan alleen bepalen wie erft. Je kunt er
+      verschillende onderdelen in opnemen, elk met een eigen doel.
+    </p>
+
+    <h3>Erfgenamen aanwijzen</h3>
+    <p>
+      Je bepaalt zelf wie erft, en voor welk deel. Dat kan je partner zijn, je
+      kinderen, een goed doel, of iemand anders die je dierbaar is.
+    </p>
+
+    <h3>Voogdij regelen</h3>
+    <p>
+      Heb je minderjarige kinderen? Dan leg je vast wie voor hen zorgt als jij
+      en de andere ouder er niet meer zijn. Zonder deze regeling beslist de
+      rechter wie voogd wordt.
+    </p>
+
+    <h3>Een executeur benoemen</h3>
+    <p>
+      Een executeur regelt na je overlijden de praktische zaken: rekeningen
+      opzeggen, schulden betalen, en bezittingen verdelen onder de erfgenamen.
+      Zonder executeur doen de erfgenamen dit gezamenlijk zelf.
+    </p>
+
+    <h3>Een legaat nalaten</h3>
+    <p>
+      Met een legaat laat je een vast bedrag, een voorwerp, of bijvoorbeeld
+      een sieraad na aan een specifiek persoon of goed doel, los van de rest
+      van je nalatenschap.
+    </p>
+
+    <h3>Een uitsluitingsclausule opnemen</h3>
+    <p>
+      Met deze clausule zorg je dat een erfenis binnen je familie blijft. Zo
+      voorkom je dat het geld van je kind na een scheiding voor de helft naar
+      de ex-partner van je kind gaat.
+    </p>
+
+    <h2>Testament of samenlevingscontract: wat regelt wat?</h2>
+    <p>
+      Een samenlevingscontract regelt vooral zaken tussen jou en je partner
+      tijdens je leven, zoals de verdeling van kosten en bezit. Een testament
+      regelt wat er na je overlijden gebeurt. Woon je ongetrouwd samen? Dan
+      heb je vaak beide nodig om je partner goed te beschermen.
+    </p>
+
+    <h2>Wat betekent dit voor een samengesteld gezin?</h2>
+    <p class="example-box">
+      Stel: je hebt een nieuwe partner, en samen heb je ook kinderen uit
+      eerdere relaties. Zonder testament erven alleen je eigen kinderen
+      automatisch van jou. Je partner en stiefkinderen krijgen dan niets,
+      tenzij je dit vastlegt in een testament.
+    </p>
+
+    <h2>Hoe stel je een testament op?</h2>
+    <ol class="steps">
+      <li>
+        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Denk na over je wensen.</strong> Wie moet erven, wie wordt
+        voogd, en heb je bijzondere wensen?
+      </li>
+      <li>
+        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Maak een afspraak bij een notaris.</strong> De notaris legt de
+        mogelijkheden aan je uit in een persoonlijk gesprek.
+      </li>
+      <li>
+        <PenLine class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Bespreek en onderteken het concept.</strong> Pas het testament
+        aan waar nodig, en onderteken de akte bij de notaris.
+      </li>
+    </ol>
+
+    <Quiz
+      id="quiz-testament"
+      title="Wat regelt de wet voor je gezin als je niets vastlegt?"
+      intro="Drie korte vragen. Ontdek wat er gebeurt als je geen testament hebt. Het duurt ongeveer een minuut. Wij bewaren je antwoorden niet."
+      questions={quizAQuestions}
+      resultIntro="Dit kun je regelen"
+      resultPoints={[
+        'Wat je partner en kinderen erven',
+        'Wie voor je kinderen zorgt',
+        'Wat je partner erft als je niet getrouwd bent',
+      ]}
+      workBlock="Je bereidt je testament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
+      ctaHref="/wachtlijst"
+      ctaLabel="Schrijf je in voor de wachtlijst"
+    />
+
+    <h2>{t('related.heading')}</h2>
+    <div class="card-grid">
+      <div class="card">
+        <ShieldCheck class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Levenstestament</h3>
+        <p>Regel wie voor je beslist als je dat zelf niet meer kunt.</p>
+        <a href="/levenstestament">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <Baby class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Kinderen en nalatenschap</h3>
+        <p>Wat je voor je kinderen regelt: voogdij en erfenis.</p>
+        <a href="/kinderen-en-nalatenschap">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <Users class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Samengesteld gezin</h3>
+        <p>Bescherm je partner en stiefkinderen met een testament.</p>
+        <a href="/samengesteld-gezin">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <Coins class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Kosten</h3>
+        <p>Wat bepaalt de prijs van een testament bij de notaris?</p>
+        <a href="/kosten-van-een-testament">Lees meer &rarr;</a>
+      </div>
+    </div>
+
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{t('faq.heading')}</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+    <p><a href="/veelgestelde-vragen">{t('cta.view_all_faq')} &rarr;</a></p>
+
+    <h2>{t('sources.heading')}</h2>
+    <ul>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over erfrecht</li>
+      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; hulp bij het vinden van een notaris</li>
+      <li><a href="https://www.belastingdienst.nl">Belastingdienst</a> &mdash; informatie over erfbelasting</li>
+    </ul>
+    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>

@@ -1,0 +1,304 @@
+---
+// Interactieve 3-vragen-quiz volgens stijlgids.md, sectie 7.
+// Belangrijk: er wordt niets opgeslagen. Antwoorden leven alleen tijdelijk
+// in het geheugen van de browser (via CSS/DOM-status), niet in localStorage,
+// sessionStorage of een server - dat is bewust, zie meten-en-privacy.md.
+import { CircleQuestionMark } from '@lucide/astro';
+
+interface QuizOption {
+  label: string;
+  correct: boolean;
+}
+
+interface QuizQuestion {
+  note?: string;
+  prompt: string;
+  options: QuizOption[];
+  explanation: string;
+  meaning: string;
+  skipLabel?: string;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  intro: string;
+  questions: QuizQuestion[];
+  resultIntro: string;
+  resultPoints: string[];
+  workBlock: string;
+  ctaHref: string;
+  ctaLabel: string;
+}
+
+const { id, title, intro, questions, resultIntro, resultPoints, workBlock, ctaHref, ctaLabel } = Astro.props;
+---
+
+<div class="quiz" data-quiz id={id}>
+  <p class="quiz-status-note">
+    Concept &mdash; nog te controleren door een notaris of jurist voordat dit
+    definitief klopt.
+  </p>
+
+  <div class="quiz-intro" data-quiz-intro>
+    <h3><CircleQuestionMark size={22} stroke-width={1.75} aria-hidden="true" class="heading-icon" />{title}</h3>
+    <p>{intro}</p>
+    <button type="button" class="button" data-quiz-start>Start de quiz</button>
+  </div>
+
+  <div class="quiz-body" data-quiz-body hidden>
+    <p class="quiz-progress" data-quiz-progress aria-live="polite"></p>
+
+    {questions.map((q, i) => (
+      <div class="quiz-question" data-quiz-question hidden={i !== 0}>
+        {q.note && <p class="quiz-note">{q.note}</p>}
+        <p class="quiz-prompt">{q.prompt}</p>
+        <div class="quiz-options" role="group" aria-label={`Antwoordopties, vraag ${i + 1}`}>
+          {q.options.map((opt, oi) => (
+            <button type="button" class="quiz-option" data-correct={String(opt.correct)} data-option-index={oi}>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+        {q.skipLabel && (
+          <p class="quiz-skip-wrap">
+            <button type="button" class="quiz-skip" data-quiz-skip>{q.skipLabel}</button>
+          </p>
+        )}
+        <div class="quiz-feedback" data-quiz-feedback hidden aria-live="polite">
+          <p class="quiz-feedback-lead" data-quiz-feedback-lead></p>
+          <p>{q.explanation}</p>
+          <p><strong>Wat betekent dit voor jou?</strong> {q.meaning}</p>
+          <button type="button" class="button" data-quiz-next>
+            {i === questions.length - 1 ? 'Bekijk resultaat' : 'Volgende vraag'}
+          </button>
+        </div>
+      </div>
+    ))}
+
+    <div class="quiz-result" data-quiz-result hidden>
+      <h3>{resultIntro}</h3>
+      <ul>
+        {resultPoints.map((point) => (
+          <li>{point}</li>
+        ))}
+      </ul>
+      <div class="quiz-workblock">
+        <p>{workBlock}</p>
+      </div>
+      <a class="button" href={ctaHref}>{ctaLabel}</a>
+    </div>
+  </div>
+</div>
+
+<details class="quiz-fallback">
+  <summary>Dezelfde vragen als tekst lezen</summary>
+  {questions.map((q) => {
+    const correct = q.options.find((opt) => opt.correct);
+    return (
+      <div class="quiz-fallback-item">
+        <h4>{q.prompt}</h4>
+        <p>
+          <strong>{correct?.label}</strong> {q.explanation} {q.meaning}
+        </p>
+      </div>
+    );
+  })}
+</details>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-quiz]').forEach((quiz) => {
+    const introEl = quiz.querySelector<HTMLElement>('[data-quiz-intro]');
+    const bodyEl = quiz.querySelector<HTMLElement>('[data-quiz-body]');
+    const startBtn = quiz.querySelector<HTMLButtonElement>('[data-quiz-start]');
+    const questionEls = Array.from(quiz.querySelectorAll<HTMLElement>('[data-quiz-question]'));
+    const resultEl = quiz.querySelector<HTMLElement>('[data-quiz-result]');
+    const progressEl = quiz.querySelector<HTMLElement>('[data-quiz-progress]');
+
+    function showQuestion(index: number) {
+      questionEls.forEach((q, i) => {
+        q.hidden = i !== index;
+      });
+      if (progressEl) {
+        progressEl.hidden = false;
+        progressEl.textContent = `Vraag ${index + 1} van ${questionEls.length}`;
+      }
+    }
+
+    function showResult() {
+      questionEls.forEach((q) => (q.hidden = true));
+      if (progressEl) progressEl.hidden = true;
+      resultEl?.removeAttribute('hidden');
+      resultEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function goToNext(index: number) {
+      if (index + 1 < questionEls.length) showQuestion(index + 1);
+      else showResult();
+    }
+
+    startBtn?.addEventListener('click', () => {
+      introEl?.setAttribute('hidden', '');
+      bodyEl?.removeAttribute('hidden');
+      showQuestion(0);
+    });
+
+    questionEls.forEach((questionEl, index) => {
+      const optionButtons = Array.from(questionEl.querySelectorAll<HTMLButtonElement>('[data-option-index]'));
+      const feedback = questionEl.querySelector<HTMLElement>('[data-quiz-feedback]');
+      const feedbackLead = questionEl.querySelector<HTMLElement>('[data-quiz-feedback-lead]');
+      const nextBtn = questionEl.querySelector<HTMLButtonElement>('[data-quiz-next]');
+      const skipBtn = questionEl.querySelector<HTMLButtonElement>('[data-quiz-skip]');
+
+      optionButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const isCorrect = btn.getAttribute('data-correct') === 'true';
+          optionButtons.forEach((b) => (b.disabled = true));
+          btn.classList.add(isCorrect ? 'is-correct' : 'is-incorrect');
+          if (feedbackLead) {
+            feedbackLead.textContent = isCorrect ? 'Klopt.' : 'Dat denken veel mensen.';
+          }
+          feedback?.removeAttribute('hidden');
+          feedback?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      });
+
+      skipBtn?.addEventListener('click', () => goToNext(index));
+      nextBtn?.addEventListener('click', () => goToNext(index));
+    });
+  });
+</script>
+
+<style>
+  .quiz {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .quiz-status-note {
+    font-size: 0.8rem;
+    color: var(--color-warning);
+    margin: 0 0 1rem;
+  }
+
+  .quiz-intro h3 {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .quiz-progress {
+    color: var(--color-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .quiz-note {
+    font-style: italic;
+    color: var(--color-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .quiz-prompt {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .quiz-options {
+    display: grid;
+    gap: 0.6rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-option {
+    text-align: left;
+    background: var(--color-secondary);
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+    font: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--color-text);
+  }
+
+  .quiz-option:hover:not(:disabled) {
+    border-color: var(--color-primary);
+  }
+
+  .quiz-option:disabled {
+    cursor: default;
+  }
+
+  .quiz-option.is-correct {
+    border-color: var(--color-primary);
+    background: var(--color-secondary);
+    font-weight: 700;
+  }
+
+  .quiz-option.is-incorrect {
+    opacity: 0.7;
+  }
+
+  .quiz-skip-wrap {
+    margin: 0 0 1rem;
+  }
+
+  .quiz-skip {
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+  }
+
+  .quiz-feedback {
+    background: var(--color-bg);
+    border-radius: 0.5rem;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .quiz-feedback-lead {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-top: 0;
+  }
+
+  .quiz-result h3 {
+    margin-top: 0;
+  }
+
+  .quiz-workblock {
+    background: var(--color-secondary);
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .quiz-workblock p {
+    margin: 0;
+  }
+
+  .quiz-fallback {
+    margin: 1rem 0 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .quiz-fallback summary {
+    cursor: pointer;
+    color: var(--color-muted);
+  }
+
+  .quiz-fallback-item {
+    margin-top: 1rem;
+  }
+
+  .quiz-fallback-item h4 {
+    margin-bottom: 0.35rem;
+  }
+</style>

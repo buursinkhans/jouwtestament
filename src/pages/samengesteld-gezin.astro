@@ -1,0 +1,154 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { useTranslations } from '../i18n/utils';
+import { Info, ScrollText, Baby, CircleQuestionMark } from '@lucide/astro';
+
+const lang = 'nl' as const;
+const t = useTranslations(lang);
+
+const faqItems = [
+  {
+    question: 'Erven stiefkinderen automatisch mee?',
+    answer:
+      'Nee, stiefkinderen erven nooit automatisch. Wil je dat je stiefkinderen meedelen in je nalatenschap? Dan moet je dit vastleggen in een testament, of hen adopteren.',
+  },
+  {
+    question: 'Erft mijn partner iets als wij niet getrouwd zijn?',
+    answer:
+      'Nee, zonder testament erft een ongehuwde partner niets. Ook niet als je al jaren samenwoont.',
+  },
+  {
+    question: 'Wat is een uitsluitingsclausule, en heb ik die nodig?',
+    answer:
+      'Een uitsluitingsclausule zorgt dat een erfenis binnen je familie blijft, ook als je kind later gaat scheiden. Voor samengestelde gezinnen is dit vaak extra belangrijk om te bespreken met de notaris.',
+  },
+];
+---
+
+<Layout
+  title="Testament voor een samengesteld gezin: waar let je op?"
+  description="In een samengesteld gezin erven partner en stiefkinderen niet automatisch mee. Lees hoe je hen beschermt met een testament."
+  pageKey="samengesteldGezin"
+  datePublished="2026-09-20"
+  dateModified="2026-09-20"
+  faqItems={faqItems}
+>
+  <article>
+    <h1>Testament voor een samengesteld gezin: waar let je op?</h1>
+
+    <p class="lead">
+      In een samengesteld gezin erven je partner en stiefkinderen niet
+      automatisch mee, ook niet na jarenlang samenwonen. Een testament is de
+      enige manier om hen goed te beschermen.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>Wat is een samengesteld gezin?</h2>
+    <p>
+      Een samengesteld gezin bestaat uit partners die ieder kinderen uit een
+      eerdere relatie hebben, en soms ook samen nog kinderen krijgen. Deze
+      gezinsvorm komt steeds vaker voor: ongeveer 1 op de 4 mensen in
+      Nederland maakt er deel van uit (bron: onderzoek van EPN, vFAS, VMN en
+      VEAN, 2025). Het erfrecht houdt hier niet vanzelf rekening mee.
+    </p>
+
+    <h2>Wat gebeurt er zonder testament?</h2>
+    <p>
+      Zonder testament erven alleen je eigen kinderen en, als je getrouwd
+      bent of een geregistreerd partnerschap hebt, je partner. Stiefkinderen
+      erven nooit automatisch, ook niet als je hen al jaren opvoedt.
+    </p>
+    <p>
+      Woon je ongetrouwd samen? Dan erft je partner in dat geval helemaal
+      niets, hoe lang je ook samen bent.
+    </p>
+
+    <h2>Hoe bescherm je je partner en stiefkinderen?</h2>
+    <ul>
+      <li>
+        <strong>Wijs je partner aan als erfgenaam</strong> in je testament,
+        zeker als je niet getrouwd bent.
+      </li>
+      <li>
+        <strong>Neem stiefkinderen op als erfgenaam of legataris</strong> als
+        je wilt dat zij meedelen in je nalatenschap.
+      </li>
+      <li>
+        <strong>Overweeg adoptie</strong> als je wilt dat een stiefkind
+        juridisch gezien je eigen kind wordt, met alle rechten die daarbij
+        horen.
+      </li>
+    </ul>
+
+    <h2>Wat is een uitsluitingsclausule?</h2>
+    <p>
+      Met een uitsluitingsclausule &mdash; ook wel "koude kant uitsluiten"
+      genoemd &mdash; zorg je dat een erfenis binnen je eigen familie blijft.
+      Zonder deze clausule kan de helft van de erfenis van je kind na een
+      scheiding naar de ex-partner van je kind gaan. In samengestelde
+      gezinnen bespreek je dit vaak samen met de notaris.
+    </p>
+
+    <h2>Wat betekent dit concreet voor jouw gezin?</h2>
+    <p class="example-box">
+      Stel: jij en je partner wonen samen, jullie hebben ieder een kind uit
+      een eerdere relatie, en samen hebben jullie nog een kind gekregen.
+      Zonder testament erven bij je overlijden alleen je eigen twee kinderen.
+      Je partner en je stiefkind krijgen dan niets, tenzij je dit vastlegt.
+    </p>
+
+    <h2>Heb je een testament én een samenlevingscontract nodig?</h2>
+    <p>
+      Ben je niet getrouwd? Dan regelt een samenlevingscontract zaken tijdens
+      je leven, zoals de verdeling van kosten. Een testament regelt wat er na
+      je overlijden gebeurt. Voor samengestelde gezinnen zijn beide vaak
+      nodig om iedereen goed te beschermen.
+    </p>
+
+    <h2>{t('related.heading')}</h2>
+    <div class="card-grid">
+      <div class="card">
+        <ScrollText class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Testament</h3>
+        <p>Alles wat je in een testament kunt regelen, op een rij.</p>
+        <a href="/testament">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <Baby class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Kinderen en nalatenschap</h3>
+        <p>Wat je voor je kinderen regelt: voogdij en erfenis.</p>
+        <a href="/kinderen-en-nalatenschap">Lees meer &rarr;</a>
+      </div>
+    </div>
+
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{t('faq.heading')}</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+    <p><a href="/veelgestelde-vragen">{t('cta.view_all_faq')} &rarr;</a></p>
+
+    <h2>{t('sources.heading')}</h2>
+    <ul>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over erfrecht en samenlevingsvormen</li>
+      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; hulp bij het vinden van een notaris</li>
+      <li><a href="https://www.erven-online.nl">Erven-online.nl</a> &mdash; onderzoek naar samengestelde gezinnen (EPN, vFAS, VMN en VEAN, 2025)</li>
+    </ul>
+    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>

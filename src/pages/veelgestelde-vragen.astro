@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Info, CircleQuestionMark, ScrollText, ShieldCheck, Baby, Users, Coins } from '@lucide/astro';
+
+const categories = [
+  {
+    heading: 'Testament algemeen',
+    icon: ScrollText,
+    link: '/testament',
+    items: [
+      {
+        question: 'Is een testament verplicht?',
+        answer:
+          'Nee, een testament is niet verplicht. Zonder testament bepaalt de wet wie erft, en dat is niet altijd wat je wilt.',
+      },
+      {
+        question: 'Wat is het verschil tussen een testament en een levenstestament?',
+        answer:
+          'Een testament regelt wat er na je overlijden gebeurt met je bezittingen. Een levenstestament regelt wie voor je beslist als je dat zelf niet meer kunt, bijvoorbeeld door ziekte.',
+      },
+      {
+        question: 'Kan ik mijn testament later nog wijzigen?',
+        answer:
+          'Je kunt je testament laten aanpassen bij de notaris, bijvoorbeeld na een verhuizing, scheiding of geboorte.',
+      },
+      {
+        question: 'Wat is een executeur?',
+        answer:
+          'Een executeur is de persoon die na je overlijden je nalatenschap afwikkelt: rekeningen opzeggen, schulden betalen en bezittingen verdelen.',
+      },
+      {
+        question: 'Wat is een legaat?',
+        answer:
+          'Een legaat is een vast bedrag, voorwerp of recht dat je aan een specifiek persoon of goed doel nalaat, los van de rest van je nalatenschap.',
+      },
+    ],
+  },
+  {
+    heading: 'Levenstestament',
+    icon: ShieldCheck,
+    link: '/levenstestament',
+    items: [
+      {
+        question: 'Is een levenstestament hetzelfde als een testament?',
+        answer:
+          'Nee. Een testament geldt na je overlijden. Een levenstestament geldt tijdens je leven, voor het geval je zelf geen beslissingen meer kunt nemen.',
+      },
+      {
+        question: 'Vanaf welke leeftijd heeft een levenstestament zin?',
+        answer:
+          'Vanaf 18 jaar kun je een levenstestament maken. Een ongeval of ernstige ziekte kan iedereen overkomen, ook op jonge leeftijd.',
+      },
+      {
+        question: 'Wat gebeurt er als ik geen levenstestament heb en wilsonbekwaam word?',
+        answer:
+          'Dan moet je partner of familie naar de kantonrechter voor bewind of mentorschap. Dat kost tijd en geld, en de rechter kiest wie dit mag doen.',
+      },
+    ],
+  },
+  {
+    heading: 'Kinderen en voogdij',
+    icon: Baby,
+    link: '/kinderen-en-nalatenschap',
+    items: [
+      {
+        question: 'Wat gebeurt er met mijn kinderen als beide ouders overlijden?',
+        answer:
+          'Zonder testament beslist de rechter wie voogd wordt over je minderjarige kinderen. Met een testament wijs je dit zelf aan.',
+      },
+      {
+        question: 'Erven mijn kinderen automatisch als ik overlijd?',
+        answer:
+          'Ja, je kinderen zijn wettelijke erfgenamen. Zonder testament regelt de wet hoe de erfenis wordt verdeeld tussen je partner en kinderen.',
+      },
+      {
+        question: 'Kan ik voorkomen dat mijn kind op zijn achttiende zomaar over de erfenis kan beschikken?',
+        answer:
+          'Ja, in je testament kun je een bewind instellen over het erfdeel van je kind, bijvoorbeeld tot een door jou gekozen leeftijd zoals 21 jaar.',
+      },
+    ],
+  },
+  {
+    heading: 'Samengesteld gezin',
+    icon: Users,
+    link: '/samengesteld-gezin',
+    items: [
+      {
+        question: 'Erven stiefkinderen automatisch mee?',
+        answer:
+          'Nee, stiefkinderen erven nooit automatisch. Wil je dat zij meedelen in je nalatenschap? Dan leg je dit vast in een testament, of je adopteert hen.',
+      },
+      {
+        question: 'Erft mijn partner iets als wij niet getrouwd zijn?',
+        answer: 'Nee, zonder testament erft een ongehuwde partner niets, ook niet na jarenlang samenwonen.',
+      },
+      {
+        question: 'Wat is een uitsluitingsclausule, en heb ik die nodig?',
+        answer:
+          'Een uitsluitingsclausule zorgt dat een erfenis binnen je familie blijft, ook als je kind later gaat scheiden.',
+      },
+    ],
+  },
+  {
+    heading: 'Kosten',
+    icon: Coins,
+    link: '/kosten-van-een-testament',
+    items: [
+      {
+        question: 'Wat kost een testament gemiddeld?',
+        answer:
+          'Er is geen vast landelijk tarief: notarissen bepalen hun eigen prijs. Vraag bij een paar notarissen een offerte op.',
+      },
+      {
+        question: 'Is de goedkoopste notaris altijd de beste keuze?',
+        answer:
+          'Niet per se. Let niet alleen op de prijs, maar ook op wat er inhoudelijk geregeld wordt en hoeveel persoonlijk advies je krijgt.',
+      },
+    ],
+  },
+];
+
+const allFaqItems = categories.flatMap((category) => category.items);
+---
+
+<Layout
+  title="Veelgestelde vragen over testament en levenstestament"
+  description="Antwoorden op de meest gestelde vragen over testament, levenstestament, kinderen, samengestelde gezinnen en kosten."
+  pageKey="faq"
+  datePublished="2026-09-20"
+  dateModified="2026-09-20"
+  faqItems={allFaqItems}
+>
+  <article>
+    <h1><CircleQuestionMark class="heading-icon" size={30} stroke-width={1.5} aria-hidden="true" />Veelgestelde vragen</h1>
+    <p class="lead">
+      Hieronder vind je antwoord op de vragen die we het vaakst horen, per
+      onderwerp gegroepeerd. Staat jouw vraag er niet bij, of gaat het om je
+      persoonlijke situatie? Neem dan contact op met een notaris.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>Deze informatie is algemeen en geen juridisch advies. Voor jouw persoonlijke situatie verwijzen we je naar een notaris.</p>
+    </div>
+
+    {categories.map((category) => (
+      <section>
+        <h2><category.icon class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{category.heading}</h2>
+        <dl>
+          {category.items.map((item) => (
+            <div class="faq-item">
+              <dt>{item.question}</dt>
+              <dd>{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
+        <p><a href={category.link}>Meer over {category.heading.toLowerCase()} &rarr;</a></p>
+      </section>
+    ))}
+
+    <h2>Bronnen</h2>
+    <ul>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over erfrecht, voogdij en gezag</li>
+      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; hulp bij het vinden van een notaris</li>
+      <li><a href="https://www.belastingdienst.nl">Belastingdienst</a> &mdash; informatie over erfbelasting</li>
+    </ul>
+    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+
+    <p class="meta-line">Laatst gecontroleerd: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">Terug naar home</a>
+    </p>
+  </article>
+</Layout>

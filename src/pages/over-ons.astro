@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { useTranslations } from '../i18n/utils';
+import { company } from '../data/company';
+import { Info } from '@lucide/astro';
+
+const lang = 'nl' as const;
+const t = useTranslations(lang);
+---
+
+<Layout
+  title="Over ons"
+  description="jouwtestament geeft heldere, onafhankelijke uitleg over testamenten en levenstestamenten. Lees wie we zijn, wat we doen en wat niet."
+  pageKey="overOns"
+  datePublished="2026-09-20"
+  dateModified="2026-09-20"
+>
+  <article>
+    <h1>Wie is jouwtestament?</h1>
+
+    <p class="lead">
+      jouwtestament geeft heldere uitleg over testamenten en levenstestamenten,
+      zodat je zelf de eerste stap kunt zetten. Wij zijn geen notaris: de
+      notaris maakt je akte op.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>Wat is onze missie?</h2>
+    <p>
+      We vinden het belangrijk dat iedereen in Nederland heeft nagedacht over
+      een (levens)testament, zeker als er kinderen zijn. We geven iedereen
+      duidelijke en eerlijke informatie, zonder moeilijke woorden, zodat een
+      (levens)testament voor iedereen mogelijk is.
+    </p>
+
+    <h2>Voor wie is jouwtestament?</h2>
+    <p>
+      We richten ons vooral op gezinnen met kinderen, op samengestelde
+      gezinnen, en op mensen die liever in hun eigen taal worden geholpen.
+      Elk jaar regelen in Nederland ruim 590.000 mensen een testament of
+      levenstestament bij de notaris (bron: KNB, jaaroverzicht 2025). Toch
+      stelt een groot deel van de Nederlanders dit nog uit.
+    </p>
+
+    <h2>Wat doen we wel?</h2>
+    <ul>
+      <li>We leggen in gewone taal uit wat een testament en een levenstestament regelen.</li>
+      <li>We helpen je nadenken over je eigen situatie, met voorbeelden en een korte quiz.</li>
+      <li>We verwijzen je door naar een notaris, die je akte opmaakt.</li>
+    </ul>
+
+    <h2>Wat doen we niet?</h2>
+    <ul>
+      <li>We zijn geen notaris en maken zelf geen akte op.</li>
+      <li>We geven geen persoonlijk juridisch advies over jouw specifieke situatie.</li>
+      <li>We zeggen nooit dat een testament "klaar" of "geldig" is voordat je het bij de notaris hebt ondertekend.</li>
+    </ul>
+    <p>
+      De notaris die je akte opmaakt, is onafhankelijk en niet in dienst van
+      jouwtestament. Zodra we met een vaste notarispartner werken, vermelden
+      we dat hier en bij de doorverwijzing zelf, inclusief of we daarvoor een
+      vergoeding ontvangen.
+    </p>
+
+    <h2>Hoe bereik je ons?</h2>
+    <p>
+      {company.name}<br />
+      <a href={`mailto:${company.email}`}>{company.email}</a>
+    </p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>

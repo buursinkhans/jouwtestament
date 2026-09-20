@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { useTranslations } from '../i18n/utils';
+import { Info, ScrollText, Users, CircleQuestionMark } from '@lucide/astro';
+
+const lang = 'nl' as const;
+const t = useTranslations(lang);
+
+const faqItems = [
+  {
+    question: 'Wat gebeurt er met mijn kinderen als beide ouders overlijden?',
+    answer:
+      'Zonder testament beslist de rechter wie voogd wordt over je minderjarige kinderen. Met een testament wijs je dit zelf aan, zodat er geen onduidelijkheid ontstaat.',
+  },
+  {
+    question: 'Erven mijn kinderen automatisch als ik overlijd?',
+    answer:
+      'Ja, je kinderen zijn wettelijke erfgenamen. Zonder testament regelt de wet hoe de erfenis wordt verdeeld tussen je partner en kinderen.',
+  },
+  {
+    question: 'Kan ik voorkomen dat mijn kind op zijn achttiende zomaar over de erfenis kan beschikken?',
+    answer:
+      'Ja, in je testament kun je een bewind instellen over het erfdeel van je kind, bijvoorbeeld tot een door jou gekozen leeftijd zoals 21 jaar.',
+  },
+  {
+    question: 'Wat als ik alleenstaand ouder ben?',
+    answer:
+      'Ook als alleenstaande ouder kun je voogdij vastleggen voor je kinderen. Dit is juist dan extra belangrijk, omdat er geen andere ouder is die automatisch voogd wordt.',
+  },
+];
+---
+
+<Layout
+  title="Wat regel je voor je kinderen in een testament?"
+  description="Voogdij, erfenis en bewind voor minderjarige kinderen: lees wat er gebeurt als je niets regelt, en hoe je dit vastlegt in een testament."
+  pageKey="kinderen"
+  datePublished="2026-09-20"
+  dateModified="2026-09-20"
+  faqItems={faqItems}
+>
+  <article>
+    <h1>Wat regel je voor je kinderen in een testament?</h1>
+
+    <p class="lead">
+      Zonder testament beslist de rechter wie voor je minderjarige kinderen
+      zorgt als jij en de andere ouder er niet meer zijn. Met een testament
+      leg je dit zelf vast, samen met hoe je kinderen erven.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>Wat gebeurt er met je kinderen als je overlijdt?</h2>
+    <p>
+      Zolang één ouder nog leeft, houdt die ouder meestal automatisch het
+      gezag over de kinderen. Overlijden beide ouders? Dan wijst de
+      kantonrechter een voogd aan: iemand die de zorg en opvoeding overneemt.
+    </p>
+    <p>
+      Heb je zelf niets vastgelegd? Dan kiest de rechter wie voogd wordt,
+      bijvoorbeeld na een verzoek van familieleden. Dat kan tot onzekerheid of
+      conflict leiden, precies op een moeilijk moment.
+    </p>
+
+    <h2>Waarom is het vastleggen van voogdij belangrijk?</h2>
+    <p>
+      Door voogdij vast te leggen in je testament, kies je zelf wie voor je
+      kinderen zorgt. Denk aan een broer, zus, of goede vriend die jouw
+      opvoedingswaarden deelt. Zo voorkom je dat de rechter een keuze moet
+      maken zonder je wensen te kennen.
+    </p>
+
+    <h2>Wat erven je kinderen?</h2>
+    <p>
+      Je kinderen zijn wettelijke erfgenamen. Zonder testament bepaalt de wet
+      hoe de erfenis wordt verdeeld tussen je partner en kinderen. Dit heet de
+      wettelijke verdeling.
+    </p>
+    <p>
+      In een testament kun je een bewind instellen over het erfdeel van je
+      kind. Bewind betekent: iemand anders beheert het geld van je kind tot
+      een door jou gekozen leeftijd, bijvoorbeeld 18, 21 of 23 jaar. Zo
+      voorkom je dat een jongvolwassene in één keer over een grote erfenis
+      beschikt.
+    </p>
+
+    <h2>Wat gebeurt er met jonge kinderen zonder deze regeling?</h2>
+    <p class="example-box">
+      Stel: een gezin met twee jonge kinderen komt samen om bij een ongeval.
+      Zonder testament beslist de kantonrechter wie de kinderen opvoedt, en
+      wie hun geld beheert totdat ze volwassen zijn. Met een testament hebben
+      de ouders dit vooraf zelf geregeld, met iemand die zij zelf vertrouwen.
+    </p>
+
+    <h2>Wat als je alleenstaande ouder bent?</h2>
+    <p>
+      Ben je alleenstaande ouder? Dan is het vastleggen van voogdij extra
+      belangrijk, want er is geen andere ouder die automatisch de zorg
+      overneemt. Denk na over wie je wilt aanwijzen, en bespreek dit vooraf
+      met die persoon.
+    </p>
+
+    <h2>{t('related.heading')}</h2>
+    <div class="card-grid">
+      <div class="card">
+        <ScrollText class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Testament</h3>
+        <p>Alles wat je in een testament kunt regelen, op een rij.</p>
+        <a href="/testament">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <Users class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Samengesteld gezin</h3>
+        <p>Bescherm je partner en stiefkinderen met een testament.</p>
+        <a href="/samengesteld-gezin">Lees meer &rarr;</a>
+      </div>
+    </div>
+
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{t('faq.heading')}</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+    <p><a href="/veelgestelde-vragen">{t('cta.view_all_faq')} &rarr;</a></p>
+
+    <h2>{t('sources.heading')}</h2>
+    <ul>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over voogdij en gezag</li>
+      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; hulp bij het vinden van een notaris</li>
+    </ul>
+    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>

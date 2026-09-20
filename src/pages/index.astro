@@ -1,0 +1,267 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {
+  ScrollText,
+  ShieldCheck,
+  Sparkles,
+  Lock,
+  BadgeCheck,
+  BookOpen,
+  MessagesSquare,
+  Landmark,
+  CircleQuestionMark,
+} from '@lucide/astro';
+
+const faqItems = [
+  {
+    question: 'Is een testament verplicht?',
+    answer:
+      'Nee, een testament is niet verplicht. Zonder testament bepaalt de wet wie erft, en dat is niet altijd wat je wilt.',
+  },
+  {
+    question: 'Wat kost een testament?',
+    answer:
+      'Er is geen vast landelijk tarief: elke notaris bepaalt zijn eigen prijs. Vraag bij een paar notarissen een offerte op.',
+  },
+];
+---
+
+<Layout
+  title="Home"
+  description="Testament of levenstestament nodig? Lees waarom dit belangrijk is voor jou en je naasten, en zet eenvoudig de eerste stap."
+  pageKey="home"
+  faqItems={faqItems}
+>
+  <section>
+    <h1>Jouw testament regelen: eenvoudig, snel en betaalbaar</h1>
+    <p class="lead">
+      Bereid je testament of levenstestament online voor, en weet dat je
+      gezin goed geregeld is.
+    </p>
+
+    <div class="hero-actions">
+      <a class="button" href="/testament">
+        <ScrollText size={18} stroke-width={1.75} aria-hidden="true" />
+        Ik wil een testament
+      </a>
+      <a class="button button-secondary" href="/levenstestament">
+        <ShieldCheck size={18} stroke-width={1.75} aria-hidden="true" />
+        Ik wil een levenstestament
+      </a>
+    </div>
+    <p class="meta-line">
+      Nog niet zover om te starten? <a href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      en ontvang bericht zodra het kan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom is dit belangrijk?</h2>
+    <p>
+      Zonder testament bepaalt de wet wie erft, en dat is niet altijd wat je
+      wilt. Zonder levenstestament beslist niemand voor je als je dat zelf
+      niet meer kunt, bijvoorbeeld door een ongeval of ziekte.
+    </p>
+    <p>
+      Dit raakt niet alleen jezelf. Je nabestaanden merken de gevolgen het
+      meest: zij moeten dan naar de rechter voor toestemming, zij weten niet
+      wat je had gewild, en zij kunnen hierover onderling in conflict raken.
+      Door dit nu te regelen, geef je hen duidelijkheid en rust op een
+      moeilijk moment.
+    </p>
+    <p>
+      Elk jaar regelen ruim 590.000 mensen in Nederland een testament of
+      levenstestament bij de notaris (bron: KNB, jaaroverzicht 2025). Toch
+      stelt een groot deel van de Nederlanders dit nog uit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Testament of levenstestament: wat is het verschil?</h2>
+    <div class="route-grid">
+      <div class="route-card">
+        <ScrollText class="route-icon" size={32} stroke-width={1.5} aria-hidden="true" />
+        <h3>Testament</h3>
+        <p class="route-tagline">Voor na je overlijden</p>
+        <p>
+          Een testament regelt wie je bezittingen erft, wie voogd wordt over
+          je kinderen, en wat er met je nalatenschap gebeurt.
+        </p>
+        <ul>
+          <li>Bepaal zelf wie erft</li>
+          <li>Regel voogdij voor je kinderen</li>
+          <li>Bescherm je partner en stiefkinderen</li>
+        </ul>
+        <a class="button" href="/testament">Start met je testament</a>
+      </div>
+
+      <div class="route-card">
+        <ShieldCheck class="route-icon" size={32} stroke-width={1.5} aria-hidden="true" />
+        <h3>Levenstestament</h3>
+        <p class="route-tagline">Voor tijdens je leven</p>
+        <p>
+          Een levenstestament regelt wie voor je beslist als je dat zelf niet
+          meer kunt, bijvoorbeeld door een ongeval of ernstige ziekte.
+        </p>
+        <ul>
+          <li>Voorkom een gang naar de kantonrechter</li>
+          <li>Wijs zelf je vertrouwenspersoon aan</li>
+          <li>Regel financiële en medische beslissingen</li>
+        </ul>
+        <a class="button" href="/levenstestament">Start met je levenstestament</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Waarom via jouwtestament?</h2>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <Sparkles size={26} stroke-width={1.5} aria-hidden="true" />
+        <h3>Eenvoudig</h3>
+        <p>Heldere uitleg in gewone taal, zonder juridisch jargon.</p>
+      </div>
+      <div class="trust-item">
+        <Lock size={26} stroke-width={1.5} aria-hidden="true" />
+        <h3>Veilig</h3>
+        <p>
+          Je testament wordt opgemaakt door een notaris, en ingeschreven in
+          het Centraal Testamentenregister.
+        </p>
+      </div>
+      <div class="trust-item">
+        <BadgeCheck size={26} stroke-width={1.5} aria-hidden="true" />
+        <h3>Betrouwbaar</h3>
+        <p>
+          Onze informatie is gebaseerd op officiële bronnen, zoals de
+          Rijksoverheid, de KNB en de Belastingdienst.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Hoe werkt het?</h2>
+    <ol class="steps">
+      <li>
+        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Lees de uitleg.</strong> Kies testament of levenstestament, en
+        lees wat erbij komt kijken.
+      </li>
+      <li>
+        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Bereid je wensen voor.</strong> Denk na over wie moet erven,
+        wie voogd wordt, en welke bijzondere wensen je hebt.
+      </li>
+      <li>
+        <Landmark class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Ga naar de notaris.</strong> De notaris maakt je testament
+        officieel op. Dat kunnen wij niet voor je doen: wij zijn geen notaris.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Veelgestelde vragen</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+    <p><a href="/veelgestelde-vragen">Bekijk alle veelgestelde vragen &rarr;</a></p>
+  </section>
+
+  <section>
+    <p class="meta-line">Laatst gecontroleerd: 20 september 2026</p>
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/over-ons">Over ons</a>
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-actions .button,
+  .hero-actions .button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1 1 220px;
+    text-align: center;
+  }
+
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .route-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .route-icon {
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .route-card h3 {
+    margin: 0 0 0.15rem;
+  }
+
+  .route-tagline {
+    color: var(--color-muted);
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  .route-card ul {
+    margin-bottom: 1.5rem;
+  }
+
+  .route-card .button {
+    margin-top: auto;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .trust-item svg {
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .trust-item h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  .trust-item p {
+    margin: 0;
+  }
+</style>

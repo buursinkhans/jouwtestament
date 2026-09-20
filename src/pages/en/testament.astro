@@ -1,0 +1,166 @@
+﻿---
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/utils';
+import { Info, CircleQuestionMark, BookOpen, MessagesSquare, PenLine } from '@lucide/astro';
+
+const lang = 'en' as const;
+const t = useTranslations(lang);
+
+const faqItems = [
+  {
+    question: 'Is a will required by law?',
+    answer:
+      "No, a will is not required. Without one, the law decides who inherits, and that isn't always what you would choose.",
+  },
+  {
+    question: 'What is the difference between a will and a living will?',
+    answer:
+      'A will arranges what happens to your belongings after you pass away. A living will arranges who decides for you if you no longer can, for example due to illness.',
+  },
+  {
+    question: 'Can I change my will later?',
+    answer:
+      'You can have your will updated by a notary, for example after moving, a divorce, or the birth of a child.',
+  },
+  {
+    question: 'What is an executor?',
+    answer:
+      'An executor is the person who settles your estate after you pass away: closing accounts, paying debts, and distributing belongings. You appoint this person yourself in your will.',
+  },
+  {
+    question: 'What is a bequest?',
+    answer:
+      'A bequest is a fixed amount, item, or right that you leave to a specific person or charity, separate from the rest of your estate.',
+  },
+];
+---
+
+<Layout
+  title="Why do you need a will?"
+  description="Without a will, the law decides who inherits. Read what you can arrange in a will and how the process works."
+  pageKey="testament"
+  datePublished="2026-09-19"
+  dateModified="2026-09-20"
+  faqItems={faqItems}
+>
+  <article>
+    <h1>Why do you need a will?</h1>
+
+    <p class="lead">
+      Without a will, the law decides who inherits. That isn't always what
+      you want. With a will, you decide this yourself, and you protect your
+      partner and children.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>What happens if you don't have a will?</h2>
+    <p>
+      Without a will, statutory inheritance law applies. The law then names
+      your heirs: the people who are legally entitled to inherit. First in
+      line are your partner and children. After them come parents, and
+      brothers and sisters.
+    </p>
+    <p>
+      Do you live together unmarried, without a cohabitation agreement and
+      without a will? Then your partner inherits nothing in that case. The
+      same applies to stepchildren: they never inherit automatically.
+    </p>
+
+    <h2>What can you arrange in a will?</h2>
+    <p>
+      A will is more than deciding who inherits. You can include several
+      elements, each with its own purpose.
+    </p>
+
+    <h3>Naming your heirs</h3>
+    <p>
+      You decide who inherits, and for what share. This can be your partner,
+      your children, a charity, or someone else who is dear to you.
+    </p>
+
+    <h3>Arranging guardianship</h3>
+    <p>
+      Do you have minor children? Then you set out who takes care of them if
+      you and the other parent are no longer there. Without this
+      arrangement, a judge decides who becomes guardian.
+    </p>
+
+    <h3>Appointing an executor</h3>
+    <p>
+      An executor handles the practical matters after you pass away: closing
+      accounts, paying debts, and dividing belongings among the heirs.
+      Without an executor, the heirs handle this together themselves.
+    </p>
+
+    <h3>Leaving a bequest</h3>
+    <p>
+      With a bequest, you leave a fixed amount, an item, or for example a
+      piece of jewelry to a specific person or charity, separate from the
+      rest of your estate.
+    </p>
+
+    <h2>Will or cohabitation agreement: what covers what?</h2>
+    <p>
+      A cohabitation agreement mainly arranges matters between you and your
+      partner during your life, such as sharing costs and property. A will
+      arranges what happens after you pass away. If you live together
+      unmarried, you often need both to properly protect your partner.
+    </p>
+
+    <h2>What does this mean for a blended family?</h2>
+    <p class="example-box">
+      Say you have a new partner, and together you also have children from
+      earlier relationships. Without a will, only your own children
+      automatically inherit from you. Your partner and stepchildren then
+      receive nothing, unless you set this out in a will.
+    </p>
+
+    <h2>How do you write a will?</h2>
+    <ol class="steps">
+      <li>
+        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Think about your wishes.</strong> Who should inherit, who
+        becomes guardian, and do you have any special wishes?
+      </li>
+      <li>
+        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Make an appointment with a notary.</strong> The notary
+        explains your options in a personal conversation.
+      </li>
+      <li>
+        <PenLine class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Discuss and sign the draft.</strong> Adjust the will where
+        needed, and sign the deed at the notary's office.
+      </li>
+    </ol>
+
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{t('faq.heading')}</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <h2>{t('sources.heading')}</h2>
+    <ul>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> (Dutch government) &mdash; information on inheritance law</li>
+      <li><a href="https://www.knb.nl">KNB</a> (Royal Dutch Association of Civil-law Notaries) &mdash; helps you find a notary</li>
+      <li><a href="https://www.belastingdienst.nl">Belastingdienst</a> (Dutch Tax Administration) &mdash; information on inheritance tax</li>
+    </ul>
+    <p class="meta-line">These sources were consulted in 2026.</p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 September 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Join the waitlist (Dutch)</a>
+      <a class="button-secondary" href="/en/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>

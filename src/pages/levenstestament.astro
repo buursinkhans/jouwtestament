@@ -1,0 +1,236 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Quiz from '../components/Quiz.astro';
+import { useTranslations } from '../i18n/utils';
+import { Info, ScrollText, Baby, CircleQuestionMark, BookOpen, MessagesSquare, PenLine } from '@lucide/astro';
+
+const lang = 'nl' as const;
+const t = useTranslations(lang);
+
+// Quiz B uit stijlgids.md, sectie 7: "Levenstestament".
+const quizBQuestions = [
+  {
+    prompt:
+      'Door ziekte, zoals dementie, kun je je zaken niet meer regelen. Je hebt niets vastgelegd. Wie beslist dan?',
+    options: [
+      { label: 'Je partner regelt automatisch alles.', correct: false },
+      { label: 'Je kinderen beslissen samen.', correct: false },
+      { label: 'Vaak de kantonrechter. Die kan iemand aanwijzen om je zaken te regelen.', correct: true },
+    ],
+    explanation:
+      'Zonder levenstestament of volmacht kan de rechter een bewindvoerder, mentor of curator benoemen. Ook als je getrouwd bent. Dat kan je partner zijn, maar dat hoeft niet.',
+    meaning: 'Je hebt zelf dan geen invloed meer op wie dit wordt.',
+  },
+  {
+    prompt: 'De rechter benoemt een bewindvoerder voor je geld. Wat is waar?',
+    options: [
+      { label: 'De bewindvoerder mag alles zelf beslissen.', correct: false },
+      {
+        label: 'Voor bepaalde zaken is toestemming van de rechter nodig. Elk jaar moet er verantwoording worden afgelegd.',
+        correct: true,
+      },
+      { label: 'Het bewind stopt na een jaar vanzelf.', correct: false },
+    ],
+    explanation:
+      'Een bewindvoerder heeft voor bepaalde handelingen, zoals de verkoop of schenking van goederen, toestemming van de kantonrechter nodig. Ook moet hij elk jaar de financiën aan de rechter laten zien.',
+    meaning:
+      'Dat kan omslachtig zijn voor je naasten. Met een levenstestament kies je zelf wie je zaken regelt en wat die persoon mag.',
+  },
+  {
+    prompt: 'Wanneer kun je een levenstestament het beste regelen?',
+    options: [
+      { label: 'Zodra je ziek wordt.', correct: false },
+      { label: 'Zolang je nog zelf kunt beslissen.', correct: true },
+      { label: 'Dat maakt niet uit.', correct: false },
+    ],
+    explanation:
+      'Je kunt alleen iets vastleggen zolang je begrijpt wat je regelt. Wacht je te lang, dan kan dat niet meer. Dan beslist de rechter.',
+    meaning: 'Met een levenstestament kies je zelf wie je zaken regelt en wanneer die volmacht ingaat.',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Is een levenstestament hetzelfde als een testament?',
+    answer:
+      'Nee. Een testament geldt na je overlijden. Een levenstestament geldt juist tijdens je leven, voor het geval je zelf geen beslissingen meer kunt nemen.',
+  },
+  {
+    question: 'Vanaf welke leeftijd heeft een levenstestament zin?',
+    answer:
+      'Vanaf 18 jaar kun je een levenstestament maken. Een ongeval of ernstige ziekte kan iedereen overkomen, ook op jonge leeftijd.',
+  },
+  {
+    question: 'Wat gebeurt er als ik geen levenstestament heb en wilsonbekwaam word?',
+    answer:
+      'Dan moet je partner of familie naar de kantonrechter voor bewind of mentorschap. Dat kost tijd, geld, en de rechter kiest wie dit mag doen, niet jij zelf.',
+  },
+  {
+    question: 'Kan ik mijn levenstestament weer intrekken of wijzigen?',
+    answer:
+      'Ja, zolang je wilsbekwaam bent, kun je je levenstestament laten aanpassen of intrekken bij de notaris.',
+  },
+];
+---
+
+<Layout
+  title="Wat is een levenstestament?"
+  description="Een levenstestament regelt wie voor je beslist als je dat zelf niet meer kunt. Lees wat het regelt, voor wie het belangrijk is en hoe je het aanpakt."
+  pageKey="levenstestament"
+  datePublished="2026-09-20"
+  dateModified="2026-09-20"
+  faqItems={faqItems}
+>
+  <article>
+    <h1>Wat is een levenstestament?</h1>
+
+    <p class="lead">
+      Een levenstestament regelt wie voor je beslist als je dat zelf niet meer
+      kunt, bijvoorbeeld door een ongeval, dementie of coma. Dit is iets
+      anders dan een gewoon testament, dat pas geldt na je overlijden.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>Wat regel je in een levenstestament?</h2>
+    <p>
+      In een levenstestament wijs je een of meer gevolmachtigden aan: mensen
+      die namens jou mogen beslissen als je dat zelf niet meer kan. Je legt
+      vast wat zij wel en niet mogen doen.
+    </p>
+    <ul>
+      <li>
+        <strong>Een financiële volmacht.</strong> Je gevolmachtigde beheert
+        je bankzaken, betaalt rekeningen, en regelt bijvoorbeeld de verkoop
+        van je huis.
+      </li>
+      <li>
+        <strong>Een medische volmacht.</strong> Je gevolmachtigde beslist mee
+        over je medische behandeling en verzorging, volgens je wensen.
+      </li>
+      <li>
+        <strong>Persoonlijke wensen.</strong> Je kunt vastleggen hoe je wilt
+        wonen, verzorgd wilt worden, of wat je wel en niet wilt aan medische
+        behandeling.
+      </li>
+    </ul>
+
+    <h2>Wat gebeurt er zonder levenstestament?</h2>
+    <p>
+      Zonder levenstestament beslist niemand automatisch voor je, ook je
+      partner niet. Je familie moet dan naar de kantonrechter voor bewind of
+      mentorschap.
+    </p>
+    <p>
+      Bewind betekent: de rechter wijst iemand aan die je geld en
+      bezittingen beheert. Mentorschap betekent: de rechter wijst iemand aan
+      die beslist over je verzorging en behandeling. De rechter kiest wie dit
+      mag doen, en dat hoeft niet je partner of kind te zijn.
+    </p>
+
+    <h2>Voor wie is een levenstestament belangrijk?</h2>
+    <p>
+      Een levenstestament is nuttig voor iedereen vanaf 18 jaar, want een
+      ongeval of ziekte kan iedereen overkomen. Het is extra belangrijk voor
+      ondernemers, mensen met een eigen huis, en mensen die willen voorkomen
+      dat familie hierover een conflict krijgt.
+    </p>
+
+    <h2>Wat gebeurt er als je plotseling wilsonbekwaam wordt?</h2>
+    <p class="example-box">
+      Stel: iemand krijgt een zware beroerte en kan tijdelijk niets meer zelf
+      regelen. Zonder levenstestament moet de partner eerst naar de rechter
+      om toestemming te krijgen om de bankzaken te regelen. Met een
+      levenstestament kan de partner dit direct doen, zonder rechter.
+    </p>
+
+    <h2>Wat is het verschil tussen een testament en een levenstestament?</h2>
+    <ul>
+      <li><strong>Testament:</strong> regelt je nalatenschap na je overlijden.</li>
+      <li>
+        <strong>Levenstestament:</strong> regelt wie voor je beslist tijdens
+        je leven, als je dat zelf niet meer kunt.
+      </li>
+    </ul>
+    <p>Veel mensen laten beide tegelijk opstellen bij de notaris.</p>
+
+    <h2>Hoe regel je een levenstestament?</h2>
+    <ol class="steps">
+      <li>
+        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Kies je gevolmachtigde(n).</strong> Denk na over wie je
+        vertrouwt om voor je te beslissen.
+      </li>
+      <li>
+        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Bespreek je wensen met de notaris.</strong> De notaris legt
+        de mogelijkheden uit en stelt een concept op.
+      </li>
+      <li>
+        <PenLine class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Onderteken de akte.</strong> Na ondertekening kan je
+        levenstestament direct worden gebruikt wanneer nodig.
+      </li>
+    </ol>
+
+    <Quiz
+      id="quiz-levenstestament"
+      title="Wie regelt jouw zaken als je dat zelf niet meer kunt?"
+      intro="Drie korte vragen. Ontdek wat er gebeurt als je ziek wordt en je zaken niet meer kunt regelen. Het duurt ongeveer een minuut. Wij bewaren je antwoorden niet."
+      questions={quizBQuestions}
+      resultIntro="Dit kun je regelen"
+      resultPoints={[
+        'Wie je geldzaken regelt',
+        'Wie beslissingen neemt over je zorg en persoonlijke zaken',
+        'Wanneer de volmacht ingaat',
+      ]}
+      workBlock="Je bereidt je levenstestament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
+      ctaHref="/wachtlijst"
+      ctaLabel="Schrijf je in voor de wachtlijst"
+    />
+
+    <h2>{t('related.heading')}</h2>
+    <div class="card-grid">
+      <div class="card">
+        <ScrollText class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Testament</h3>
+        <p>Regel wat er met je bezittingen gebeurt na je overlijden.</p>
+        <a href="/testament">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <Baby class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Kinderen en nalatenschap</h3>
+        <p>Wat je voor je kinderen regelt: voogdij en erfenis.</p>
+        <a href="/kinderen-en-nalatenschap">Lees meer &rarr;</a>
+      </div>
+    </div>
+
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{t('faq.heading')}</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+    <p><a href="/veelgestelde-vragen">{t('cta.view_all_faq')} &rarr;</a></p>
+
+    <h2>{t('sources.heading')}</h2>
+    <ul>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over bewind, mentorschap en curatele</li>
+      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; hulp bij het vinden van een notaris</li>
+    </ul>
+    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>

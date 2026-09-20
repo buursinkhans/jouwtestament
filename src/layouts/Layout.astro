@@ -1,0 +1,678 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/lora/600.css';
+import '@fontsource/lora/700.css';
+import { ChevronDown } from '@lucide/astro';
+import { languages, defaultLang } from '../i18n/ui';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { translatedPaths, mainNav, type LangCode } from '../i18n/routes';
+import { company } from '../data/company';
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  pageKey: string; // welke pagina dit is, voor de taalkiezer (zie i18n/routes.ts)
+  datePublished?: string; // ISO-datum, voor Article-structured data
+  dateModified?: string; // ISO-datum, standaard gelijk aan datePublished
+  faqItems?: FaqItem[]; // voor FAQPage-structured data
+}
+
+const { title, description, pageKey, datePublished, dateModified, faqItems } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url) as LangCode;
+const t = useTranslations(lang);
+
+const paths = translatedPaths[pageKey];
+const homePaths = translatedPaths.home;
+
+// Alleen talen tonen/koppelen die voor deze pagina daadwerkelijk bestaan.
+const availableLangs = (Object.keys(languages) as LangCode[]).filter((code) => paths[code]);
+const currentPath = paths[lang]!;
+const canonicalUrl = new URL(currentPath, Astro.site);
+
+const breadcrumbItems =
+  pageKey === 'home'
+    ? [{ name: t('nav.home'), url: homePaths[lang]! }]
+    : [
+        { name: t('nav.home'), url: homePaths[lang]! },
+        { name: title, url: currentPath },
+      ];
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: company.name,
+  url: 'https://jouwtestament.nl',
+  email: company.email,
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: new URL(item.url, Astro.site).toString(),
+  })),
+};
+
+const articleSchema = datePublished
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      inLanguage: lang,
+      datePublished,
+      dateModified: dateModified ?? datePublished,
+      description,
+    }
+  : null;
+
+const faqSchema =
+  faqItems && faqItems.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+
+// Hoofdmenu: alleen items (en submenu-items) tonen die in de huidige taal bestaan.
+const navItems = mainNav
+  .map((item) => ({
+    ...item,
+    href: translatedPaths[item.key][lang],
+    children: item.children
+      ?.map((child) => ({ ...child, href: translatedPaths[child.key][lang] }))
+      .filter((child) => child.href),
+  }))
+  .filter((item) => item.href);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {availableLangs.map((code) => (
+      <link rel="alternate" hreflang={code} href={new URL(paths[code]!, Astro.site)} />
+    ))}
+    {paths[defaultLang as LangCode] && (
+      <link rel="alternate" hreflang="x-default" href={new URL(paths[defaultLang as LangCode]!, Astro.site)} />
+    )}
+    <title>{title} · {t('site.title')}</title>
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    {articleSchema && <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />}
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href={homePaths[lang]}>{t('site.title')}</a>
+
+        <button
+          id="nav-toggle"
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+        >
+          <span class="sr-only">{t('nav.menu')}</span>
+          <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        <nav id="primary-nav" class="primary-nav" aria-label="Hoofdmenu">
+          <a href={homePaths[lang]}>{t('nav.home')}</a>
+          {navItems.map((item) =>
+            item.children && item.children.length > 0 ? (
+              <div class="nav-item has-children">
+                <a href={item.href}>{t(item.labelKey as Parameters<typeof t>[0])}</a>
+                <button
+                  type="button"
+                  class="dropdown-toggle"
+                  aria-expanded="false"
+                  aria-controls={`submenu-${item.key}`}
+                >
+                  <span class="sr-only">Submenu {t(item.labelKey as Parameters<typeof t>[0])}</span>
+                  <ChevronDown size={16} stroke-width={2} aria-hidden="true" />
+                </button>
+                <ul id={`submenu-${item.key}`} class="dropdown-menu">
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={child.href}>{t(child.labelKey as Parameters<typeof t>[0])}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <a href={item.href}>{t(item.labelKey as Parameters<typeof t>[0])}</a>
+            )
+          )}
+        </nav>
+
+        {availableLangs.length > 1 && (
+          <div class="lang-switch">
+            {availableLangs.map((code) => (
+              <a href={paths[code]} aria-current={lang === code ? 'page' : undefined}>
+                {code.toUpperCase()}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>{t('disclaimer.footer')}</p>
+        <p class="footer-contact">
+          {company.name}
+          &middot;
+          <a href={`mailto:${company.email}`}>{company.email}</a>
+          &middot;
+          <a href="/over-ons">{t('nav.over_ons')}</a>
+        </p>
+        <p>&copy; {new Date().getFullYear()} {t('site.title')}</p>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById('nav-toggle');
+      const nav = document.getElementById('primary-nav');
+      toggle?.addEventListener('click', () => {
+        const isOpen = nav?.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      document.querySelectorAll<HTMLButtonElement>('.dropdown-toggle').forEach((dropdownToggle) => {
+        const menuId = dropdownToggle.getAttribute('aria-controls');
+        const menu = menuId ? document.getElementById(menuId) : null;
+        dropdownToggle.addEventListener('click', () => {
+          const isOpen = menu?.classList.toggle('is-open');
+          dropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        document.querySelectorAll<HTMLElement>('.dropdown-menu.is-open').forEach((menu) => {
+          const relatedToggle = document.querySelector<HTMLButtonElement>(`[aria-controls="${menu.id}"]`);
+          const target = event.target as Node;
+          if (!menu.contains(target) && relatedToggle && !relatedToggle.contains(target)) {
+            menu.classList.remove('is-open');
+            relatedToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    /* Kleuren uit stijlgids.md, sectie 4 ("Erfgoed": salie-groen + terracotta) */
+    --color-primary: #4a6656;
+    --color-secondary: #edf0e8;
+    --color-accent: #c17a54;
+    --color-bg: #fbf8f3;
+    --color-text: #2a2e28;
+    --color-warning: #8b3a2b;
+    --color-border: #dde0d5;
+    --color-muted: #6b6f63;
+    --max-width: 760px;
+
+    --font-heading: 'Lora', Georgia, serif;
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    line-height: 1.25;
+    color: var(--color-primary);
+  }
+
+  a {
+    color: var(--color-primary);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .site-header {
+    background: var(--color-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    position: relative;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--color-primary);
+    margin-right: auto;
+  }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 0.35rem;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+  }
+
+  .hamburger,
+  .hamburger::before,
+  .hamburger::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-primary);
+    position: relative;
+  }
+
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    position: absolute;
+  }
+
+  .hamburger::before {
+    top: -6px;
+  }
+
+  .hamburger::after {
+    top: 6px;
+  }
+
+  .primary-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    width: 100%;
+    order: 3;
+  }
+
+  .primary-nav a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .primary-nav a:hover {
+    color: var(--color-primary);
+  }
+
+  .nav-item.has-children {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+  }
+
+  .dropdown-toggle {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem;
+  }
+
+  .dropdown-toggle svg {
+    transition: transform 0.15s ease;
+  }
+
+  .dropdown-toggle[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dropdown-menu.is-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lang-switch {
+    display: flex;
+    gap: 0.5rem;
+    border-left: 1px solid var(--color-border);
+    padding-left: 1rem;
+  }
+
+  .lang-switch a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+
+  .lang-switch a[aria-current='page'] {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  main {
+    padding: 2.5rem 1.25rem 3rem;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+  }
+
+  .disclaimer-box {
+    background: var(--color-secondary);
+    border-left: 3px solid var(--color-primary);
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .disclaimer-box svg {
+    flex-shrink: 0;
+    color: var(--color-primary);
+    margin-top: 0.15rem;
+  }
+
+  .disclaimer-box p {
+    margin: 0;
+  }
+
+  .heading-icon {
+    color: var(--color-primary);
+    vertical-align: -0.2rem;
+    margin-right: 0.4rem;
+  }
+
+  .card-icon {
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-icon {
+    color: var(--color-primary);
+    vertical-align: -0.35rem;
+    margin-right: 0.4rem;
+  }
+
+  .example-box {
+    background: var(--color-secondary);
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  .card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+
+  .card a {
+    font-weight: 600;
+  }
+
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .steps li {
+    counter-increment: step;
+    padding-left: 2.75rem;
+    position: relative;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+  }
+
+  .faq-item {
+    margin-bottom: 1.25rem;
+  }
+
+  .faq-item dt {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .faq-item dd {
+    margin: 0;
+  }
+
+  .meta-line {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    padding: 1.5rem 0 2.5rem;
+  }
+
+  .footer-contact {
+    line-height: 1.7;
+  }
+
+  .button {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+  }
+
+  .button:hover {
+    background: #3b5245;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .button-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    border: 1px solid var(--color-primary);
+  }
+
+  @media (max-width: 767px) {
+    .nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .primary-nav {
+      display: none;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding: 0.75rem 0 0.25rem;
+      border-top: 1px solid var(--color-border);
+      margin-top: 0.5rem;
+    }
+
+    .primary-nav.is-open {
+      display: flex;
+    }
+
+    .nav-item.has-children {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .dropdown-toggle {
+      display: none;
+    }
+
+    .dropdown-menu,
+    .dropdown-menu.is-open {
+      display: flex;
+    }
+
+    .dropdown-menu {
+      margin-left: 1rem;
+      margin-top: 0.5rem;
+      gap: 0.6rem;
+    }
+
+    .dropdown-menu a {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .header-inner {
+      flex-wrap: nowrap;
+    }
+
+    .primary-nav {
+      width: auto;
+      order: 2;
+    }
+
+    .lang-switch {
+      order: 4;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      padding: 0.6rem;
+      min-width: 220px;
+      box-shadow: 0 8px 20px rgba(31, 41, 51, 0.1);
+      z-index: 20;
+      gap: 0.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .dropdown-menu a {
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    .dropdown-menu a:hover {
+      background: var(--color-secondary);
+    }
+  }
+</style>

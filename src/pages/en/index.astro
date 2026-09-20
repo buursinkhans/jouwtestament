@@ -1,0 +1,260 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {
+  ScrollText,
+  ShieldCheck,
+  Sparkles,
+  Lock,
+  BadgeCheck,
+  BookOpen,
+  MessagesSquare,
+  Landmark,
+  CircleQuestionMark,
+} from '@lucide/astro';
+
+const faqItems = [
+  {
+    question: 'Is a will required by law?',
+    answer:
+      "No, a will is not required. Without one, the law decides who inherits, and that isn't always what you would choose.",
+  },
+  {
+    question: 'How much does a will cost?',
+    answer:
+      'There is no fixed national rate: every notary sets their own price. Ask a few notaries for a quote.',
+  },
+];
+---
+
+<Layout
+  title="Home"
+  description="Need a will or a living will? Read why this matters for you and your loved ones, and take the first step easily."
+  pageKey="home"
+  faqItems={faqItems}
+>
+  <section>
+    <h1>Arranging your will, without the difficult words</h1>
+    <p class="lead">
+      Not sure yet whether you need a will or a living will? Choose your
+      route below. We explain every step in plain language.
+    </p>
+
+    <div class="hero-actions">
+      <a class="button" href="/en/testament">
+        <ScrollText size={18} stroke-width={1.75} aria-hidden="true" />
+        I want a will
+      </a>
+      <a class="button button-secondary" href="/levenstestament">
+        <ShieldCheck size={18} stroke-width={1.75} aria-hidden="true" />
+        I want a living will
+      </a>
+    </div>
+    <p class="meta-line">
+      Living will content is currently only available in Dutch. We're working
+      on an English version.
+    </p>
+    <p class="meta-line">
+      Not ready to start yet? <a href="/wachtlijst">Join the waitlist</a> (Dutch)
+      and we'll email you once this is available.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why does this matter?</h2>
+    <p>
+      Without a will, the law decides who inherits, and that isn't always
+      what you want. Without a living will, no one decides for you if you no
+      longer can, for example due to an accident or illness.
+    </p>
+    <p>
+      This doesn't only affect you. Your loved ones feel the consequences
+      most: they have to go to court for permission, they don't know what you
+      would have wanted, and they can end up in conflict with each other.
+      Arranging this now gives them clarity and peace of mind at a difficult
+      time.
+    </p>
+  </section>
+
+  <section>
+    <h2>Will or living will: what's the difference?</h2>
+    <div class="route-grid">
+      <div class="route-card">
+        <ScrollText class="route-icon" size={32} stroke-width={1.5} aria-hidden="true" />
+        <h3>Will</h3>
+        <p class="route-tagline">For after you pass away</p>
+        <p>
+          A will arranges who inherits your belongings, who becomes guardian
+          of your children, and what happens to your estate.
+        </p>
+        <ul>
+          <li>Decide who inherits</li>
+          <li>Arrange guardianship for your children</li>
+          <li>Protect your partner and stepchildren</li>
+        </ul>
+        <a class="button" href="/en/testament">Start with your will</a>
+      </div>
+
+      <div class="route-card">
+        <ShieldCheck class="route-icon" size={32} stroke-width={1.5} aria-hidden="true" />
+        <h3>Living will</h3>
+        <p class="route-tagline">For during your life</p>
+        <p>
+          A living will arranges who decides for you if you no longer can,
+          for example due to an accident or serious illness.
+        </p>
+        <ul>
+          <li>Avoid a court procedure</li>
+          <li>Appoint your own trusted representative</li>
+          <li>Arrange financial and medical decisions</li>
+        </ul>
+        <a class="button" href="/levenstestament">More information (Dutch)</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why jouwtestament?</h2>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <Sparkles size={26} stroke-width={1.5} aria-hidden="true" />
+        <h3>Simple</h3>
+        <p>Clear explanations in plain language, without legal jargon.</p>
+      </div>
+      <div class="trust-item">
+        <Lock size={26} stroke-width={1.5} aria-hidden="true" />
+        <h3>Safe</h3>
+        <p>
+          Your will is drawn up by a notary, and registered in the Central
+          Wills Register.
+        </p>
+      </div>
+      <div class="trust-item">
+        <BadgeCheck size={26} stroke-width={1.5} aria-hidden="true" />
+        <h3>Reliable</h3>
+        <p>
+          Our information is based on official sources, such as the Dutch
+          government, the KNB, and the Tax Administration.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How does it work?</h2>
+    <ol class="steps">
+      <li>
+        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Read the explanation.</strong> Choose a will or living will,
+        and read what's involved.
+      </li>
+      <li>
+        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Prepare your wishes.</strong> Think about who should inherit,
+        who becomes guardian, and any special wishes you have.
+      </li>
+      <li>
+        <Landmark class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
+        <strong>Go to a notary.</strong> The notary makes your will official.
+        We can't do that for you: we are not a notary.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Frequently asked questions</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section>
+    <p class="meta-line">Last checked: 20 September 2026</p>
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Join the waitlist (Dutch)</a>
+      <a class="button-secondary" href="/over-ons">About us (Dutch)</a>
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-actions .button,
+  .hero-actions .button-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .route-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .route-icon {
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .route-card h3 {
+    margin: 0 0 0.15rem;
+  }
+
+  .route-tagline {
+    color: var(--color-muted);
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  .route-card ul {
+    margin-bottom: 1.5rem;
+  }
+
+  .route-card .button {
+    margin-top: auto;
+    text-align: center;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .trust-item svg {
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .trust-item h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  .trust-item p {
+    margin: 0;
+  }
+</style>

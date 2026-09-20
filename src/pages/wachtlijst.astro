@@ -1,0 +1,172 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Mail } from '@lucide/astro';
+---
+
+<Layout
+  title="Schrijf je in voor de wachtlijst"
+  description="jouwtestament is nog niet live. Schrijf je in voor de wachtlijst en ontvang bericht zodra je je testament of levenstestament online kunt voorbereiden."
+  pageKey="wachtlijst"
+>
+  <article>
+    <h1>Schrijf je in voor de wachtlijst</h1>
+
+    <p class="lead">
+      jouwtestament werkt aan een eenvoudige manier om je testament of
+      levenstestament online voor te bereiden, met een notaris die de akte
+      opmaakt. Dit kan nog niet. Laat je e-mailadres achter, en we laten het
+      je als eerste weten zodra het zover is.
+    </p>
+
+    <div id="wachtlijst-form-wrap">
+      <form
+        name="wachtlijst"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        id="wachtlijst-form"
+      >
+        <input type="hidden" name="form-name" value="wachtlijst" />
+        <p class="visually-hidden">
+          <label>Niet invullen als je een mens bent: <input name="bot-field" /></label>
+        </p>
+
+        <div class="form-field">
+          <label for="email">E-mailadres</label>
+          <input type="email" id="email" name="email" required autocomplete="email" />
+        </div>
+
+        <fieldset class="form-field">
+          <legend>Waar ben je naar op zoek? (optioneel)</legend>
+          <label class="radio-label">
+            <input type="radio" name="interesse" value="Testament" />
+            Testament
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="interesse" value="Levenstestament" />
+            Levenstestament
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="interesse" value="Weet ik nog niet" checked />
+            Weet ik nog niet
+          </label>
+        </fieldset>
+
+        <button type="submit" class="button">
+          <Mail size={18} stroke-width={1.75} aria-hidden="true" />
+          Zet mij op de wachtlijst
+        </button>
+      </form>
+
+      <div id="wachtlijst-success" hidden>
+        <p class="disclaimer-box">
+          Bedankt! Je staat op de wachtlijst. We laten je per e-mail weten
+          zodra je via jouwtestament een (levens)testament kunt voorbereiden.
+        </p>
+      </div>
+
+      <div id="wachtlijst-error" hidden>
+        <p class="disclaimer-box">
+          Er ging iets mis bij het versturen. Probeer het later nog eens.
+        </p>
+      </div>
+    </div>
+
+    <p class="meta-line">
+      We gebruiken je e-mailadres alleen om je op de hoogte te houden over
+      jouwtestament. We delen dit niet met derden en sturen geen andere
+      mailings.
+    </p>
+
+    <p>
+      <a class="button-secondary" href="/">Terug naar home</a>
+    </p>
+  </article>
+</Layout>
+
+<script>
+  const form = document.getElementById('wachtlijst-form') as HTMLFormElement | null;
+  const successEl = document.getElementById('wachtlijst-success');
+  const errorEl = document.getElementById('wachtlijst-error');
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    errorEl?.setAttribute('hidden', '');
+
+    const formData = new FormData(form);
+    const body = new URLSearchParams();
+    formData.forEach((value, key) => body.append(key, String(value)));
+
+    try {
+      const response = await fetch('/wachtlijst', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      });
+
+      if (!response.ok) throw new Error('Netwerkfout');
+
+      form.hidden = true;
+      successEl?.removeAttribute('hidden');
+      successEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch {
+      errorEl?.removeAttribute('hidden');
+    }
+  });
+</script>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  #wachtlijst-form {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    margin: 1.5rem 0;
+    display: grid;
+    gap: 1.25rem;
+    max-width: 26rem;
+  }
+
+  .form-field {
+    display: grid;
+    gap: 0.4rem;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .form-field label,
+  .form-field legend {
+    font-weight: 600;
+  }
+
+  .form-field input[type='email'] {
+    font: inherit;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 400;
+  }
+
+  #wachtlijst-form button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: start;
+  }
+</style>

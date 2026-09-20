@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { useTranslations } from '../i18n/utils';
+import { Info, ScrollText, ShieldCheck, CircleQuestionMark } from '@lucide/astro';
+
+const lang = 'nl' as const;
+const t = useTranslations(lang);
+
+const faqItems = [
+  {
+    question: 'Wat kost een testament gemiddeld?',
+    answer:
+      'Er is geen vast landelijk tarief: notarissen bepalen hun eigen prijs. Vraag bij een paar notarissen een offerte op, en vergelijk wat er precies bij inbegrepen is.',
+  },
+  {
+    question: 'Is een testament voor twee partners duurder dan voor één persoon?',
+    answer:
+      'Vaak bieden notarissen een gecombineerd tarief voor twee testamenten die in hetzelfde gesprek worden opgesteld. Vraag hiernaar bij het opvragen van een offerte.',
+  },
+  {
+    question: 'Zit het inschrijven in het Centraal Testamentenregister bij de prijs inbegrepen?',
+    answer:
+      'Meestal wel. De notaris schrijft je testament na ondertekening in bij het Centraal Testamentenregister (CTR), zodat het na je overlijden teruggevonden kan worden.',
+  },
+  {
+    question: 'Is de goedkoopste notaris altijd de beste keuze?',
+    answer:
+      'Niet per se. Let niet alleen op de prijs, maar ook op wat er inhoudelijk in het testament wordt geregeld en hoeveel persoonlijk advies je krijgt.',
+  },
+];
+---
+
+<Layout
+  title="Wat bepaalt de kosten van een testament?"
+  description="Er is geen vast landelijk tarief voor een testament. Lees welke factoren de prijs bepalen en hoe je prijzen van notarissen vergelijkt."
+  pageKey="kosten"
+  datePublished="2026-09-20"
+  dateModified="2026-09-20"
+  faqItems={faqItems}
+>
+  <article>
+    <h1>Wat bepaalt de kosten van een testament?</h1>
+
+    <p class="lead">
+      Er is geen vast landelijk tarief voor een testament: elke notaris
+      bepaalt zijn eigen prijs. De uiteindelijke kosten hangen af van wat je
+      wilt regelen, en bij welke notaris je langsgaat.
+    </p>
+
+    <div class="disclaimer-box">
+      <Info size={20} stroke-width={1.75} />
+      <p>{t('disclaimer.short')}</p>
+    </div>
+
+    <h2>Welke factoren bepalen de prijs?</h2>
+    <ul>
+      <li>
+        <strong>Het type testament.</strong> Een eenvoudig testament kost
+        minder tijd dan een testament met veel clausules.
+      </li>
+      <li>
+        <strong>Het aantal onderdelen.</strong> Voeg je bijvoorbeeld voogdij,
+        een uitsluitingsclausule en een legaat toe? Dan kost het opstellen
+        meer tijd.
+      </li>
+      <li>
+        <strong>Eén testament of twee samen.</strong> Stel je samen met je
+        partner een testament op? Dan bieden veel notarissen hiervoor een
+        gecombineerd tarief.
+      </li>
+      <li>
+        <strong>De notaris en regio.</strong> Notarissen zijn vrij om hun
+        eigen tarief te bepalen. Dit verschilt per kantoor en regio.
+      </li>
+    </ul>
+
+    <h2>Waarom vraagt elke notaris een andere prijs?</h2>
+    <p>
+      Notaristarieven voor testamenten zijn sinds 1999 vrij: de overheid
+      schrijft geen vaste prijs voor. Notarissen bepalen zelf hun tarief,
+      gebaseerd op de tijd die het opstellen kost en de dienstverlening die
+      zij bieden.
+    </p>
+
+    <h2>Wat zit er meestal bij de kosten inbegrepen?</h2>
+    <p>
+      De meeste notarissen rekenen voor een intakegesprek, het opstellen van
+      een concept, het ondertekenen van de akte, en de inschrijving bij het
+      Centraal Testamentenregister (CTR). Dit is een landelijk register
+      waarin staat bij welke notaris je testament ligt, zodat het na je
+      overlijden teruggevonden kan worden.
+    </p>
+
+    <h2>Hoe vergelijk je prijzen tussen notarissen?</h2>
+    <p>
+      Vraag bij een paar notarissen een offerte op, en vergelijk niet alleen
+      de prijs, maar ook wat er inhoudelijk geregeld wordt. Een lage prijs
+      zonder persoonlijk advies is niet altijd de beste keuze voor jouw
+      situatie.
+    </p>
+
+    <h2>Hoe pakt dit uit als je prijzen vergelijkt?</h2>
+    <p class="example-box">
+      Stel: een stel vraagt bij twee notarissen een offerte op voor hetzelfde
+      testament. De ene offerte is goedkoper, maar bevat alleen een basaal
+      testament. De andere is iets duurder, maar neemt ook voogdij en een
+      uitsluitingsclausule mee. Door goed te vergelijken kiezen zij bewust
+      voor de optie die bij hun situatie past.
+    </p>
+
+    <h2>{t('related.heading')}</h2>
+    <div class="card-grid">
+      <div class="card">
+        <ScrollText class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Testament</h3>
+        <p>Alles wat je in een testament kunt regelen, op een rij.</p>
+        <a href="/testament">Lees meer &rarr;</a>
+      </div>
+      <div class="card">
+        <ShieldCheck class="card-icon" size={28} stroke-width={1.5} aria-hidden="true" />
+        <h3>Levenstestament</h3>
+        <p>Regel wie voor je beslist als je dat zelf niet meer kunt.</p>
+        <a href="/levenstestament">Lees meer &rarr;</a>
+      </div>
+    </div>
+
+    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{t('faq.heading')}</h2>
+    <dl>
+      {faqItems.map((item) => (
+        <div class="faq-item">
+          <dt>{item.question}</dt>
+          <dd>{item.answer}</dd>
+        </div>
+      ))}
+    </dl>
+    <p><a href="/veelgestelde-vragen">{t('cta.view_all_faq')} &rarr;</a></p>
+
+    <h2>{t('sources.heading')}</h2>
+    <ul>
+      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; vraag actuele tarieven rechtstreeks op bij notarissen</li>
+      <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over het Centraal Testamentenregister</li>
+    </ul>
+    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+
+    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+
+    <p class="cta-row">
+      <a class="button" href="/wachtlijst">Schrijf je in voor de wachtlijst</a>
+      <a class="button-secondary" href="/">{t('cta.back_home')}</a>
+    </p>
+  </article>
+</Layout>
