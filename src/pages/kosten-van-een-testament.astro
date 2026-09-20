@@ -1,50 +1,49 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { useTranslations } from '../i18n/utils';
-import { Info, ScrollText, ShieldCheck, CircleQuestionMark } from '@lucide/astro';
+import { Info, ScrollText, ShieldCheck, CircleQuestionMark, Clock, BadgePercent, CircleCheck } from '@lucide/astro';
+import { pricing, priceForTwo } from '../data/pricing';
 
 const lang = 'nl' as const;
 const t = useTranslations(lang);
 
+const included = [
+  'Voorbereiding met het stappenplan',
+  'Controle door de notaris',
+  'Opmaken en ondertekenen van de akte',
+  'Inschrijving in het officiële register',
+];
+
 const faqItems = [
   {
-    question: 'Wat kost een testament gemiddeld?',
-    answer:
-      'Er is geen vast landelijk tarief: notarissen bepalen hun eigen prijs. Vraag bij een paar notarissen een offerte op, en vergelijk wat er precies bij inbegrepen is.',
+    question: 'Betaal ik vooraf?',
+    answer: 'Ja, je betaalt het volledige bedrag vooraf. Daarna plannen we je afspraak bij de notaris in.',
   },
   {
-    question: 'Is een testament voor twee partners duurder dan voor één persoon?',
-    answer:
-      'Vaak bieden notarissen een gecombineerd tarief voor twee testamenten die in hetzelfde gesprek worden opgesteld. Vraag hiernaar bij het opvragen van een offerte.',
+    question: 'Wat garanderen jullie precies?',
+    answer: `We garanderen dat je binnen ${pricing.guaranteeWeeks} weken na betaling bij de notaris zit voor de ondertekening.`,
   },
   {
-    question: 'Zit het inschrijven in het Centraal Testamentenregister bij de prijs inbegrepen?',
-    answer:
-      'Meestal wel. De notaris schrijft je testament na ondertekening in bij het Centraal Testamentenregister (CTR), zodat het na je overlijden teruggevonden kan worden.',
-  },
-  {
-    question: 'Is de goedkoopste notaris altijd de beste keuze?',
-    answer:
-      'Niet per se. Let niet alleen op de prijs, maar ook op wat er inhoudelijk in het testament wordt geregeld en hoeveel persoonlijk advies je krijgt.',
+    question: 'Zit de inschrijving in het officiële register bij de prijs inbegrepen?',
+    answer: 'Ja, dat zit bij de prijs inbegrepen.',
   },
 ];
 ---
 
 <Layout
-  title="Wat bepaalt de kosten van een testament?"
-  description="Er is geen vast landelijk tarief voor een testament. Lees welke factoren de prijs bepalen en hoe je prijzen van notarissen vergelijkt."
+  title="Wat kost een testament of levenstestament?"
+  description={`Eén vast bedrag van €${pricing.pricePerDocument} per document. Je betaalt vooraf, met garantie dat je binnen ${pricing.guaranteeWeeks} weken bij de notaris zit.`}
   pageKey="kosten"
   datePublished="2026-09-20"
-  dateModified="2026-09-20"
+  dateModified="2026-09-21"
   faqItems={faqItems}
 >
   <article>
-    <h1>Wat bepaalt de kosten van een testament?</h1>
+    <h1>Wat kost een testament of levenstestament?</h1>
 
     <p class="lead">
-      Er is geen vast landelijk tarief voor een testament: elke notaris
-      bepaalt zijn eigen prijs. De uiteindelijke kosten hangen af van wat je
-      wilt regelen, en bij welke notaris je langsgaat.
+      Eén vast bedrag, geen verrassingen achteraf. Je betaalt vooraf, en we
+      garanderen dat je binnen {pricing.guaranteeWeeks} weken bij de notaris zit.
     </p>
 
     <div class="disclaimer-box">
@@ -52,61 +51,42 @@ const faqItems = [
       <p>{t('disclaimer.short')}</p>
     </div>
 
-    <h2>Welke factoren bepalen de prijs?</h2>
-    <ul>
-      <li>
-        <strong>Het type testament.</strong> Een eenvoudig testament kost
-        minder tijd dan een testament met veel clausules.
-      </li>
-      <li>
-        <strong>Het aantal onderdelen.</strong> Voeg je bijvoorbeeld voogdij,
-        een uitsluitingsclausule en een legaat toe? Dan kost het opstellen
-        meer tijd.
-      </li>
-      <li>
-        <strong>Eén testament of twee samen.</strong> Stel je samen met je
-        partner een testament op? Dan bieden veel notarissen hiervoor een
-        gecombineerd tarief.
-      </li>
-      <li>
-        <strong>De notaris en regio.</strong> Notarissen zijn vrij om hun
-        eigen tarief te bepalen. Dit verschilt per kantoor en regio.
-      </li>
-    </ul>
+    <div class="price-grid">
+      <div class="price-card">
+        <p class="price-card-label">1 document</p>
+        <p class="price-amount">&euro;{pricing.pricePerDocument}</p>
+        <p class="price-card-sub">Testament of levenstestament</p>
+        <ul class="price-features">
+          {included.map((item) => (
+            <li><CircleCheck size={18} stroke-width={1.75} aria-hidden="true" /> {item}</li>
+          ))}
+        </ul>
+        <a class="button" href="/testament#funnel-testament">Start het stappenplan</a>
+      </div>
 
-    <h2>Waarom vraagt elke notaris een andere prijs?</h2>
-    <p>
-      Notaristarieven voor testamenten zijn sinds 1999 vrij: de overheid
-      schrijft geen vaste prijs voor. Notarissen bepalen zelf hun tarief,
-      gebaseerd op de tijd die het opstellen kost en de dienstverlening die
-      zij bieden.
-    </p>
+      <div class="price-card price-card-highlight">
+        <p class="price-card-badge"><BadgePercent size={16} stroke-width={1.75} aria-hidden="true" /> Samen voordeliger</p>
+        <p class="price-card-label">2 documenten, samen met je partner</p>
+        <p class="price-amount">&euro;{priceForTwo}</p>
+        <p class="price-card-sub">
+          In plaats van &euro;{pricing.pricePerDocument * 2} &mdash; je bespaart &euro;{pricing.coupleDiscount}
+        </p>
+        <ul class="price-features">
+          {included.map((item) => (
+            <li><CircleCheck size={18} stroke-width={1.75} aria-hidden="true" /> {item}</li>
+          ))}
+        </ul>
+        <a class="button" href="/testament#funnel-testament">Start het stappenplan</a>
+      </div>
+    </div>
 
-    <h2>Wat zit er meestal bij de kosten inbegrepen?</h2>
-    <p>
-      De meeste notarissen rekenen voor een intakegesprek, het opstellen van
-      een concept, het ondertekenen van de akte, en de inschrijving bij het
-      Centraal Testamentenregister (CTR). Dit is een landelijk register
-      waarin staat bij welke notaris je testament ligt, zodat het na je
-      overlijden teruggevonden kan worden.
-    </p>
-
-    <h2>Hoe vergelijk je prijzen tussen notarissen?</h2>
-    <p>
-      Vraag bij een paar notarissen een offerte op, en vergelijk niet alleen
-      de prijs, maar ook wat er inhoudelijk geregeld wordt. Een lage prijs
-      zonder persoonlijk advies is niet altijd de beste keuze voor jouw
-      situatie.
-    </p>
-
-    <h2>Hoe pakt dit uit als je prijzen vergelijkt?</h2>
-    <p class="example-box">
-      Stel: een stel vraagt bij twee notarissen een offerte op voor hetzelfde
-      testament. De ene offerte is goedkoper, maar bevat alleen een basaal
-      testament. De andere is iets duurder, maar neemt ook voogdij en een
-      uitsluitingsclausule mee. Door goed te vergelijken kiezen zij bewust
-      voor de optie die bij hun situatie past.
-    </p>
+    <div class="guarantee-box">
+      <Clock size={28} stroke-width={1.5} aria-hidden="true" class="guarantee-icon" />
+      <div>
+        <p class="guarantee-title">Garantie: binnen {pricing.guaranteeWeeks} weken bij de notaris</p>
+        <p>Je betaalt vooraf, en wij zorgen dat je afspraak binnen {pricing.guaranteeWeeks} weken gepland staat.</p>
+      </div>
+    </div>
 
     <h2>{t('related.heading')}</h2>
     <div class="card-grid">
@@ -137,12 +117,11 @@ const faqItems = [
 
     <h2>{t('sources.heading')}</h2>
     <ul>
-      <li><a href="https://www.knb.nl">KNB</a> (Koninklijke Notariële Beroepsorganisatie) &mdash; vraag actuele tarieven rechtstreeks op bij notarissen</li>
       <li><a href="https://www.rijksoverheid.nl">Rijksoverheid</a> &mdash; informatie over het Centraal Testamentenregister</li>
     </ul>
-    <p class="meta-line">Deze bronnen zijn geraadpleegd in 2026.</p>
+    <p class="meta-line">Deze bron is geraadpleegd in 2026.</p>
 
-    <p class="meta-line">{t('lastchecked.label')}: 20 september 2026</p>
+    <p class="meta-line">{t('lastchecked.label')}: 21 september 2026</p>
 
     <p class="cta-row">
       <a class="button" href="/testament#funnel-testament">Start het stappenplan</a>
@@ -150,3 +129,111 @@ const faqItems = [
     </p>
   </article>
 </Layout>
+
+<style>
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin: 1.75rem 0;
+  }
+
+  .price-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-card-highlight {
+    border: 2px solid var(--color-accent);
+    position: relative;
+  }
+
+  .price-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    align-self: flex-start;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    margin: 0 0 0.85rem;
+  }
+
+  .price-card-label {
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .price-amount {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0.2rem 0;
+  }
+
+  .price-card-sub {
+    color: var(--color-muted);
+    margin: 0 0 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .price-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .price-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .price-features svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .price-card .button {
+    margin-top: auto;
+    text-align: center;
+  }
+
+  .guarantee-box {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: var(--color-secondary);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .guarantee-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .guarantee-title {
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+    color: var(--color-primary);
+  }
+
+  .guarantee-box p:last-child {
+    margin: 0;
+  }
+</style>

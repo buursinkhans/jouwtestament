@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Info, CircleQuestionMark, ScrollText, ShieldCheck, Baby, Users, Coins } from '@lucide/astro';
+import { pricing, priceForTwo } from '../data/pricing';
 
 const categories = [
   {
@@ -106,14 +107,16 @@ const categories = [
     link: '/kosten-van-een-testament',
     items: [
       {
-        question: 'Wat kost een testament gemiddeld?',
-        answer:
-          'Er is geen vast landelijk tarief: notarissen bepalen hun eigen prijs. Vraag bij een paar notarissen een offerte op.',
+        question: 'Wat kost een testament?',
+        answer: `Eén vast bedrag van €${pricing.pricePerDocument} per document, vooraf te betalen.`,
       },
       {
-        question: 'Is de goedkoopste notaris altijd de beste keuze?',
-        answer:
-          'Niet per se. Let niet alleen op de prijs, maar ook op wat er inhoudelijk geregeld wordt en hoeveel persoonlijk advies je krijgt.',
+        question: 'Krijg ik korting als ik samen met mijn partner een testament regel?',
+        answer: `Ja, samen betaal je €${priceForTwo} voor twee documenten in plaats van €${pricing.pricePerDocument * 2} — een korting van €${pricing.coupleDiscount}.`,
+      },
+      {
+        question: 'Wat garanderen jullie?',
+        answer: `We garanderen dat je binnen ${pricing.guaranteeWeeks} weken na betaling bij de notaris zit.`,
       },
     ],
   },

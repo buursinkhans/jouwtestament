@@ -10,7 +10,10 @@ import {
   MessagesSquare,
   Landmark,
   CircleQuestionMark,
+  Coins,
+  Clock,
 } from '@lucide/astro';
+import { pricing, priceForTwo } from '../data/pricing';
 
 const faqItems = [
   {
@@ -20,8 +23,7 @@ const faqItems = [
   },
   {
     question: 'Wat kost een testament?',
-    answer:
-      'Er is geen vast landelijk tarief: elke notaris bepaalt zijn eigen prijs. Vraag bij een paar notarissen een offerte op.',
+    answer: `Eén vast bedrag van €${pricing.pricePerDocument} per document. Samen met je partner? Dan betaal je €${priceForTwo} voor twee documenten.`,
   },
 ];
 ---
@@ -105,6 +107,25 @@ const faqItems = [
           <li>Regel financiële en medische beslissingen</li>
         </ul>
         <a class="button" href="/levenstestament">Start met je levenstestament</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Wat kost het?</h2>
+    <div class="home-price-box">
+      <Coins size={30} stroke-width={1.5} aria-hidden="true" class="home-price-icon" />
+      <div>
+        <p class="home-price-amount">&euro;{pricing.pricePerDocument} <span>per testament of levenstestament</span></p>
+        <p class="home-price-detail">
+          Samen met je partner? Dan betaal je &euro;{priceForTwo} voor twee documenten
+          &mdash; &euro;{pricing.coupleDiscount} korting.
+        </p>
+        <p class="home-price-detail">
+          <Clock size={16} stroke-width={1.75} aria-hidden="true" />
+          Je betaalt vooraf, met garantie dat je binnen {pricing.guaranteeWeeks} weken bij de notaris zit.
+        </p>
+        <a href="/kosten-van-een-testament">Bekijk alle details over de kosten &rarr;</a>
       </div>
     </div>
   </section>
@@ -238,6 +259,47 @@ const faqItems = [
     display: block;
     width: 100%;
     text-align: center;
+  }
+
+  .home-price-box {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
+    padding: 1.5rem 1.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .home-price-icon {
+    color: var(--color-accent);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .home-price-amount {
+    font-family: var(--font-heading);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .home-price-amount span {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  .home-price-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin: 0 0 0.5rem;
   }
 
   .trust-grid {
