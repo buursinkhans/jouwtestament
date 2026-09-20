@@ -35,11 +35,6 @@ const { id, title, intro, questions, resultIntro, resultPoints, workBlock, ctaHr
 ---
 
 <div class="quiz" data-quiz id={id}>
-  <p class="quiz-status-note">
-    Concept &mdash; nog te controleren door een notaris of jurist voordat dit
-    definitief klopt.
-  </p>
-
   <div class="quiz-intro" data-quiz-intro>
     <h3><CircleQuestionMark size={22} stroke-width={1.75} aria-hidden="true" class="heading-icon" />{title}</h3>
     <p>{intro}</p>
@@ -176,12 +171,6 @@ const { id, title, intro, questions, resultIntro, resultPoints, workBlock, ctaHr
     border-radius: 0.75rem;
     padding: 1.75rem;
     margin: 1.5rem 0;
-  }
-
-  .quiz-status-note {
-    font-size: 0.8rem;
-    color: var(--color-warning);
-    margin: 0 0 1rem;
   }
 
   .quiz-intro h3 {
