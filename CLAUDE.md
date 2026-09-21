@@ -16,8 +16,9 @@ Doelgroep: gezinnen met kinderen, samengestelde gezinnen en gezinnen die in hun 
 - Markt (KNB, 2025): 354.820 testamenten en 236.566 levenstestamenten gepasseerd, samen ongeveer 591.000 akten per jaar. Groei vlakte in 2025 af. Details en bronnen in businessmodel.md.
 - Inkomensdoel eigenaar: €6.000 per maand winst vóór belasting, ongeveer 82 afgeronde aanvragen per maand bij €75 (zie businessmodel.md).
 - Opbrengst via een partnerafspraak: verwachting €75 per afgeronde aanvraag (aanname eigenaar, te bevestigen met de partner). Startaanname voor conversie van bezoeker tot afgeronde aanvraag: 0,5% (5% doorklik × 10% afronding), te vervangen door meting. Later eventueel white label voor adviseurs.
-- Zolang de overeenkomst niet is getekend: wachtlijst als call-to-action. Daarna doorklik naar de partner via één configureerbare instelling.
-- De partner staat op de achtergrond maar is niet verborgen: noem hem bij doorverwijzing, in de privacyverklaring en in de disclaimer, met de mogelijke vergoeding. Toon geen prijzen zonder bevestiging door de eigenaar en de partner. Nooit beloven dat iets "juridisch correct" of "gegarandeerd" is.
+- **Smoketest-opzet (huidige situatie, vervangt de wachtlijst):** zolang er geen getekend partnercontract is, eindigt de hoofd-CTA niet bij een wachtlijst maar bij een interactief stappenplan (nut/noodzaak, situatie, wensen, gegevens, notaris kiezen, "betalen"). De laatste stap toont geen echt betaalformulier, maar een excuusscherm ("we zijn er nog niet, excuses") met een optioneel e-mailveld voor een seintje later. Niets van stap 1 t/m 5 wordt verstuurd of opgeslagen.
+- De partner staat op de achtergrond maar is niet verborgen: noem hem bij doorverwijzing, in de privacyverklaring en in de disclaimer, met de mogelijke vergoeding.
+- **Prijzen tijdens de smoketest:** de eigenaar heeft ervoor gekozen om, in afwijking van de oorspronkelijke regel "geen prijzen zonder partnerbevestiging", al wel €399 per document te tonen (€723 voor twee samen met partner, €75 korting), inclusief een operationele garantie ("binnen 3 weken bij de notaris"). Doel: kooprintentie meten tijdens de smoketest. Herzie dit zodra er een echte partner is bevestigd — de prijs en de garantie kunnen dan wijzigen.
 - Verkeer via GEO/SEO op life-event vragen (baby, huis, samenwonen, scheiding), aangevuld met kleine betaalde tests.
 
 ## Bedrijfsgegevens
@@ -26,11 +27,11 @@ Doelgroep: gezinnen met kinderen, samengestelde gezinnen en gezinnen die in hun 
 - E-mail: info@jouwtestament.nl
 - KvK-nummer: [nog in te vullen]
 - Btw-identificatienummer: [indien van toepassing, nog in te vullen]
-- Gebruik deze gegevens in de footer, op de contactpagina, in de privacyverklaring, in de disclaimer en in de structured data (Organization).
-- Verzin geen andere gegevens. Ontbrekende gegevens blijven zichtbaar als [nog in te vullen] in de code en worden pas op de live site getoond zodra de eigenaar ze heeft bevestigd.
+- **Op verzoek van de eigenaar staat het vestigingsadres nergens zichtbaar op de live site** (niet in de footer, niet op Over ons, niet in de structured data) — alleen naam en e-mailadres zijn publiek. Het adres blijft wel vastgelegd in `src/data/company.ts` voor eventueel toekomstig gebruik (bijvoorbeeld een KvK-registratie of privacyverklaring).
+- Verzin geen andere gegevens. Ontbrekende gegevens (KvK, btw) blijven als placeholder in de code en worden pas getoond zodra de eigenaar ze heeft bevestigd.
 
 ## Fase
-Fase 0-1 (smoke test, ongeveer 6 weken): basissite, antwoordpagina's (NL, daarna EN), wachtlijst en tracking.
+Fase 0-1 (smoke test, ongeveer 6 weken): basissite, antwoordpagina's (NL, daarna EN), stappenplan en tracking.
 Doel: meten of er genoeg vraag is voordat er verder wordt geïnvesteerd.
 Talen: Nederlands (standaard) en Engels eerst. Daarna Turks, Arabisch en Pools testen. Meertalig bouwen vanaf het begin, ook rechts-naar-links (Arabisch).
 
@@ -50,12 +51,12 @@ Talen: Nederlands (standaard) en Engels eerst. Daarna Turks, Arabisch en Pools t
 
 ## Regels voor alle teksten
 - Naam: altijd jouwtestament, één woord, kleine letters, zonder ".nl". Het webadres jouwtestament.nl gebruik je alleen waar mensen het moeten onthouden of intypen (footer, contactpagina, advertenties, e-mail). Zie naamregels in de stijlgids.
-- Schrijf voor bezoekers in de u-vorm, B1-taal, maximaal 20 woorden per zin, eerst het antwoord en dan de uitleg. Sluit elke tekst af met een vervolgstap.
+- **Schrijf voor bezoekers in de je/jouw-vorm** (gewijzigd op verzoek van de eigenaar, sluit aan bij de merknaam), B1-taal, maximaal 20 woorden per zin, eerst het antwoord en dan de uitleg. Sluit elke tekst af met een vervolgstap.
 - Volg de GEO-controlelijst uit de stijlgids voor elke pagina.
-- Geen garanties, geen absolute uitspraken, geen verzonnen cijfers of bronnen.
+- Geen verzonnen cijfers of bronnen. Uitzondering: de prijs en de garantietermijn tijdens de smoketest (zie "Businessmodel" hierboven) zijn bewust door de eigenaar vastgesteld, niet door Claude verzonnen.
 - Zeg nooit dat een testament "klaar", "geldig" of "af" is voordat het bij de notaris is ondertekend. Gebruik "online voorbereiden" in plaats van "online testament maken" of "afsluiten".
 - Quizzen (stijlgids sectie 7): 3 vragen, uitleg na elk antwoord, geen score, geen opslag van antwoorden. Zet dezelfde inhoud ook als gewone tekst onder de quiz.
-- Zet het standaardblok "Wat doet u zelf en wat doet de notaris?" (stijlgids) op elke pagina met een call-to-action.
+- Zet het standaardblok "Wat doe jij zelf en wat doet de notaris?" (stijlgids) op elke pagina met een call-to-action.
 - Vermeld op pagina's de disclaimer en de datum "laatst gecontroleerd".
 - Juridische inhoud is een voorstel tot een notaris of jurist het heeft gecontroleerd. Markeer nieuwe juridische teksten daarom als "concept, nog te controleren".
 

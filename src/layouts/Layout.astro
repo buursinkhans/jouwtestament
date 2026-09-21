@@ -117,7 +117,7 @@ const navItems = mainNav
     {paths[defaultLang as LangCode] && (
       <link rel="alternate" hreflang="x-default" href={new URL(paths[defaultLang as LangCode]!, Astro.site)} />
     )}
-    <title>{title} · {t('site.title')}</title>
+    <title>{title} | {t('site.title')}</title>
 
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

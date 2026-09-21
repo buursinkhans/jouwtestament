@@ -10,13 +10,13 @@
 
 - **Naam:** jouwtestament
 - **Domein:** jouwtestament.nl (webadres, geen merknaam)
-- **Missie:** jouwtestament vindt het belangrijk dat iedere inwoner van Nederland heeft nagedacht over een (levens)testament en er een heeft, zeker als er kinderen zijn. Wij geven iedereen duidelijke en eerlijke informatie en ondersteunen u bij het regelen ervan, zodat een (levens)testament voor iedereen mogelijk is.
-- **Belofte aan de bezoeker (voorstel):** Wij leggen eenvoudig uit wat u moet regelen en helpen u de eerste stap te zetten, in uw eigen taal.
+- **Missie:** jouwtestament vindt het belangrijk dat iedere inwoner van Nederland heeft nagedacht over een (levens)testament en er een heeft, zeker als er kinderen zijn. Wij geven iedereen duidelijke en eerlijke informatie en ondersteunen je bij het regelen ervan, zodat een (levens)testament voor iedereen mogelijk is.
+- **Belofte aan de bezoeker (voorstel):** Wij leggen eenvoudig uit wat je moet regelen en helpen je de eerste stap te zetten, in je eigen taal.
 - **Doelgroepen:**
   - Gezinnen met kinderen
   - Samengestelde gezinnen
   - Gezinnen die in hun eigen taal geholpen willen worden
-- **Wat wij zijn:** Wij geven praktische informatie en helpen u bij het regelen van een (levens)testament via een notaris.
+- **Wat wij zijn:** Wij geven praktische informatie en helpen je bij het regelen van een (levens)testament via een notaris.
 - **Wat wij niet zijn:** Wij zijn geen notaris en geven geen persoonlijk juridisch advies. De notaris maakt de akte op.
 - **Partners:** De Nationale Notaris (hoofdpartner, op de achtergrond, afspraken nog vast te leggen). Later eventueel meer partners.
 
@@ -34,7 +34,7 @@
 ## 2. Tone of voice
 
 - **Karakter in drie woorden:** helder, warm, betrouwbaar
-- **Aanspreekvorm:** u (overal, in teksten, knoppen en agent)
+- **Aanspreekvorm:** je/jouw (overal, in teksten, knoppen en agent). Sluit aan bij de merknaam "jouwtestament". *Gewijzigd op verzoek van de eigenaar; hiervoor gebruikte de site de u-vorm.*
 - **Niveau:** B1-taal, korte zinnen, geen jargon
 - **Gevoeligheid (voorstel):** Het onderwerp raakt aan overlijden en familie. Wij zijn rustig en respectvol. Wij jagen geen angst aan en gebruiken geen dreigende taal.
 - **Schrijfregels:**
@@ -44,11 +44,11 @@
   - (voorstel) Eén onderwerp per alinea, maximaal vier zinnen.
   - (voorstel) Leg elk vakwoord uit bij het eerste gebruik.
   - (voorstel) Gebruik voorbeelden uit het gezinsleven.
-- **Woorden die wij gebruiken:** eenvoudig, nalaten, regelen. (voorstel) duidelijk, rust, uw gezin, uw kinderen, zekerheid
-- **Woorden die wij vermijden (voorstel):** gegarandeerd, goedkoopste, altijd, nooit, vakjargon zonder uitleg (zoals "versterf", "legitieme portie", "erflater"). Gebruik de gewone uitleg erbij.
+- **Woorden die wij gebruiken:** eenvoudig, nalaten, regelen. (voorstel) duidelijk, rust, jouw gezin, jouw kinderen, zekerheid
+- **Woorden die wij vermijden (voorstel):** goedkoopste, vakjargon zonder uitleg (zoals "versterf", "legitieme portie", "erflater"). Gebruik de gewone uitleg erbij. *Uitzondering: "gegarandeerd" wordt tijdens de smoketest bewust wél gebruikt voor de leveringsgarantie (3 weken tot de notaris) — zie businessmodel.md, sectie "Prijzen tijdens de smoketest".*
 
 **Voorbeeldzin, zo wel:**
-"Zonder testament bepaalt de wet wie erft. Dat is niet altijd wat u wilt. Met een testament regelt u dit zelf."
+"Zonder testament bepaalt de wet wie erft. Dat is niet altijd wat je wilt. Met een testament regel je dit zelf."
 
 **Voorbeeldzin, zo niet:**
 "Bij versterf vindt de vererving plaats conform de wettelijke verdeling, tenzij er sprake is van een uiterste wilsbeschikking."
@@ -60,22 +60,22 @@
 - Bij persoonlijke situaties verwijzen wij naar de notaris.
 - Wij zeggen altijd duidelijk dat de notaris het testament opmaakt en dat de akte in het Nederlands wordt opgesteld.
 - **Korte disclaimer:**
-  "Deze informatie is algemeen en geen juridisch advies. Voor uw persoonlijke situatie verwijzen wij u naar een notaris."
+  "Deze informatie is algemeen. Herken je een bijzondere situatie? Dan bieden we maatwerk, in samenwerking met een notaris en tegen een ander tarief."
 - **Uitgebreide disclaimer (footer):**
-  "jouwtestament geeft algemene informatie over testamenten en levenstestamenten en helpt u bij de voorbereiding. Wij zijn geen notaris. Een testament wordt opgemaakt door een notaris en de akte is in het Nederlands. De informatie is met zorg samengesteld, maar kan afwijken van uw persoonlijke situatie of gewijzigd zijn. Vraag altijd advies aan een notaris voordat u beslissingen neemt."
+  "jouwtestament geeft algemene informatie over testamenten en levenstestamenten en helpt je bij de voorbereiding. Wij zijn geen notaris. Een testament wordt opgemaakt door een notaris en de akte is in het Nederlands. De informatie is met zorg samengesteld, maar kan afwijken van jouw persoonlijke situatie of gewijzigd zijn."
+  *Gewijzigd op verzoek van de eigenaar: de oude formulering ("voor uw persoonlijke situatie, ga naar een notaris") werkte als een afwijzing die bezoekers de funnel uit stuurde. Nu bieden we in plaats daarvan maatwerk aan.*
 - **Vermelding van de samenwerking (voorstel, afstemmen met de partner en een jurist):**
-  - Disclaimer of footer: "Wij werken samen met notarissen en aanbieders, zoals De Nationale Notaris, die uw aanvraag verder afhandelen. Als u via onze website een aanvraag doet, kunnen wij daarvoor een vergoeding ontvangen. [Voor u zijn de kosten daardoor niet hoger.] Wij zijn zelf geen notaris."
-  - Bij de doorverwijzing: "U gaat nu naar De Nationale Notaris, onze partner voor het opmaken van uw testament. Uw gegevens worden door hen verwerkt volgens hun privacyverklaring."
+  - Disclaimer of footer: "We werken samen met notarissen en aanbieders, zoals De Nationale Notaris, die jouw aanvraag verder afhandelen. Als je via onze website een aanvraag doet, kunnen wij daarvoor een vergoeding ontvangen. [Voor jou zijn de kosten daardoor niet hoger.] Wij zijn zelf geen notaris."
+  - Bij de doorverwijzing: "Je gaat nu naar De Nationale Notaris, onze partner voor het opmaken van jouw testament. Jouw gegevens worden door hen verwerkt volgens hun privacyverklaring."
   - Het deel tussen haakjes alleen gebruiken als het klopt. Pas de tekst aan als er meer partners komen.
-- **Bedrijfs- en contactgegevens (verplicht zichtbaar, controleer met een jurist):**
+  - **Nog niet van toepassing:** er is nog geen getekend partnercontract, dus deze teksten staan nog nergens op de site. Zie de smoketest-opzet hieronder.
+- **Bedrijfs- en contactgegevens:**
   - Naam: jouwtestament
-  - Adres: Pablo Picassostraat 61, [postcode] Rotterdam
+  - Adres: Pablo Picassostraat 61, [postcode] Rotterdam — **op verzoek van de eigenaar (nog) niet zichtbaar op de site.** Alleen de naam en het e-mailadres staan publiek (footer, Over ons, structured data).
   - E-mail: info@jouwtestament.nl
   - KvK-nummer: [nog in te vullen]
   - Btw-identificatienummer: [indien van toepassing]
-  - Een aanbieder in Nederland moet zijn identiteit tonen, zoals naam, adres, e-mailadres en KvK-nummer. Zet ze in de footer, op de contactpagina en op de Over ons-pagina.
-  - Footerregel (voorstel): "jouwtestament | Pablo Picassostraat 61, Rotterdam | info@jouwtestament.nl | KvK [nummer]"
-  - Controleer of dit adres ook een woonadres is. Na plaatsing is het openbaar. Overweeg anders een ander adres of postadres.
+  - Zodra het adres, KvK-nummer en btw-nummer wel getoond moeten worden (bijvoorbeeld voor de wettelijke identificatieplicht bij een echte lancering), staan ze al klaar in `src/data/company.ts`.
 - **Bronnen die wij noemen:** Rijksoverheid, KNB (Koninklijke Notariële Beroepsorganisatie), Belastingdienst
 - **Elke pagina eindigt met:** "Laatst gecontroleerd: [datum]" en een verwijzing naar de notaris of de volgende stap.
 
@@ -87,29 +87,29 @@
 - Zeg nooit dat een testament "klaar", "geldig" of "af" is voordat het bij de notaris is ondertekend.
 - Laat zien wat de klant zelf doet en wat de notaris doet. Dat is geen nadeel, maar een vertrouwenspunt.
 
-**Standaardblok: "Wat doet u zelf en wat doet de notaris?"**
+**Standaardblok: "Wat doe jij zelf en wat doet de notaris?"**
 
 Korte versie (bij de knop):
-"U bereidt uw testament online voor. De notaris controleert het en maakt de akte op. U ondertekent de akte persoonlijk bij de notaris."
+"Je bereidt je testament online voor. De notaris controleert het en maakt de akte op. Je ondertekent de akte persoonlijk bij de notaris."
 
 Uitgebreide versie:
 
-*Wat u zelf doet*
-- U leest de uitleg en kiest wat bij uw situatie past.
-- U vult online in wat u wilt regelen, zoals wie erft en wie voor uw kinderen zorgt.
+*Wat jij zelf doet*
+- Je leest de uitleg en kiest wat bij jouw situatie past.
+- Je vult online in wat je wilt regelen, zoals wie erft en wie voor je kinderen zorgt.
 
 *Wat de notaris doet*
-- De notaris controleert wat u hebt ingevuld en geeft advies waar nodig.
+- De notaris controleert wat je hebt ingevuld en geeft advies waar nodig.
 - De notaris maakt de akte op.
-- U ondertekent de akte persoonlijk bij de notaris. Pas dan is uw (levens)testament geldig.
+- Je ondertekent de akte persoonlijk bij de notaris. Pas dan is je (levens)testament geldig.
 - De notaris zorgt voor de registratie van het testament.
 
 *Wat wij doen*
-- Wij geven u uitleg en helpen u met de eerste stap.
-- Wij verwijzen u door naar onze partner.
+- We geven je uitleg en helpen je met de eerste stap.
+- We verwijzen je door naar onze partner.
 - Wij zijn zelf geen notaris.
 
-Slotzin: "Een testament dat u zonder notaris opstelt, is in Nederland niet geldig. De akte is in het Nederlands. Hebt u hulp nodig bij het gesprek met de notaris, meld dat dan bij uw aanvraag."
+Slotzin: "Een testament dat je zonder notaris opstelt, is in Nederland niet geldig. De akte is in het Nederlands. Heb je hulp nodig bij het gesprek met de notaris, meld dat dan bij je aanvraag."
 
 
 ## 4. Visuele identiteit (voorstel)
@@ -166,7 +166,7 @@ GEO staat voor Generative Engine Optimization: teksten zo schrijven dat AI-zoekm
 **Technische regels voor de website**
 - Schoon, statisch HTML (Astro), zodat AI-crawlers de volledige tekst zonder scripts zien.
 - Structured data (schema.org) op elke pagina: Organization, Article met datePublished en dateModified, FAQPage waar van toepassing, en BreadcrumbList.
-- De Organization-gegevens (naam, adres, e-mail) komen uit de bedrijfs- en contactgegevens in sectie 3.
+- De Organization-gegevens (naam en e-mail) komen uit de bedrijfs- en contactgegevens in sectie 3. Het adres staat er bewust nog niet in (zie sectie 3).
 - Elke taal heeft een eigen vaste URL, met hreflang-koppelingen. Geen automatisch vertalen in de browser.
 - Sitemap en een robots.txt die zoek- en AI-crawlers niet onnodig blokkeert. Een llms.txt is optioneel en van onbewezen waarde.
 - Snelle laadtijd en goede mobiele weergave.
@@ -274,9 +274,9 @@ GEO staat voor Generative Engine Optimization: teksten zo schrijven dat AI-zoekm
 **Resultaatscherm:** "Dit kunt u regelen: (1) wie uw geldzaken regelt, (2) wie beslissingen neemt over uw zorg en persoonlijke zaken, (3) wanneer de volmacht ingaat." Daarna het standaardblok en de call-to-action.
 
 ### Call-to-action en vervolg (beide quizzen)
-- Hoofdknop: dezelfde als elders op de site (nu wachtlijst, later de partnerlink).
-- Tweede optie: "Stel uw vraag aan de assistent."
-- Noem nooit prijzen in de quiz, tenzij bevestigd.
+- Hoofdknop: dezelfde als elders op de site — nu het stappenplan (zie businessmodel.md, "smoketest-opzet"), later eventueel de partnerlink.
+- Tweede optie ("Stel uw vraag aan de assistent") vervalt zolang er geen agent is gebouwd.
+- Prijzen mogen inmiddels genoemd worden: de eigenaar heeft €399/€723 vastgesteld voor de smoketest (zie businessmodel.md).
 
 ### Bronnen (voor de controle door een notaris of jurist)
 - Wikipedia (nl): Wettelijke verdeling en Erfrecht (Nederland), voor vraag 1 en 3 van quiz A. Wikipedia is een startpunt, geen definitieve bron.
@@ -313,12 +313,12 @@ GEO staat voor Generative Engine Optimization: teksten zo schrijven dat AI-zoekm
 ## 9. Agent (chatassistent) (voorstel)
 
 - **Naam en presentatie:** "de AI-assistent van jouwtestament"
-- **Openingszin:** "Goedendag, ik ben de AI-assistent van jouwtestament. Ik geef algemene informatie over testamenten en help u met een eerste stap. Waarmee kan ik u helpen?"
-- **Toon:** dezelfde als in sectie 2. Warm, helder, u-vorm, korte zinnen.
+- **Openingszin:** "Hoi, ik ben de AI-assistent van jouwtestament. Ik geef algemene informatie over testamenten en help je met een eerste stap. Waarmee kan ik je helpen?"
+- **Toon:** dezelfde als in sectie 2. Warm, helder, je/jouw-vorm, korte zinnen.
 - **Wat de agent doet:** algemene vragen beantwoorden, eenvoudige uitleg geven, intakevragen stellen, doorverwijzen naar pagina's en naar de notaris.
 - **Uitleg over de werkverdeling:** de agent legt bij elke vraag over "hoe werkt het" uit wat de klant zelf doet en wat de notaris doet (standaardblok), en zegt dat de notaris altijd betrokken is.
 - **Wat de agent niet doet:** persoonlijk juridisch advies geven, garanties of beloftes doen over uitkomsten, uitspraken doen over erfbelasting in een concrete situatie.
-- **Aanbod van de agent (nu):** testament en levenstestament. Bij een vraag over een samenlevingscontract zegt de agent: "Wij richten ons nu op het testament en het levenstestament. Voor een samenlevingscontract verwijzen wij u naar een notaris." De agent noemt alleen prijzen als die zijn bevestigd en met de prijsdatum.
+- **Aanbod van de agent (nu):** testament en levenstestament. Bij een vraag over een samenlevingscontract zegt de agent: "We richten ons nu op het testament en het levenstestament. Voor een samenlevingscontract verwijzen we je naar een notaris." De agent mag de smoketest-prijzen noemen (€399/€723, zie businessmodel.md).
 - **Intakevragen:** gezinssituatie (alleenstaand, samenwonend, getrouwd, samengesteld), aantal en leeftijd kinderen, bezit (huis, spaargeld, onderneming), belangrijkste wensen, gewenste taal.
 - **Doorverwijzing:** bij persoonlijke, complexe of gevoelige situaties verwijst de agent naar de notaris of naar de intake. Bij twijfel of ontevredenheid biedt de agent een menselijk contact aan.
 - **Taal:** antwoordt in de taal van de bezoeker en legt uit dat de akte in het Nederlands wordt opgesteld.
@@ -327,17 +327,16 @@ GEO staat voor Generative Engine Optimization: teksten zo schrijven dat AI-zoekm
 
 ## 10. Voorbeeldteksten (voorstel)
 
-- **Headline homepage (gekozen variant C):** jouwtestament. Eenvoudig, snel en betaalbaar.
-- **Subkop:** Regel uw testament of levenstestament online voor en weet dat uw gezin goed geregeld is.
-- **Onder de knop:** Een notaris controleert alles en maakt de akte op.
-- **Knoptekst:** Start uw intake (nu: wachtlijst)
-- **Titel-tag voor zoekmachines (voorstel):** Testament en levenstestament regelen | jouwtestament
-- **Te bevestigen voordat de kop live gaat:** "snel" (vraag de partner naar de doorlooptijd, of noem een echt getal) en "betaalbaar" (noem liefst "vanaf €399" zodra de partner de prijs bevestigt). "Goed geregeld" is een belofte over het resultaat en geen garantie.
+- **Headline homepage (live):** Jouw testament regelen: eenvoudig, snel en betaalbaar
+- **Subkop:** Bereid je testament of levenstestament online voor, en weet dat je gezin goed geregeld is.
+- **Knoptekst:** Start het stappenplan (vervangt "Start uw intake" / de wachtlijst)
+- **Titel-tag voor zoekmachines:** eindig met "| jouwtestament" (zie naamregels, sectie 1)
+- **"Snel" en "betaalbaar":** ingevuld voor de smoketest met een prijs van €399 per document en een garantie van 3 weken tot de notaris (zie businessmodel.md). Dit is een keuze van de eigenaar, nog niet bevestigd door een partner.
 - **Kernbelofte, drie punten:**
   - Eenvoudige uitleg zonder moeilijke woorden
-  - Hulp in uw eigen taal
+  - Hulp in je eigen taal
   - Een duidelijke vervolgstap richting de notaris
-- **Meta-omschrijving (max. 155 tekens):** Wat gebeurt er als u niets regelt? Lees eenvoudige uitleg over testament en levenstestament en zet de eerste stap in uw eigen taal.
+- **Meta-omschrijving (max. 155 tekens):** Testament of levenstestament nodig? Lees waarom dit belangrijk is voor jou en je naasten, en zet eenvoudig de eerste stap.
 
 ## 11. Open punten
 
@@ -351,4 +350,4 @@ GEO staat voor Generative Engine Optimization: teksten zo schrijven dat AI-zoekm
 
 ## 12. Instructie voor Claude
 
-Lees dit bestand voordat je teksten, pagina's of code maakt. Volg kleuren, lettertypen, toon en juridische regels hieruit. Kom je iets tegen dat hier niet in staat, doe dan een voorstel en markeer dat als "nog te bevestigen". Schrijf alle teksten voor bezoekers in de u-vorm en volg de GEO-regels uit sectie 6 voor elke pagina die je maakt. Bouw quizzen volgens sectie 7 en bewaar nooit quizantwoorden.
+Lees dit bestand voordat je teksten, pagina's of code maakt. Volg kleuren, lettertypen, toon en juridische regels hieruit. Kom je iets tegen dat hier niet in staat, doe dan een voorstel en markeer dat als "nog te bevestigen". Schrijf alle teksten voor bezoekers in de je/jouw-vorm en volg de GEO-regels uit sectie 6 voor elke pagina die je maakt. Bouw quizzen volgens sectie 7 en bewaar nooit quizantwoorden.

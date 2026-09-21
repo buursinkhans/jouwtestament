@@ -10,7 +10,7 @@
 - Het testament is niet het startpunt maar de **oplossing** op vragen die mensen stellen bij life events (baby, huis, samenwonen, scheiding, ouder verloren).
 - Wij bereiden mensen voor en verwijzen door naar onze partner. De notaris maakt de akte op, in het Nederlands.
 - **Er is altijd een notaris betrokken.** In ons aanbod passeert altijd een notaris de akte. Een testament of levenstestament zonder notaris bestaat bij ons niet. Een deel doet de klant zelf (online voorbereiden), een deel doet de notaris (controleren, opmaken, ondertekenen).
-- Formuleer nooit een belofte als "juridisch correct" of "gegarandeerd". Zeg dat de notaris de akte opmaakt.
+- Formuleer nooit een belofte als "juridisch correct". Zeg dat de notaris de akte opmaakt. *Uitzondering: tijdens de smoketest gebruiken we bewust "garantie" voor de leveringsbelofte (binnen 3 weken bij de notaris) — dat is een operationele toezegging, geen juridische garantie over de inhoud van de akte.*
 
 ### Bedrijfsgegevens
 | Onderdeel | Gegeven |
@@ -21,7 +21,7 @@
 | KvK-nummer | [nog in te vullen] |
 | Btw-identificatienummer | [indien van toepassing, nog in te vullen] |
 
-Deze gegevens staan in de footer, op de contactpagina en in de privacyverklaring. Een aanbieder in Nederland moet zijn identiteit tonen (naam, adres, e-mailadres, KvK-nummer). Controleer met een jurist en check of het adres ook een woonadres is, want het is na plaatsing openbaar.
+**Op verzoek van de eigenaar staat het adres nergens zichtbaar op de live site.** Alleen naam en e-mailadres staan in de footer, op de Over ons-pagina en in de structured data. Een aanbieder in Nederland moet normaal gesproken zijn identiteit tonen (naam, adres, e-mailadres, KvK-nummer) — dit is dus nog een openstaand punt voor een echte lancering. Controleer met een jurist en check of het adres ook een woonadres is, want het wordt na plaatsing openbaar.
 
 ## 2. Doelgroep en triggers
 - **Kern:** gezinnen zonder testament, ongeveer 35-60 jaar, met koopwoning en/of kinderen. Ook samengestelde gezinnen.
@@ -77,7 +77,7 @@ Je start misschien ook met andere partijen. Bouw daarom **partner-onafhankelijk*
 - **A. Doorklik (voorstel voor de start):** de call-to-action leidt naar De Nationale Notaris met een partnerparameter. Er gaan geen persoonsgegevens van onze site naar hen. Laag AVG-risico en snel te bouwen. Meting: doorkliks plus de rapportage van de partner.
 - **B. Intake bij ons en leadoverdracht:** meer inzicht en betere begeleiding, maar zwaarder qua AVG, techniek en merkafspraken. Later overwegen.
 
-Totdat de overeenkomst is getekend blijft de call-to-action een **wachtlijst**. Daarna zetten we de CTA om naar de partnerlink. Bouw de partnerlink daarom als één instelling die op één plek kan worden aangepast.
+**Smoketest-opzet (huidige situatie):** totdat de overeenkomst is getekend, leidt de call-to-action niet naar een wachtlijst maar naar een interactief **stappenplan** (nut/noodzaak → situatie → wensen → gegevens → notaris kiezen → "betalen"). De laatste stap toont geen echt betaalformulier, maar een excuusscherm: "we zijn er nog niet, excuses", met een optioneel e-mailveld voor een seintje later. Dit meet koopintentie zonder dat er al een partner of betaalproces is. Zodra de overeenkomst met een partner getekend is, zetten we de laatste stap om naar een echte doorklik naar de partner. Bouw de partnerlink daarom als één instelling die op één plek kan worden aangepast.
 
 ## 4. Aanbod en prijzen (uitgangspunt van de eigenaar)
 
@@ -110,7 +110,9 @@ Totdat de overeenkomst is getekend blijft de call-to-action een **wachtlijst**. 
 - Het inkomensdoel van €6.000 per maand ligt ver boven de KOR-grens. De KOR is dus alleen zinvol in de smoke test.
 - **Actie:** vraag een accountant of we als btw-ondernemer starten of eerst de KOR gebruiken.
 
-**Prijzen in de configuratie:** zet ze in het partnerbestand per product met naam, prijs, prijsdatum, btw-indicatie en status. Alleen actieve producten (testament en levenstestament) worden getoond, en alleen nadat de partner de prijzen heeft bevestigd. Toon op de site: "Prijs per [datum], volgens de partner."
+**Prijzen in de configuratie:** zet ze in het partnerbestand per product met naam, prijs, prijsdatum, btw-indicatie en status. Alleen actieve producten (testament en levenstestament) worden getoond.
+
+**Prijzen tijdens de smoketest (afwijking van de oorspronkelijke regel):** de eigenaar heeft besloten om, zonder partnerbevestiging, alvast €399 per document te tonen op de site (`src/data/pricing.ts`), met €75 korting bij twee documenten samen met een partner (€723 totaal) en een garantie van 3 weken tot de notaris. Doel: kooprintentie meten voordat er een partner is. Herzie prijs, korting en garantie zodra er een echte partner is bevestigd — dan geldt de oorspronkelijke regel weer: prijzen pas tonen na bevestiging door eigenaar én partner, met een prijsdatum erbij.
 
 ## 5. Werkverdeling: wat doet de klant zelf, wat doet de notaris?
 
@@ -310,10 +312,10 @@ Hypotheses die we meten in plaats van aannemen: dat YouTube de sterkste GEO-fact
 **Let op bij prijzen:** noem tarieven van De Nationale Notaris alleen op onze site als ze zijn afgestemd en worden bijgehouden. Verouderde prijzen zijn een risico voor vertrouwen en juridische betrouwbaarheid.
 
 ## 12. Funnel
-1. **Informatiepagina** ("Jong gezin met kinderen: wat erft uw gezin zonder testament?"): diep en gezaghebbend. Doel: AI-citaties en organisch verkeer.
-2. **Activatiepagina** ("Als u morgen overlijdt: wie beslist dan over uw kinderen?"): confronterende vraag, drie juridische gevolgen stap voor stap, tabbladen per life event, sterke call-to-action. Doel: conversie. Hierin past de quiz (3 vragen per situatie, zie stijlgids sectie 7) als activerend onderdeel.
-3. **Uitleg werkverdeling:** vast blok "Wat doet u zelf en wat doet de notaris?" bij elke call-to-action.
-4. **Call-to-action:** wachtlijst tot de overeenkomst er is, daarna doorklik naar De Nationale Notaris (variant A).
+1. **Informatiepagina** ("Jong gezin met kinderen: wat erft je gezin zonder testament?"): diep en gezaghebbend. Doel: AI-citaties en organisch verkeer.
+2. **Activatiepagina** ("Als je morgen overlijdt: wie beslist dan over je kinderen?"): confronterende vraag, drie juridische gevolgen stap voor stap, tabbladen per life event, sterke call-to-action. Doel: conversie. Hierin past de quiz (3 vragen per situatie, zie stijlgids sectie 7) als activerend onderdeel.
+3. **Uitleg werkverdeling:** vast blok "Wat doe jij zelf en wat doet de notaris?" bij elke call-to-action.
+4. **Call-to-action (smoketest):** het stappenplan, eindigend in een excuusscherm tot de overeenkomst er is. Daarna zetten we de laatste stap om naar een doorklik naar De Nationale Notaris (variant A).
 5. **Afhandeling door de partner en de notaris:** controle, akte opmaken, persoonlijk ondertekenen.
 
 De twee pagina's zijn al gebouwd. Zet ze als HTML in de projectmap (bijvoorbeeld `docs/bronnen/`), zodat Claude Code ze kan omzetten naar Astro-pagina's in de huisstijl en met meertaligheid.
@@ -328,7 +330,7 @@ Doel: valideren of het concept converteert voordat er verder wordt geïnvesteerd
 
 **(voorstel) Aanscherping**
 - Bij 50 bezoekers en 3% zijn dat één à twee klikken. Dat zegt bijna niets.
-- Meet een **wachtlijstaanmelding** (vóór de overeenkomst) of een **doorklik naar de partner** (daarna), in plaats van een klik op een knop op de eigen pagina.
+- Meet het **bereiken van het excuusscherm** in het stappenplan (vóór de overeenkomst) of een **doorklik naar de partner** (daarna), in plaats van een klik op een knop op de eigen pagina.
 - Stel een hoger minimum aan bezoekers in (bijvoorbeeld enkele honderden) en een maximum voor de kosten per lead of doorklik.
 - Voeg toe: De Nationale Notaris bevestigt de vergoedingsafspraak en levert rapportage.
 - Vul zelf de getallen in: [bezoekers ≥ ...], [aanmelding- of doorklikpercentage ≥ ...%], [kosten per lead ≤ €...].
@@ -353,13 +355,13 @@ Doel: valideren of het concept converteert voordat er verder wordt geïnvesteerd
 ## 16. Instructie voor Claude Code
 - Bouw de quizzen uit de stijlgids (sectie 7): drie vragen per quiz, direct uitleg na elk antwoord, geen opslag van antwoorden, en meet alleen voortgang.
 - Zeg nergens dat een testament "klaar", "geldig" of "af" is voordat het bij de notaris is ondertekend. Gebruik "online voorbereiden" in plaats van "online testament maken" of "afsluiten".
-- Plaats het standaardblok "Wat doet u zelf en wat doet de notaris?" (stijlgids) op elke pagina met een call-to-action en in het antwoord van de agent wanneer iemand vraagt hoe het werkt.
+- Plaats het standaardblok "Wat doe jij zelf en wat doet de notaris?" (stijlgids) op elke pagina met een call-to-action.
 - Bouw geen functies die suggereren dat jouwtestament zelf testamenten opmaakt of verkoopt.
-- Gebruik de bedrijfsgegevens uit CLAUDE.md (adres, e-mail, KvK) in de footer, op de contactpagina, in de privacyverklaring en in de structured data.
+- Gebruik alleen naam en e-mail uit `src/data/company.ts` in de footer en op de Over ons-pagina. Het adres blijft op verzoek van de eigenaar onzichtbaar op de live site (zie sectie "Bedrijfsgegevens").
 - Bouw partner-onafhankelijk: een configuratiebestand voor partners (naam, link en parameter, talen, regio's, actief). Hardcode De Nationale Notaris nergens in code of teksten.
-- Maak de call-to-action-bestemming configureerbaar in één instelling: nu wachtlijst, later de partnerlink.
-- Noem de partner bij naam bij de doorverwijzing en in de disclaimer, met de mogelijke vergoeding. Gebruik de teksten uit de stijlgids. Pas de vermelding aan als er meer partners komen.
-- Toon prijzen alleen uit het partnerbestand (product, prijs, prijsdatum, btw-indicatie) en alleen nadat de eigenaar en de partner ze hebben bevestigd. Toon alleen actieve producten: testament en levenstestament.
+- **Call-to-action tijdens de smoketest:** de hoofd-CTA is het stappenplan (`Funnel`-component), dat eindigt in een excuusscherm in plaats van een echte betaalstap of partnerdoorverwijzing. Maak de laatste stap zo dat die later makkelijk om te zetten is naar een echte doorklik naar de partner.
+- Noem de partner bij naam bij de doorverwijzing en in de disclaimer, met de mogelijke vergoeding, zodra er een getekend contract is. Tot die tijd wordt de partner nergens genoemd.
+- Prijzen komen uit `src/data/pricing.ts` (nu: €399 per document, €75 korting bij twee samen, garantie van 3 weken). Dit is tijdens de smoketest bewust al zichtbaar, zonder partnerbevestiging. Herzie zodra er een partner is.
 - Bouw geen samenlevingscontract in de CTA, prijstabel of agent. Noem het alleen kort als informatie met een verwijzing naar een notaris.
-- Meet volgens meten-en-privacy.md. Tel wachtlijstaanmeldingen of doorkliks naar de partner als conversie, niet alleen klikken op de eigen pagina.
-- Gebruik de twee bestaande pagina's als inhoud en structuur, maar pas ze aan in de huisstijl en de u-vorm.
+- Meet volgens meten-en-privacy.md. Tel het bereiken van het excuusscherm en eventuele e-mailinschrijvingen daar als conversie, niet alleen klikken op de eigen pagina.
+- Gebruik de twee bestaande pagina's als inhoud en structuur, maar pas ze aan in de huisstijl en de je/jouw-vorm.
