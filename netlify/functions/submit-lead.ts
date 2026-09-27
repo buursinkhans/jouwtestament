@@ -1,11 +1,12 @@
 // POST /api/submit-lead (docs/10 "Formulier"). Netlify Functions (v2, standard Request/Response).
 // Steps: POST only → validate → honeypot → compute flags/segment/score → store → { id, flags }.
-// Not done yet (owner decisions pending):
-// TODO(owner): storage (Airtable / Google Sheet / Supabase) incl. lead id sequence and rate limit 5/hour per IP.
+// Storage: Google Sheet (owner decision 2026-09-27). Row 1 holds the headers (LEAD_COLUMNS),
+// so the lead sequence number = sheet row number - 1.
 // TODO(owner): partner and confirmation mail (owner: "werk nog even zonder mail").
+// TODO: rate limit 5/hour per IP (needs shared state, e.g. Netlify Blobs).
 // Never log personal data.
-import { validateSubmission, buildLead, formatLeadId } from '../../src/components/check/lead.ts';
-import type { Lead } from '../../src/components/check/types.ts';
+import { validateSubmission, buildLead, formatLeadId, leadToRow } from '../../src/components/check/lead.ts';
+import { sheetConfigFromEnv, appendRowWithId } from './lib/googleSheets.ts';
 
 export const config = { path: '/api/submit-lead' };
 
@@ -26,10 +27,6 @@ function fromForm(form: URLSearchParams) {
   };
 }
 
-/** Stores the lead and returns its sequence number, or null when no storage is configured. */
-async function saveLead(_lead: Omit<Lead, 'id'>): Promise<number | null> {
-  return null; // TODO(owner): connect storage
-}
 
 export default async (req: Request): Promise<Response> => {
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
@@ -55,10 +52,17 @@ export default async (req: Request): Promise<Response> => {
     return isForm ? Response.redirect(new URL('/bedankt', req.url), 303) : json({ id: null, flags: draft.flags });
   }
 
-  const sequence = await saveLead(draft);
-  if (sequence === null) return json({ error: 'storage_not_configured' }, 503);
+  const sheet = sheetConfigFromEnv(process.env);
+  if (!sheet) return json({ error: 'storage_not_configured' }, 503);
 
-  const id = formatLeadId(now.getFullYear(), sequence);
+  let id: string;
+  try {
+    id = await appendRowWithId(sheet, leadToRow(draft), (row) => formatLeadId(now.getFullYear(), row - 1));
+  } catch (error) {
+    console.error('lead_storage_failed', (error as Error).message); // message only, no lead data
+    return json({ error: 'storage_failed' }, 502);
+  }
+
   return isForm
     ? Response.redirect(new URL(`/bedankt?id=${encodeURIComponent(id)}`, req.url), 303)
     : json({ id, flags: draft.flags });

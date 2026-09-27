@@ -119,3 +119,56 @@ export function buildLead(submission: Submission, id: string, now: Date): Lead {
     statusHistory: [{ status: 'nieuw', at: createdAt, by: 'website' }],
   };
 }
+
+// Google Sheet columns (phase 1 storage, docs/10). The partner updates "status" in the sheet.
+export const LEAD_COLUMNS = [
+  'id',
+  'createdAt',
+  'status',
+  'priority',
+  'score',
+  'segment',
+  'referralChild',
+  'flags',
+  'name',
+  'email',
+  'phone',
+  'situation',
+  'children',
+  'minors',
+  'home',
+  'documents',
+  'notary',
+  'landingPage',
+  'segmentPage',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'referrer',
+  'domain',
+  'consentText',
+  'consentAt',
+  'statusHistory',
+] as const;
+
+export function leadToRow(lead: Lead): string[] {
+  const values: Partial<Record<(typeof LEAD_COLUMNS)[number], unknown>> = {
+    id: lead.id,
+    createdAt: lead.createdAt,
+    status: lead.status,
+    priority: lead.priority,
+    score: lead.score,
+    segment: lead.segment,
+    referralChild: lead.referralChild ? 'ja' : 'nee',
+    flags: lead.flags.join(', '),
+    name: lead.contact.name,
+    email: lead.contact.email,
+    phone: lead.contact.phone,
+    ...lead.answers,
+    ...lead.source,
+    consentText: lead.consent.text,
+    consentAt: lead.consent.at,
+    statusHistory: JSON.stringify(lead.statusHistory),
+  };
+  return LEAD_COLUMNS.map((column) => (values[column] === undefined ? '' : String(values[column])));
+}

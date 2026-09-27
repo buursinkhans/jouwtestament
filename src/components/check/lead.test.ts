@@ -1,7 +1,7 @@
 // Unit tests for server-side lead handling (docs/09). Run with: npm run test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateSubmission, buildLead, formatLeadId } from './lead.ts';
+import { validateSubmission, buildLead, formatLeadId, leadToRow, LEAD_COLUMNS } from './lead.ts';
 
 const valid = () => ({
   answers: { situation: 'cohabiting', children: 'joint', minors: 'yes', home: 'yes', documents: 'nothing' },
@@ -80,4 +80,19 @@ test('marks leads via ?ref=kind as referral from a child', () => {
   const lead = buildLead(result.data, 'HN-2026-000001', new Date());
   assert.equal(lead.referralChild, true);
   assert.equal('ref' in lead.source, false);
+});
+
+test('turns a lead into a sheet row in column order', () => {
+  const result = validateSubmission(valid());
+  assert.ok(result.ok);
+  const lead = buildLead(result.data, 'HN-2026-000007', new Date('2026-09-27T10:00:00Z'));
+  const row = leadToRow(lead);
+  assert.equal(row.length, LEAD_COLUMNS.length);
+  const cell = (column: (typeof LEAD_COLUMNS)[number]) => row[LEAD_COLUMNS.indexOf(column)];
+  assert.equal(cell('id'), 'HN-2026-000007');
+  assert.equal(cell('status'), 'nieuw');
+  assert.equal(cell('email'), 'sam@example.nl');
+  assert.equal(cell('situation'), 'cohabiting');
+  assert.equal(cell('notary'), '');
+  assert.equal(cell('utm_source'), 'jouwtestament');
 });
