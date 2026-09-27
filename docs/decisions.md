@@ -14,3 +14,5 @@
 | 2026-09-27 | Oude jouwtestament-pagina's, Engelse pagina's en i18n verwijderd; oude URL's 301 naar nieuwe pagina's (`netlify.toml`) | Akkoord eigenaar. Site is voorlopig alleen Nederlands. |
 | 2026-09-27 | Leadopslag fase 1 in Google Sheet via service account, zonder extra dependency (`netlify/functions/lib/googleSheets.ts`) | Keuze eigenaar. Lead-id = rijnummer − 1 (rij 1 = kopjes). Rate limit volgt later. |
 | 2026-09-27 | Analytics: Simple Analytics, alleen in productie, events zonder persoonsgegevens of antwoorden (`src/lib/analytics.ts`) | Keuze eigenaar. Cookieloos, EU. |
+| 2026-09-27 | Site draait voorlopig op jouwtestament.nl (`site.url`, `astro.config.mjs`, robots.txt) | Eigenaar moet heldernalaten.nl nog kopen. Daarna terugzetten en jouwtestament.nl laten doorverwijzen naar /testament (docs/01). |
+| 2026-09-27 | Placeholders alleen zichtbaar in development; op de live site vervalt de hele zin of het blok (`devOnly`/`canShow` in `src/config/site.ts`) | docs/10: placeholders verborgen in productie. Contact-e-mail info@jouwtestament.nl (eerder door eigenaar opgegeven). |
