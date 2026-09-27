@@ -12,6 +12,12 @@ export const translatedPaths: Record<string, Partial<Record<LangCode, string>>> 
   kosten: { nl: '/kosten-van-een-testament' },
   faq: { nl: '/veelgestelde-vragen' },
   overOns: { nl: '/over-ons' },
+  voorWie: { nl: '/voor-wie' },
+  voorWieSamenwonen: { nl: '/voor-wie/samenwonen' },
+  voorWieJongeKinderen: { nl: '/voor-wie/jonge-kinderen' },
+  voorWieSamengesteldGezin: { nl: '/voor-wie/samengesteld-gezin' },
+  voorWie55Plus: { nl: '/voor-wie/55-plus' },
+  voorWieJeOuders: { nl: '/voor-wie/je-ouders' },
 };
 
 type NavKey = keyof typeof translatedPaths;
@@ -27,6 +33,19 @@ export interface NavItem {
 // gezin" zijn verdiepingen van het testament, en staan daarom als submenu
 // onder "Testament" in plaats van als los, gelijkwaardig hoofditem.
 export const mainNav: NavItem[] = [
+  // "Voor wie": navigation by life situation (docs/03-informatiearchitectuur.md)
+  {
+    key: 'voorWie',
+    labelKey: 'nav.voor_wie',
+    children: [
+      { key: 'voorWieSamenwonen', labelKey: 'nav.voor_wie.samenwonen' },
+      { key: 'voorWieJongeKinderen', labelKey: 'nav.voor_wie.jonge_kinderen' },
+      { key: 'voorWieSamengesteldGezin', labelKey: 'nav.voor_wie.samengesteld_gezin' },
+      { key: 'voorWie55Plus', labelKey: 'nav.voor_wie.55_plus' },
+      { key: 'voorWieJeOuders', labelKey: 'nav.voor_wie.je_ouders' },
+      { key: 'voorWie', labelKey: 'nav.voor_wie.alle' },
+    ],
+  },
   {
     key: 'testament',
     labelKey: 'nav.testament',

@@ -21,9 +21,12 @@ interface Props {
   datePublished?: string; // ISO-datum, voor Article-structured data
   dateModified?: string; // ISO-datum, standaard gelijk aan datePublished
   faqItems?: FaqItem[]; // voor FAQPage-structured data
+  fullTitle?: string; // complete <title>, zonder automatisch achtervoegsel
+  breadcrumbs?: { name: string; url: string }[]; // eigen kruimelpad (incl. Home)
 }
 
-const { title, description, pageKey, datePublished, dateModified, faqItems } = Astro.props;
+const { title, description, pageKey, datePublished, dateModified, faqItems, fullTitle, breadcrumbs } =
+  Astro.props;
 
 const lang = getLangFromUrl(Astro.url) as LangCode;
 const t = useTranslations(lang);
@@ -36,8 +39,9 @@ const availableLangs = (Object.keys(languages) as LangCode[]).filter((code) => p
 const currentPath = paths[lang]!;
 const canonicalUrl = new URL(currentPath, Astro.site);
 
-const breadcrumbItems =
-  pageKey === 'home'
+const breadcrumbItems = breadcrumbs
+  ? breadcrumbs
+  : pageKey === 'home'
     ? [{ name: t('nav.home'), url: homePaths[lang]! }]
     : [
         { name: t('nav.home'), url: homePaths[lang]! },
@@ -117,7 +121,7 @@ const navItems = mainNav
     {paths[defaultLang as LangCode] && (
       <link rel="alternate" hreflang="x-default" href={new URL(paths[defaultLang as LangCode]!, Astro.site)} />
     )}
-    <title>{title} | {t('site.title')}</title>
+    <title>{fullTitle ?? `${title} | ${t('site.title')}`}</title>
 
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

@@ -10,7 +10,9 @@ export function getLangFromUrl(url: URL) {
 
 // Geeft een functie t() terug waarmee je in een pagina teksten opvraagt: t('nav.home').
 export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof (typeof ui)[typeof defaultLang]) {
-    return ui[lang][key] ?? ui[defaultLang][key];
+  type Key = keyof (typeof ui)[typeof defaultLang];
+  return function t(key: Key) {
+    // Missing translations fall back to the default language.
+    return (ui[lang] as Partial<Record<Key, string>>)[key] ?? ui[defaultLang][key];
   };
 }

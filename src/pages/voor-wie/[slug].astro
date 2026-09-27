@@ -1,0 +1,12 @@
+---
+import SegmentPage from '../../components/SegmentPage.astro';
+import { segments, type Segment } from '../../data/segments';
+
+export function getStaticPaths() {
+  return segments.map((segment) => ({ params: { slug: segment.slug }, props: { segment } }));
+}
+
+const { segment } = Astro.props as { segment: Segment };
+---
+
+<SegmentPage segment={segment} />

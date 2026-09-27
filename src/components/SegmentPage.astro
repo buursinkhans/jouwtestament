@@ -1,0 +1,231 @@
+---
+// Template for the "Voor wie" segment pages (docs/06-content-voor-wie.md):
+// breadcrumb → H1 → short answer → if you do nothing → what you can arrange → figure
+// → tips → price example → check block → FAQ → closing CTA.
+// TODO(review-partner): legal content, not live without partner approval.
+import Layout from '../layouts/Layout.astro';
+import { CircleQuestionMark, CircleAlert, CircleCheck, Lightbulb, Euro, ClipboardCheck } from '@lucide/astro';
+import type { Segment } from '../data/segments';
+
+interface Props {
+  segment: Segment;
+}
+
+const { segment } = Astro.props;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Voor wie', url: '/voor-wie' },
+  { name: segment.breadcrumb, url: `/voor-wie/${segment.slug}` },
+];
+
+// /check is built from docs/09 (not available yet).
+const checkHref = `/check${segment.checkQuery}`;
+const shareHref = '/check?ref=kind';
+const ListTag = segment.canArrange.ordered ? 'ol' : 'ul';
+---
+
+<Layout
+  title={segment.h1}
+  fullTitle={segment.title}
+  description={segment.description}
+  pageKey={segment.pageKey}
+  faqItems={segment.faq}
+  breadcrumbs={breadcrumbs}
+>
+  <article class="segment">
+    <nav class="breadcrumb" aria-label="Kruimelpad">
+      <ol>
+        {breadcrumbs.map((crumb, index) => (
+          <li>
+            {index < breadcrumbs.length - 1 ? (
+              <a href={crumb.url}>{crumb.name}</a>
+            ) : (
+              <span aria-current="page">{crumb.name}</span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <h1>{segment.h1}</h1>
+
+    <section class="short-answer" aria-label="Kort antwoord">
+      <p class="lead">{segment.shortAnswer}</p>
+    </section>
+
+    <section>
+      <h2><CircleAlert class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{segment.ifNothing.heading}</h2>
+      <ul>
+        {segment.ifNothing.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <section>
+      <h2><CircleCheck class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />{segment.canArrange.heading}</h2>
+      <ListTag>
+        {segment.canArrange.items.map((item) => <li>{item}</li>)}
+      </ListTag>
+    </section>
+
+    {segment.share && (
+      <section class="share-row" aria-label="Delen">
+        <a class="button" href={shareHref} data-share data-share-title="Nalatenschapscheck">
+          Stuur de check naar je ouders
+        </a>
+        <a class="button-secondary" href="/tips" data-share data-share-title="Tips">
+          Deel de tips
+        </a>
+      </section>
+    )}
+
+    {segment.figure && (
+      <figure class="figure-box">
+        <p>{segment.figure.text}</p>
+        {/* TODO(owner): link the original source page (docs/02) */}
+        <figcaption>Bron: {segment.figure.source}</figcaption>
+      </figure>
+    )}
+
+    <section>
+      <h2><Lightbulb class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Tips voor jouw situatie</h2>
+      {/* TODO(owner): tip titles and links come from docs/08-content-tips.md (not available yet) */}
+      <div class="card-grid">
+        {segment.tips.map((tip) => (
+          <div class="card placeholder">
+            <h3>[TIP: {tip}]</h3>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {segment.priceExample && (
+      <section>
+        <h2><Euro class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Wat kost het?</h2>
+        <p class="example-box">{segment.priceExample}</p>
+      </section>
+    )}
+
+    <section id="check" class="check-block" aria-labelledby="check-heading">
+      <ClipboardCheck size={32} stroke-width={1.5} aria-hidden="true" />
+      <h2 id="check-heading">Doe de gratis check</h2>
+      {/* TODO(owner): check block copy and logic come from docs/09-nalatenschapscheck.md */}
+      <p>[CHECK-BLOK: tekst en vragen volgen uit docs/09]</p>
+      <a class="button" href={checkHref}>Doe de gratis check (2 min)</a>
+    </section>
+
+    <section>
+      <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Veelgestelde vragen</h2>
+      <dl>
+        {segment.faq.map((item) => (
+          <div class="faq-item">
+            <dt>{item.question}</dt>
+            <dd>{item.answer}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <p class="cta-row">
+      <a class="button" href={checkHref}>Doe de gratis check (2 min)</a>
+      <a class="button-secondary" href="/voor-wie">Bekijk andere situaties</a>
+    </p>
+  </article>
+</Layout>
+
+<script>
+  // Native share where available, otherwise a mailto link. No tracking (docs/06).
+  document.querySelectorAll<HTMLAnchorElement>('[data-share]').forEach((link) => {
+    link.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const url = new URL(link.getAttribute('href') ?? '/', window.location.origin).toString();
+      const title = link.dataset.shareTitle ?? document.title;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, url });
+        } catch {
+          // user cancelled sharing
+        }
+        return;
+      }
+      window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+    });
+  });
+</script>
+
+<style>
+  .breadcrumb ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0;
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+  }
+
+  .breadcrumb li + li::before {
+    content: '›';
+    margin-right: 0.25rem;
+  }
+
+  .short-answer {
+    background: #fff;
+    border-left: 4px solid var(--color-accent);
+    padding: 0.25rem 1.25rem;
+    border-radius: 0.25rem;
+  }
+
+  .figure-box {
+    margin: 2rem 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-secondary);
+    border-radius: 0.5rem;
+  }
+
+  .figure-box p {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--color-primary);
+  }
+
+  .figure-box figcaption {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+
+  .placeholder h3 {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  .share-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+
+  .check-block {
+    margin: 2.5rem 0;
+    padding: 1.5rem;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 0.75rem;
+  }
+
+  .check-block h2 {
+    color: #fff;
+    margin-top: 0.5rem;
+  }
+
+  .check-block .button {
+    background: var(--color-accent);
+  }
+
+  .check-block .button:hover {
+    background: #a8653f;
+  }
+</style>
