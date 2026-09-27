@@ -159,7 +159,8 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
       <p class="error" hidden data-error-for="consent">Geef toestemming om verder te gaan.</p>
     </fieldset>
 
-    <input type="hidden" name="landingPage" value="" />
+    <input type="hidden" name="consentText" value={consentText} />
+    <input type="hidden" name="landingPage" value={Astro.url.pathname} />
     <input type="hidden" name="segmentPage" value={segmentPage} />
 
     <p class="form-error error" hidden data-form-error role="alert">
