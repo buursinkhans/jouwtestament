@@ -16,6 +16,7 @@
   --color-accent-hover: #8a3f1c;
   --color-border: #ddd8cd;
   --color-input-border: #bdb6a8;
+  --color-tint: #e7eeeb; /* light primary tint, e.g. inactive step numbers */
 
   --font-body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
 

@@ -2,10 +2,10 @@
 // /hoe-het-werkt (docs/07)
 import Layout from '../layouts/Layout.astro';
 import ShortAnswer from '../components/content/ShortAnswer.astro';
-import Steps from '../components/content/Steps.astro';
+import StepsAnimation from '../components/content/StepsAnimation.astro';
 import DocumentCard from '../components/content/DocumentCard.astro';
 import ReviewMeta from '../components/content/ReviewMeta.astro';
-import { steps, optionalStep, documents } from '../data/offer';
+import { documents } from '../data/offer';
 import { devOnly } from '../config/site';
 
 const breadcrumbs = [
@@ -21,7 +21,7 @@ const breadcrumbs = [
   breadcrumbs={breadcrumbs}
   schema={[{ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Hoe het werkt', inLanguage: 'nl-NL' }]}
 >
-  <div class="container narrow top">
+  <div class="container narrow">
     <h1>Zo regel je het goed, in vier stappen</h1>
     <ReviewMeta />
     <ShortAnswer>
@@ -31,11 +31,10 @@ const breadcrumbs = [
         notaris.
       </p>
     </ShortAnswer>
+  </div>
 
-    <section id="stappen">
-      <h2>Stappen</h2>
-      <Steps steps={[...steps, optionalStep]} />
-    </section>
+  <div class="container top">
+    <StepsAnimation heading="Stappen" id="stappen" showOptional />
   </div>
 
   <section class="section section-surface" id="wat-je-krijgt">
@@ -69,10 +68,6 @@ const breadcrumbs = [
 <style>
   .top {
     padding-bottom: var(--section-pad);
-  }
-
-  #stappen h2 {
-    margin-bottom: 32px;
   }
 
   .cta {

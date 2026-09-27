@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro';
 import SituationTile from '../components/content/SituationTile.astro';
 import TipCard from '../components/content/TipCard.astro';
 import DocumentCard from '../components/content/DocumentCard.astro';
+import StepsAnimation from '../components/content/StepsAnimation.astro';
 import PriceCard from '../components/content/PriceCard.astro';
 import Faq from '../components/content/Faq.astro';
 import Check from '../components/check/Check.astro';
@@ -204,7 +205,8 @@ const serviceSchema = {
           testament bij een notaris naar keuze.
         </p>
       </div>
-      <div class="grid grid-2">
+      <StepsAnimation id="stappen-home" />
+      <div class="grid grid-2 documents">
         {documents.map((doc) => (
           <DocumentCard number={doc.number} title={doc.title} bullets={doc.bullets.slice(0, 2)} />
         ))}
@@ -430,6 +432,10 @@ const serviceSchema = {
 
   .more {
     margin-top: 28px;
+  }
+
+  .documents {
+    margin-top: 40px;
   }
 
   .closing {
