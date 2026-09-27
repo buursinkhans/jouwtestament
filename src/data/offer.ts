@@ -61,6 +61,12 @@ export const priceCards = [
 
 const allPriceRows = [
   {
+    // Option 1 (owner 2026-09-27). TODO(owner): confirm what exactly is included
+    item: 'Zelf regelen met de assistent',
+    price: euro(pricing.selfService),
+    included: 'Gesprek met onze digitale assistent, instructie voor de notaris, uitleg voor nabestaanden (notaris niet inbegrepen)',
+  },
+  {
     item: 'Financieel advies over je nalatenschap',
     price: euroRange(pricing.advice),
     included:

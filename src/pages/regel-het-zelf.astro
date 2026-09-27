@@ -1,0 +1,31 @@
+---
+// /regel-het-zelf: option 1 - prepare your testament with the assistant and receive two documents
+// (owner 2026-09-27, docs/13-agent.md). Option 2 (adviser) goes via the check.
+import Layout from '../layouts/Layout.astro';
+import AgentChat from '../components/agent/AgentChat.astro';
+import { pricing, euro } from '../config/pricing';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Zelf regelen', url: '/regel-het-zelf' },
+];
+const price = euro(pricing.selfService);
+---
+
+<Layout
+  title="Regel je testament zelf voor, met onze assistent"
+  description={`Zet met onze digitale assistent je wensen voor je testament op een rij. Voor ${price} krijg je een instructie voor de notaris en een uitleg voor je nabestaanden.`}
+  breadcrumbs={breadcrumbs}
+  hideStickyCta
+>
+  <div class="container page">
+    <div class="section-head agent-page-head">
+      <h1>Regel je testament zelf voor, met onze assistent</h1>
+      <p class="lead">
+        Onze digitale assistent stelt je de vragen en legt de keuzes uit. Voor {price} krijg je twee documenten: een
+        heldere instructie voor de notaris en een heldere uitleg voor je nabestaanden.
+      </p>
+    </div>
+    <AgentChat />
+  </div>
+</Layout>

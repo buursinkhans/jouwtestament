@@ -3,6 +3,7 @@
 // TODO(owner): confirm VAT, living will and cohabitation agreement prices with the partner.
 export const pricing = {
   advice: { min: 500, max: 1000 },
+  selfService: 200, // option 1: prepare yourself with the assistant, receive the two documents (owner 2026-09-27)
   adviceComplex: { min: 750, max: 1000 }, // e.g. blended families. TODO(owner): confirm with partner
   willSingle: 500,
   willCouple: 800, // for 2 testaments
