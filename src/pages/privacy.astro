@@ -1,0 +1,16 @@
+---
+// /privacy. TODO(owner): privacy statement must be written and reviewed before launch (docs/10):
+// purpose, legal basis (consent), retention period, recipient (adviser), rights.
+import Layout from '../layouts/Layout.astro';
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Privacy', url: '/privacy' },
+];
+---
+
+<Layout title="Privacyverklaring" description="Hoe Helder Nalaten omgaat met je gegevens." breadcrumbs={breadcrumbs}>
+  <div class="container narrow page">
+    <h1>Privacyverklaring</h1>
+    <p><span class="placeholder">[PRIVACYVERKLARING: doel, grondslag, bewaartermijn, ontvangers, je rechten]</span></p>
+  </div>
+</Layout>

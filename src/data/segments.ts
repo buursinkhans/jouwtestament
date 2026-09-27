@@ -1,6 +1,6 @@
 // Content for the "Voor wie" segment pages. Copy is taken verbatim from docs/06-content-voor-wie.md.
 // TODO(review-partner): all legal content on these pages needs partner approval before going live.
-import { pricing, formatEuro } from '../config/pricing';
+import { pricing, euro } from '../config/pricing';
 
 export interface FaqItem {
   question: string;
@@ -25,20 +25,26 @@ export interface Segment {
   checkQuery: string; // prefill for /check, see docs/03
   share?: boolean; // share buttons (je-ouders)
   faq: FaqItem[];
-  // Navigation / overview tile (docs/03)
+  priority: number; // docs/02; order in menus and tiles
+  segmentPage: string; // sent with the lead as source.segmentPage (docs/09)
+  // Navigation (docs/03) and situation tile on home and /voor-wie (docs/05)
   navLabel: string;
   navSub: string;
+  tileSub: string;
 }
 
-const standardExample = `Advies ${formatEuro(pricing.advice)} + twee testamenten ${formatEuro(pricing.testamentCouple)} = ${formatEuro(pricing.advice + pricing.testamentCouple)}.`;
+const standardExample = `Advies ${euro(pricing.advice.min)} + twee testamenten ${euro(pricing.willCouple)} = ${euro(pricing.advice.min + pricing.willCouple)}.`;
 
 export const segments: Segment[] = [
   {
     slug: 'samenwonen',
+    priority: 1,
+    segmentPage: 'samenwonen',
+    tileSub: 'Niet getrouwd? Dan erft je partner niets.',
     pageKey: 'voorWieSamenwonen',
     breadcrumb: 'Samenwonen',
     title: 'Samenwonen en je nalatenschap: je partner erft niets zonder regeling | Helder Nalaten',
-    description: `Woon je samen zonder huwelijk of geregistreerd partnerschap? Dan erft je partner zonder testament niets. Zo regel je het goed, vanaf ${formatEuro(pricing.advice)}.`,
+    description: `Woon je samen zonder huwelijk of geregistreerd partnerschap? Dan erft je partner zonder testament niets. Zo regel je het goed, vanaf ${euro(pricing.advice.min)}.`,
     h1: 'We wonen samen. Wat gebeurt er als een van ons overlijdt?',
     shortAnswer:
       'Als je samenwoont zonder huwelijk of geregistreerd partnerschap, erft je partner zonder testament niets. Zonder notarieel samenlevingscontract betaalt je partner bovendien vaak het hoogste tarief erfbelasting. Met een testament en samenlevingscontract regel je dat.',
@@ -65,7 +71,7 @@ export const segments: Segment[] = [
       source: 'NJi o.b.v. CBS, 2025',
     },
     tips: ['pensioen', 'verzekering', 'jonge-kinderen'],
-    priceExample: `${standardExample} Samenlevingscontract: ${formatEuro(pricing.cohabitationContract)}.`,
+    priceExample: `${standardExample} Samenlevingscontract: ${euro(pricing.cohabitationAgreement)}.`,
     checkQuery: '?situatie=samenwonend',
     faq: [
       {
@@ -89,6 +95,9 @@ export const segments: Segment[] = [
   },
   {
     slug: 'jonge-kinderen',
+    priority: 2,
+    segmentPage: 'jonge-kinderen',
+    tileSub: 'Wie zorgt er voor hen, en voor hun geld?',
     pageKey: 'voorWieJongeKinderen',
     breadcrumb: 'Jonge kinderen',
     title: 'Jonge kinderen: voogdij en erfenis goed regelen | Helder Nalaten',
@@ -141,6 +150,9 @@ export const segments: Segment[] = [
   },
   {
     slug: 'samengesteld-gezin',
+    priority: 3,
+    segmentPage: 'samengesteld-gezin',
+    tileSub: 'Bescherm je partner én alle kinderen.',
     pageKey: 'voorWieSamengesteldGezin',
     breadcrumb: 'Samengesteld gezin',
     title: 'Samengesteld gezin en erfenis: bescherm partner én kinderen | Helder Nalaten',
@@ -173,7 +185,7 @@ export const segments: Segment[] = [
     },
     tips: ['hertrouwen', 'ex-partner', 'transparant'],
     // TODO(owner): confirm with partner
-    priceExample: `Samengestelde gezinnen zijn vaak complexer: advies meestal ${formatEuro(pricing.adviceComplex.from)} – ${pricing.adviceComplex.to.toLocaleString('nl-NL')} + twee testamenten ${formatEuro(pricing.testamentCouple)}.`,
+    priceExample: `Samengestelde gezinnen zijn vaak complexer: advies meestal ${euro(pricing.adviceComplex.min)} – ${pricing.adviceComplex.max.toLocaleString('nl-NL')} + twee testamenten ${euro(pricing.willCouple)}.`,
     checkQuery: '?kinderen=eerder',
     faq: [
       {
@@ -197,6 +209,9 @@ export const segments: Segment[] = [
   },
   {
     slug: '55-plus',
+    priority: 4,
+    segmentPage: '55-plus',
+    tileSub: 'Je woning is je grootste nalatenschap.',
     pageKey: 'voorWie55Plus',
     breadcrumb: '55-plus',
     title: '55-plus met een eigen huis: regel je nalatenschap en levenstestament | Helder Nalaten',
@@ -228,7 +243,7 @@ export const segments: Segment[] = [
       source: 'Kamerbrief VWS 2026 o.b.v. Alzheimer Nederland',
     },
     tips: ['actueel', 'executeur', 'codicil'],
-    priceExample: `${standardExample} Levenstestament: ${formatEuro(pricing.livingWill)}.`,
+    priceExample: `${standardExample} Levenstestament: ${euro(pricing.livingWill)}.`,
     checkQuery: '?woning=ja',
     faq: [
       {
@@ -252,6 +267,9 @@ export const segments: Segment[] = [
   },
   {
     slug: 'je-ouders',
+    priority: 5,
+    segmentPage: 'je-ouders',
+    tileSub: 'Help ze het te regelen, voordat het te laat is.',
     pageKey: 'voorWieJeOuders',
     breadcrumb: 'Je ouders',
     title: 'Je ouders helpen hun nalatenschap te regelen | Helder Nalaten',
@@ -298,4 +316,17 @@ export const segments: Segment[] = [
     navLabel: 'Ik wil mijn ouders helpen',
     navSub: 'Hoe begin je het gesprek?',
   },
+];
+
+// Six situation tiles on home (section 2) and /voor-wie (docs/05)
+export const situationTiles = [
+  ...[...segments]
+    .sort((a, b) => a.priority - b.priority)
+    .map((segment) => ({
+      title: segment.navLabel,
+      sub: segment.tileSub,
+      href: `/voor-wie/${segment.slug}`,
+      segment: segment.slug,
+    })),
+  { title: 'Iets anders', sub: 'Doe de check en zie wat voor jou belangrijk is.', href: '/check', segment: 'iets-anders' },
 ];

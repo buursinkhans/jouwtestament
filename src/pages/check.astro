@@ -1,0 +1,27 @@
+---
+// /check: the check as a standalone page (docs/09). URL parameters prefill answers.
+import Layout from '../layouts/Layout.astro';
+import Check from '../components/check/Check.astro';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Gratis check', url: '/check' },
+];
+---
+
+<Layout
+  title="Gratis nalatenschapscheck: hoe staat jouw regeling ervoor?"
+  description="Beantwoord een paar vragen en zie direct waar je op moet letten. Wil je het verder uitzoeken? Dan neemt een adviseur binnen twee werkdagen contact op."
+  breadcrumbs={breadcrumbs}
+  hideStickyCta
+>
+  <div class="container page">
+    <Check isPageTitle />
+  </div>
+</Layout>
+
+<style>
+  .page {
+    padding-top: 8px;
+  }
+</style>

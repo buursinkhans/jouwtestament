@@ -1,0 +1,101 @@
+---
+// /tarieven (docs/07). All amounts from config/pricing.ts.
+import Layout from '../layouts/Layout.astro';
+import ShortAnswer from '../components/content/ShortAnswer.astro';
+import ReviewMeta from '../components/content/ReviewMeta.astro';
+import { pricing, euro, euroRange } from '../config/pricing';
+import { priceTable, priceExamples, offerSchema } from '../data/offer';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Tarieven', url: '/tarieven' },
+];
+
+const adviceRange = `${euro(pricing.advice.min)} tot ${euro(pricing.advice.max)}`;
+---
+
+<Layout
+  title="Wat kost het om je nalatenschap goed te regelen?"
+  fullTitle={`Tarieven: advies vanaf ${euro(pricing.advice.min)}, testament ${euro(pricing.willSingle)} | Helder Nalaten`}
+  description={`Vaste prijzen, vooraf bekend. Financieel advies over je nalatenschap ${euroRange(pricing.advice).replace(' – ', '–')}, testament ${euro(pricing.willSingle)}, voor partners ${euro(pricing.willCouple)} voor twee testamenten.`}
+  breadcrumbs={breadcrumbs}
+  schema={[{ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Tarieven', inLanguage: 'nl-NL', offers: offerSchema }]}
+>
+  <div class="container narrow page">
+    <h1>Wat kost het om je nalatenschap goed te regelen?</h1>
+    <ReviewMeta />
+    <ShortAnswer>
+      <p>
+        Het advies kost {adviceRange}, afhankelijk van je situatie. Een testament bij een netwerknotaris kost
+        {' '}{euro(pricing.willSingle)}, of {euro(pricing.willCouple)} voor twee testamenten voor partners. Bij je eigen
+        notaris betaal je diens tarief.
+      </p>
+    </ShortAnswer>
+
+    <section id="prijzen">
+      <h2>Prijzen</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Onderdeel</span></th>
+              <th scope="col">Prijs</th>
+              <th scope="col">Inbegrepen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {priceTable.map((row) => (
+              <tr>
+                <th scope="row">{row.item}</th>
+                <td class="price">
+                  {row.price.includes('[PRIJS]') ? <span class="placeholder">{row.price}</span> : row.price}
+                </td>
+                <td>{row.included}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="adviesprijs" class="prose">
+      <h2>Waar hangt de adviesprijs van af?</h2>
+      <p>
+        Het aantal onderwerpen en de complexiteit. Een stel met gezamenlijke kinderen zit meestal aan de onderkant;
+        een samengesteld gezin of een ondernemer aan de bovenkant. Je hoort de prijs altijd vóór het gesprek.
+      </p>
+    </section>
+
+    <section id="rekenvoorbeelden" class="prose">
+      <h2>Rekenvoorbeelden</h2>
+      <ul>
+        {priceExamples.map((example) => (
+          <li><em>{example.label}:</em> {example.sum} = <strong>{example.total}</strong></li>
+        ))}
+      </ul>
+    </section>
+
+    {/* TODO(owner): VAT, what notary rates include, prices of living will / cohabitation agreement */}
+    <p class="small">Alle prijzen <span class="placeholder">[inclusief btw]</span>.</p>
+
+    <div class="btn-row cta">
+      <a class="btn-primary" href="/check">Doe de gratis check (2 min)</a>
+      <a class="btn-secondary" href="/hoe-het-werkt">Zo werkt het</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  section {
+    margin-top: 48px;
+  }
+
+  .price {
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .cta {
+    margin-top: 40px;
+  }
+</style>

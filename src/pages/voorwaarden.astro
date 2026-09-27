@@ -1,0 +1,15 @@
+---
+// /voorwaarden. TODO(owner): terms must be written and reviewed before launch.
+import Layout from '../layouts/Layout.astro';
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Voorwaarden', url: '/voorwaarden' },
+];
+---
+
+<Layout title="Voorwaarden" description="De voorwaarden van Helder Nalaten." breadcrumbs={breadcrumbs}>
+  <div class="container narrow page">
+    <h1>Voorwaarden</h1>
+    <p><span class="placeholder">[VOORWAARDEN]</span></p>
+  </div>
+</Layout>

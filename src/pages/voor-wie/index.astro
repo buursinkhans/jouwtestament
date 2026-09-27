@@ -1,7 +1,8 @@
 ---
-// Overview of situations (docs/06, "/voor-wie").
+// Overview of situations (docs/06, "/voor-wie"): six tiles, same as home section 2.
 import Layout from '../../layouts/Layout.astro';
-import { segments } from '../../data/segments';
+import SituationTile from '../../components/content/SituationTile.astro';
+import { situationTiles } from '../../data/segments';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -12,62 +13,26 @@ const breadcrumbs = [
 <Layout
   title="In welke situatie zit jij?"
   fullTitle="Voor wie is Helder Nalaten? Kies je situatie | Helder Nalaten"
-  description="Wat je moet regelen, hangt af van je leven. Kies de situatie die het beste bij je past."
+  description="Wat je moet regelen, hangt af van je leven. Kies de situatie die het beste bij je past. Past geen van allen? Doe dan de check."
   pageKey="voorWie"
   breadcrumbs={breadcrumbs}
 >
-  <article>
-    <nav class="breadcrumb" aria-label="Kruimelpad">
-      <a href="/">Home</a> › <span aria-current="page">Voor wie</span>
-    </nav>
-
-    <h1>In welke situatie zit jij?</h1>
-    <p class="lead">
-      Wat je moet regelen, hangt af van je leven. Kies de situatie die het beste bij je past. Past
-      geen van allen? Doe dan de check.
-    </p>
-
-    {/* TODO(owner): docs/06 asks for six tiles "same as home, section 2" (docs/05, not available yet) */}
-    <div class="card-grid">
-      {segments.map((segment) => (
-        <a class="card tile" href={`/voor-wie/${segment.slug}`}>
-          <h2>{segment.navLabel}</h2>
-          <p>{segment.navSub}</p>
-        </a>
-      ))}
+  <div class="container page-top">
+    <div class="section-head">
+      <h1>In welke situatie zit jij?</h1>
+      <p class="lead">
+        Wat je moet regelen, hangt af van je leven. Kies de situatie die het beste bij je past. Past geen van
+        allen? Doe dan de check.
+      </p>
     </div>
-
-    <p class="cta-row">
-      <a class="button" href="/check">Doe de gratis check (2 min)</a>
-    </p>
-  </article>
+    <div class="grid grid-3">
+      {situationTiles.map((tile) => <SituationTile {...tile} headingLevel="h2" />)}
+    </div>
+  </div>
 </Layout>
 
 <style>
-  .breadcrumb {
-    font-size: 0.9rem;
-    color: var(--color-muted);
-    margin-bottom: 1rem;
-  }
-
-  .tile {
-    text-decoration: none;
-    color: var(--color-text);
-    transition: border-color 0.15s ease;
-  }
-
-  .tile:hover {
-    border-color: var(--color-primary);
-  }
-
-  .tile h2 {
-    margin: 0 0 0.35rem;
-    font-size: 1.15rem;
-  }
-
-  .tile p {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 0.95rem;
+  .page-top {
+    padding: 8px var(--gutter) var(--section-pad);
   }
 </style>

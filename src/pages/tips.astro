@@ -1,0 +1,193 @@
+---
+// /tips (docs/08): overview with all 12 tips. Individual tip pages are phase 2.
+// TODO(review-partner): all tips.
+import Layout from '../layouts/Layout.astro';
+import ShortAnswer from '../components/content/ShortAnswer.astro';
+import ReviewMeta from '../components/content/ReviewMeta.astro';
+import { tips, tipBySlug } from '../data/tips';
+import { segments } from '../data/segments';
+import { site } from '../config/site';
+import { pricing, euro } from '../config/pricing';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Tips', url: '/tips' },
+];
+
+const title = '12 dingen over je nalatenschap waar bijna niemand aan denkt';
+const description =
+  'Van het uitstellen van de erfenis voor jonge kinderen tot het benoemen van een executeur: 12 punten die mensen vaak vergeten, met kort antwoord en wat je kunt doen.';
+
+const summary = [
+  'Kinderen krijgen hun erfenis zonder testament op hun 18e. Met een testament kun je dat uitstellen.',
+  'Benoem zelf een voogd en een beheerder, anders beslist de rechter of beheert je ex het geld.',
+  'Een executeur voorkomt dat alle erfgenamen samen alles moeten regelen.',
+  'Uitleggen wat er in je testament staat, voorkomt veel onbegrip en ruzie.',
+  'Verzekeringen en nabestaandenpensioen lopen niet via je testament: controleer ze apart.',
+];
+
+const segmentLink = (slug: string) => {
+  const segment = segments.find((s) => s.slug === slug);
+  return segment ? { href: `/voor-wie/${slug}`, label: segment.navLabel } : null;
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  inLanguage: 'nl-NL',
+  publisher: { '@type': 'Organization', name: site.name },
+  // TODO(owner): author, reviewedBy, datePublished and dateModified once the reviewer is known
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  breadcrumbs={breadcrumbs}
+  faqItems={tips.map((tip) => ({ question: tip.question, answer: tip.short }))}
+  schema={[articleSchema]}
+>
+  <div class="container narrow">
+    <h1>{title}</h1>
+    <ReviewMeta readingTime="8 minuten" />
+    <p class="lead">
+      Een testament gaat niet alleen over wie wat krijgt, maar ook over wanneer, door wie en hoe. Deze punten worden
+      het vaakst vergeten, terwijl ze voor je naasten het grootste verschil maken.
+    </p>
+
+    <section class="summary" aria-labelledby="in-het-kort">
+      <h2 id="in-het-kort">In het kort</h2>
+      <ul>{summary.map((item) => <li>{item}</li>)}</ul>
+    </section>
+
+    <nav class="toc" aria-labelledby="inhoud">
+      <h2 id="inhoud">Inhoud</h2>
+      <ol>
+        {tips.map((tip) => <li><a href={`#${tip.slug}`}>{tip.question}</a></li>)}
+      </ol>
+    </nav>
+
+    {tips.map((tip) => (
+      <article class="tip" id={tip.slug} aria-labelledby={`${tip.slug}-title`}>
+        <span class="eyebrow">Tip {tip.number}</span>
+        <h2 id={`${tip.slug}-title`}>{tip.question}</h2>
+        <ShortAnswer id={`${tip.slug}-kort`}>
+          <p>{tip.short}</p>
+        </ShortAnswer>
+        <p>{tip.explanation}</p>
+        <h3>Wat kun je doen?</h3>
+        <p>{tip.action}</p>
+        <p class="related">
+          Lees ook:{' '}
+          {tip.related.map((slug, index) => (
+            <>
+              {index > 0 && ' · '}
+              <a href={`#${slug}`}>{tipBySlug(slug).cardTitle}</a>
+            </>
+          ))}
+          {tip.segments
+            .map(segmentLink)
+            .filter(Boolean)
+            .map((link) => (
+              <>
+                {' · '}
+                <a href={link!.href}>{link!.label}</a>
+              </>
+            ))}
+        </p>
+      </article>
+    ))}
+
+    <section class="sources">
+      <h2>Bronnen</h2>
+      {/* TODO(owner): link the specific source page per tip */}
+      <p>Rijksoverheid.nl; Notaris.nl (KNB); Belastingdienst.</p>
+      <p class="small">
+        Deze informatie is algemeen en geen persoonlijk juridisch of financieel advies. Je persoonlijke situatie
+        bespreek je in het adviesgesprek.
+      </p>
+    </section>
+  </div>
+
+  <section class="section section-dark cta-section">
+    <div class="container narrow">
+      <h2>Welke punten gelden voor jou?</h2>
+      <p class="lead">
+        Doe de gratis check van twee minuten. Daarna bespreek je het met een adviseur, vanaf {euro(pricing.advice.min)}.
+      </p>
+      <a class="btn-light" href="/check">Doe de gratis check</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .summary {
+    background: var(--color-primary);
+    color: var(--color-on-primary-soft);
+    border-radius: var(--radius-panel);
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+
+  .summary h2 {
+    color: #fff;
+    font-size: 26px;
+  }
+
+  .summary ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .summary li + li {
+    margin-top: 8px;
+  }
+
+  .toc h2 {
+    font-size: 26px;
+  }
+
+  .toc ol {
+    padding-left: 1.4em;
+  }
+
+  .toc li + li {
+    margin-top: 6px;
+  }
+
+  .tip {
+    margin-top: 72px;
+    padding-top: 8px;
+  }
+
+  .tip h2 {
+    font-size: calc(var(--fs-h2) * 0.8);
+  }
+
+  .tip :global(.short-answer) {
+    margin: 16px 0 24px;
+  }
+
+  .related {
+    font-size: 16px;
+    color: var(--color-muted);
+  }
+
+  .sources {
+    margin: 72px 0 var(--section-pad);
+  }
+
+  .sources h2 {
+    font-size: 26px;
+  }
+
+  .cta-section {
+    text-align: center;
+  }
+
+  .cta-section .lead {
+    margin-bottom: 28px;
+  }
+</style>
