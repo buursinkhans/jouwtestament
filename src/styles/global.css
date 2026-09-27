@@ -63,6 +63,11 @@ html {
   scroll-padding-top: 88px;
 }
 
+/* The hidden attribute always wins over component display rules (e.g. buttons) */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   line-height: 1.6;
