@@ -8,7 +8,6 @@ import DocumentCard from '../components/content/DocumentCard.astro';
 import PriceCard from '../components/content/PriceCard.astro';
 import Faq from '../components/content/Faq.astro';
 import Check from '../components/check/Check.astro';
-import { Home, PiggyBank, Landmark, ShieldCheck } from '@lucide/astro';
 import { site, canShow } from '../config/site';
 import { pricing, euro } from '../config/pricing';
 import { situationTiles } from '../data/segments';
@@ -25,10 +24,10 @@ const heroPanel = [
 ];
 
 const estateTiles = [
-  { icon: Home, title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
-  { icon: PiggyBank, title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
-  { icon: Landmark, title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
-  { icon: ShieldCheck, title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
+  { title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
+  { title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
+  { title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
+  { title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
 ];
 
 const risks = [
@@ -101,7 +100,7 @@ const serviceSchema = {
   </section>
 
   <!-- 2. Situation choice -->
-  <section class="section section-surface" id="voor-wie">
+  <section class="section" id="voor-wie">
     <div class="container">
       <div class="section-head">
         <h2>In welke situatie zit jij?</h2>
@@ -135,20 +134,19 @@ const serviceSchema = {
           <figcaption class="source">Bron: berichtgeving op basis van CBS/ESB (2026)</figcaption>
         </figure>
       </div>
-      <div class="grid grid-4 estate">
-        {estateTiles.map(({ icon: Icon, title, text }) => (
-          <div class="card">
-            <Icon size={28} stroke-width={1.8} aria-hidden="true" class="estate-icon" />
+      <ul class="plain-list estate">
+        {estateTiles.map(({ title, text }) => (
+          <li>
             <h3>{title}</h3>
             <p>{text}</p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
   <!-- 4. What is at stake -->
-  <section class="section section-surface" id="waarom">
+  <section class="section" id="waarom">
     <div class="container">
       <div class="section-head">
         <h2>Wat gebeurt er als je niets regelt?</h2>
@@ -157,11 +155,10 @@ const serviceSchema = {
           bij de mensen die je juist wilt beschermen.
         </p>
       </div>
-      <ol class="grid grid-3 risks">
+      <ol class="plain-list risks">
         {risks.map(([title, text], index) => (
-          <li class="card risk">
-            <span class="risk-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            <h3>{title}</h3>
+          <li>
+            <h3><span class="risk-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{title}</h3>
             <p>{text}</p>
           </li>
         ))}
@@ -197,7 +194,7 @@ const serviceSchema = {
   </section>
 
   <!-- 6. What you get -->
-  <section class="section section-surface">
+  <section class="section">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Financieel advies over je nalatenschap</span>
@@ -231,7 +228,7 @@ const serviceSchema = {
   </section>
 
   <!-- 8. Check -->
-  <section class="section section-surface check-section">
+  <section class="section check-section">
     <div class="container">
       <Check segmentPage="home" />
     </div>
@@ -250,7 +247,7 @@ const serviceSchema = {
   </section>
 
   <!-- 10. FAQ -->
-  <section class="section section-surface" id="veelgestelde-vragen">
+  <section class="section" id="veelgestelde-vragen">
     <div class="container">
       <div class="section-head">
         <h2>Veelgestelde vragen</h2>
@@ -261,7 +258,7 @@ const serviceSchema = {
   </section>
 
   <!-- 11. Closing -->
-  <section class="section section-dark">
+  <section class="section">
     <div class="container narrow closing">
       <h2>Regel het nu, voor de mensen van wie je houdt.</h2>
       <p class="lead">
@@ -271,25 +268,25 @@ const serviceSchema = {
           <>Doe de gratis check van twee minuten.</>
         )}
       </p>
-      <a class="btn-light" href="/check">Doe de gratis check</a>
+      <a class="btn-primary" href="/check">Doe de gratis check</a>
     </div>
   </section>
 </Layout>
 
 <style>
   .hero {
-    padding: 48px 0 var(--section-pad);
+    padding: 40px 0 var(--section-pad);
   }
 
   .hero-grid {
     display: grid;
     gap: 40px;
-    align-items: center;
+    align-items: start;
   }
 
   @media (min-width: 1024px) {
     .hero {
-      padding-top: 80px;
+      padding-top: 72px;
     }
     .hero-grid {
       grid-template-columns: 7fr 5fr;
@@ -298,26 +295,25 @@ const serviceSchema = {
   }
 
   .hero .lead {
-    margin: 24px 0 32px;
+    margin: 20px 0 28px;
   }
 
   .trust {
-    margin-top: 24px;
-    font-weight: 600;
+    margin-top: 20px;
+    font-size: var(--fs-small);
     color: var(--color-muted);
   }
 
   .hero-panel {
-    background: var(--color-primary);
-    color: var(--color-on-primary-soft);
-    border-radius: var(--radius-panel);
-    padding: 32px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 28px;
   }
 
   .hero-panel h2 {
-    color: #fff;
-    font-size: 28px;
-    margin-bottom: 20px;
+    font-size: var(--fs-h3);
+    margin-bottom: 8px;
   }
 
   .hero-panel dl {
@@ -325,25 +321,27 @@ const serviceSchema = {
   }
 
   .hero-panel div {
-    border-top: 1px solid var(--color-primary-line);
-    padding: 14px 0;
+    border-top: 1px solid var(--color-border);
+    padding: 12px 0;
+  }
+
+  .hero-panel div:last-child {
+    padding-bottom: 0;
   }
 
   .hero-panel dt {
-    font-size: 16px;
+    color: var(--color-muted);
   }
 
   .hero-panel dd {
-    margin: 2px 0 0;
-    color: #fff;
-    font-weight: 700;
-    font-size: 19px;
+    margin: 0;
+    font-weight: 600;
   }
 
   .split {
     display: grid;
     gap: 32px;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
   }
 
   @media (min-width: 1024px) {
@@ -359,64 +357,79 @@ const serviceSchema = {
 
   .big-stat {
     margin: 0;
-    background: var(--color-surface);
-    border-radius: var(--radius-card);
-    padding: 28px;
+    border-left: 0;
+    padding: 0;
   }
 
-  .number,
-  .stat dt {
-    font-family: var(--font-display);
-    font-size: var(--fs-stat);
-    line-height: 1.1;
-    color: var(--color-accent);
-    margin: 0 0 8px;
+  .number {
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-primary);
+    margin: 0 0 4px;
   }
 
-  :global(.estate-icon) {
-    color: var(--color-accent);
-    margin-bottom: 12px;
-  }
-
-  .estate p {
-    color: var(--color-ink-soft);
-  }
-
-  .risks {
+  .plain-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 48px;
+    margin: 0;
+    display: grid;
+    gap: 8px 48px;
   }
 
-  .risk p {
-    color: var(--color-ink-soft);
+  @media (min-width: 768px) {
+    .plain-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .plain-list li {
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0 8px;
+  }
+
+  .plain-list h3 {
+    font-size: var(--fs-body);
+    margin-bottom: 4px;
+  }
+
+  .plain-list p {
+    margin: 0;
   }
 
   .risk-number {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 32px;
-    color: var(--color-accent);
-    margin-bottom: 8px;
+    color: var(--color-muted);
+    font-weight: 600;
+    margin-right: 10px;
+  }
+
+  .risks {
+    margin-bottom: 40px;
   }
 
   .stats {
-    margin: 0 0 16px;
+    margin: 0 0 12px;
   }
 
   .stat {
-    background: var(--color-ground);
-    border-radius: var(--radius-card);
-    padding: 24px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+  }
+
+  .stat dt {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--color-primary);
   }
 
   .stat dd {
     margin: 0;
-    color: var(--color-ink-soft);
+    font-size: var(--fs-small);
+    color: var(--color-muted);
   }
 
   .more {
-    margin-top: 32px;
+    margin-top: 28px;
   }
 
   .closing {
@@ -424,6 +437,6 @@ const serviceSchema = {
   }
 
   .closing .lead {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 </style>

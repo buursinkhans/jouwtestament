@@ -21,17 +21,15 @@ const { id = 'kort-antwoord' } = Astro.props;
   }
 
   .label {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+    font-size: var(--fs-small);
+    font-weight: 600;
     color: var(--color-muted);
     margin: 0 0 8px;
   }
 
   .text {
-    font-size: 19px;
-    line-height: 1.55;
+    font-size: var(--fs-body);
+    line-height: 1.6;
     color: var(--color-ink);
   }
 

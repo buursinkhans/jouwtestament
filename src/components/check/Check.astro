@@ -417,14 +417,14 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 
   legend {
     font-weight: 700;
-    font-size: 19px;
+    font-size: var(--fs-body);
     color: var(--color-primary);
     margin-bottom: 12px;
     padding: 0;
   }
 
   .q-number {
-    color: var(--color-accent);
+    color: var(--color-muted);
     margin-right: 6px;
   }
 
@@ -528,7 +528,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
     display: flex;
     gap: 12px;
     align-items: flex-start;
-    font-size: 16px;
+    font-size: var(--fs-small);
     color: var(--color-ink-soft);
     cursor: pointer;
   }
@@ -543,7 +543,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 
   .error {
     color: var(--color-accent-hover);
-    font-size: 15px;
+    font-size: var(--fs-small);
     font-weight: 600;
     margin: 8px 0 0;
   }
@@ -592,7 +592,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 
   .flags :global(h4) {
     margin: 0 0 6px;
-    font-size: 19px;
+    font-size: var(--fs-body);
     color: var(--color-primary);
   }
 

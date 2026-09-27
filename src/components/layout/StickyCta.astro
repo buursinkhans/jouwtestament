@@ -5,7 +5,7 @@ import { cta } from '../../config/navigation';
 ---
 
 <div class="sticky-cta" data-sticky-cta aria-hidden="true">
-  <a class="btn-light" href={cta.href} tabindex="-1">{cta.labelLong}</a>
+  <a class="btn-primary" href={cta.href} tabindex="-1">{cta.labelLong}</a>
 </div>
 
 <script>
@@ -43,7 +43,8 @@ import { cta } from '../../config/navigation';
     right: 0;
     bottom: 0;
     z-index: 40;
-    background: var(--color-primary);
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
     padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
     transform: translateY(110%);
     transition: transform 0.2s ease;

@@ -192,16 +192,13 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
   }
 
   .logo-name {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 24px;
+    font-weight: 700;
+    font-size: var(--fs-h3);
     line-height: 1.1;
   }
 
   .logo-tagline {
     display: none;
-    font-size: 13px;
-    color: var(--color-muted);
   }
 
   .desktop-nav {
@@ -274,13 +271,13 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
   }
 
   .item-label {
-    font-size: 17px;
+    font-size: var(--fs-body);
     font-weight: 700;
     color: var(--color-primary);
   }
 
   .item-sub {
-    font-size: 15px;
+    font-size: var(--fs-small);
     color: var(--color-muted);
   }
 
@@ -336,7 +333,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
   }
 
   .mobile-group summary {
-    font-size: 20px;
+    font-size: var(--fs-h3);
     font-weight: 700;
     color: var(--color-primary);
     padding: 12px 0;
@@ -364,7 +361,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
 
   .mobile-links a {
     display: block;
-    font-size: 20px;
+    font-size: var(--fs-h3);
     font-weight: 700;
     color: var(--color-primary);
     text-decoration: none;
@@ -384,10 +381,6 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
   @media (min-width: 1024px) {
     .header-inner {
       min-height: 76px;
-    }
-
-    .logo-tagline {
-      display: block;
     }
 
     .desktop-nav {
