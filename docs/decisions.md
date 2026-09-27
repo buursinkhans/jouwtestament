@@ -11,3 +11,6 @@
 | 2026-09-27 | Leadopslag nog niet gekoppeld: check toont aandachtspunten, verstuurt pas als `PUBLIC_LEAD_ENDPOINT` is ingesteld | Keuze opslagdienst (docs/10) ligt bij de eigenaar. |
 | 2026-09-27 | `netlify/functions/submit-lead.ts` valideert en berekent de lead, maar slaat nog niets op (antwoord 503) en verstuurt geen mail | Eigenaar: "werk nog even zonder mail". Validatie handmatig in `lead.ts` in plaats van Zod (geen extra dependency). |
 | 2026-09-27 | `all_good` ook tonen als `review` het enige aandachtspunt is | Met de oorspronkelijke regels was `all_good` onbereikbaar; invulling op verzoek van de eigenaar, vastgelegd in docs/09. |
+| 2026-09-27 | Oude jouwtestament-pagina's, Engelse pagina's en i18n verwijderd; oude URL's 301 naar nieuwe pagina's (`netlify.toml`) | Akkoord eigenaar. Site is voorlopig alleen Nederlands. |
+| 2026-09-27 | Leadopslag fase 1 in Google Sheet via service account, zonder extra dependency (`netlify/functions/lib/googleSheets.ts`) | Keuze eigenaar. Lead-id = rijnummer − 1 (rij 1 = kopjes). Rate limit volgt later. |
+| 2026-09-27 | Analytics: Simple Analytics, alleen in productie, events zonder persoonsgegevens of antwoorden (`src/lib/analytics.ts`) | Keuze eigenaar. Cookieloos, EU. |
