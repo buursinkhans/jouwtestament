@@ -1,0 +1,121 @@
+---
+// Footer with four columns (docs/03).
+import { site, canShow, devOnly } from '../../config/site';
+import { voorWieItems, footerMore, footerLegal } from '../../config/navigation';
+
+// Terms are not written yet: only link them in development.
+const legalLinks = footerLegal.filter((item) => devOnly || item.href !== '/voorwaarden');
+
+const shortDescription =
+  'Financieel advies over je nalatenschap, met een instructie voor de notaris en een uitleg voor je nabestaanden.';
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-name">{site.name}</p>
+      <p>{site.tagline}</p>
+      <p>{shortDescription}</p>
+      <p>
+        {canShow(site.contact.phone) && <><span class="placeholder">{site.contact.phone}</span><br /></>}
+        {canShow(site.contact.email) && <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>}
+      </p>
+    </div>
+    <div>
+      <h2>Voor wie</h2>
+      <ul>
+        {voorWieItems.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h2>Meer</h2>
+      <ul>
+        {footerMore.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h2>Juridisch</h2>
+      <ul>
+        {legalLinks.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        {canShow(site.kvk) && <li>KvK <span class="placeholder">{site.kvk}</span></li>}
+        {canShow(site.reviewer.name) && (
+          <li>
+            Inhoud gecontroleerd door <a href={`/over-ons#${site.reviewer.anchor}`}>{site.reviewer.name}</a>
+          </li>
+        )}
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© {new Date().getFullYear()} {site.name}. De informatie op deze site is algemeen en geen persoonlijk juridisch of financieel advies.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-primary);
+    color: var(--color-on-primary-soft);
+    padding: 64px 0 calc(96px + env(safe-area-inset-bottom));
+    font-size: 16px;
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    }
+    .site-footer {
+      padding-bottom: 48px;
+    }
+  }
+
+  .footer-name {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li + li {
+    margin-top: 10px;
+  }
+
+  a {
+    color: var(--color-on-primary-soft);
+  }
+
+  a:hover {
+    color: #fff;
+  }
+
+  .placeholder {
+    color: var(--color-ink);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--color-primary-line);
+    margin-top: 48px;
+    padding-top: 24px;
+    font-size: 14px;
+  }
+</style>

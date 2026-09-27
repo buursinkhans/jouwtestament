@@ -1,0 +1,30 @@
+---
+// Tip card (docs/04): label "Tip N", title, text, "Lees meer".
+import { tipBySlug, tipHref } from '../../data/tips';
+interface Props {
+  slug: string;
+  headingLevel?: 'h2' | 'h3';
+}
+const { slug, headingLevel = 'h3' } = Astro.props;
+const tip = tipBySlug(slug);
+const Heading = headingLevel;
+---
+
+<article class="card tip-card">
+  <span class="eyebrow">Tip {tip.number}</span>
+  <Heading>{tip.cardTitle}</Heading>
+  <p>{tip.cardText}</p>
+  <a class="link-arrow" href={tipHref(tip.slug)}>Lees meer<span class="sr-only">: {tip.cardTitle}</span> →</a>
+</article>
+
+<style>
+  .tip-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tip-card p {
+    color: var(--color-ink-soft);
+    flex-grow: 1;
+  }
+</style>

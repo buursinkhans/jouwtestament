@@ -1,0 +1,81 @@
+---
+// /hoe-het-werkt (docs/07)
+import Layout from '../layouts/Layout.astro';
+import ShortAnswer from '../components/content/ShortAnswer.astro';
+import Steps from '../components/content/Steps.astro';
+import DocumentCard from '../components/content/DocumentCard.astro';
+import ReviewMeta from '../components/content/ReviewMeta.astro';
+import { steps, optionalStep, documents } from '../data/offer';
+import { devOnly } from '../config/site';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Hoe het werkt', url: '/hoe-het-werkt' },
+];
+---
+
+<Layout
+  title="Zo regel je het goed, in vier stappen"
+  fullTitle="Hoe het werkt: van check tot testament | Helder Nalaten"
+  description="In vier stappen je nalatenschap goed geregeld: gratis check, adviesgesprek, twee heldere documenten en je testament bij de notaris van jouw keuze."
+  breadcrumbs={breadcrumbs}
+  schema={[{ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Hoe het werkt', inLanguage: 'nl-NL' }]}
+>
+  <div class="container narrow top">
+    <h1>Zo regel je het goed, in vier stappen</h1>
+    <ReviewMeta />
+    <ShortAnswer>
+      <p>
+        Je doet een gratis check, hebt een adviesgesprek met een professional, ontvangt een instructie voor de
+        notaris en een uitleg voor je nabestaanden, en legt je testament vast bij een netwerknotaris of je eigen
+        notaris.
+      </p>
+    </ShortAnswer>
+
+    <section id="stappen">
+      <h2>Stappen</h2>
+      <Steps steps={[...steps, optionalStep]} />
+    </section>
+  </div>
+
+  <section class="section section-surface" id="wat-je-krijgt">
+    <div class="container">
+      <div class="section-head">
+        <h2>Wat je krijgt: twee heldere documenten</h2>
+      </div>
+      <div class="grid grid-2">
+        {documents.map((doc) => <DocumentCard {...doc} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="adviseur">
+    <div class="container narrow">
+      {devOnly && (
+        <>
+          <h2>Wie is je adviseur?</h2>
+          <p><span class="placeholder">[NAAM, KWALIFICATIE, KORTE BIO, FOTO]</span></p>
+          <p><a class="link-arrow" href="/over-ons">Over ons →</a></p>
+        </>
+      )}
+      <div class="btn-row cta">
+        <a class="btn-primary" href="/check">Doe de gratis check (2 min)</a>
+        <a class="btn-secondary" href="/tarieven">Bekijk de tarieven</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .top {
+    padding-bottom: var(--section-pad);
+  }
+
+  #stappen h2 {
+    margin-bottom: 32px;
+  }
+
+  .cta {
+    margin-top: 32px;
+  }
+</style>

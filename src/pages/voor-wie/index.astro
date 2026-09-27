@@ -1,0 +1,37 @@
+---
+// Overview of situations (docs/06, "/voor-wie"): six tiles, same as home section 2.
+import Layout from '../../layouts/Layout.astro';
+import SituationTile from '../../components/content/SituationTile.astro';
+import { situationTiles } from '../../data/segments';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Voor wie', url: '/voor-wie' },
+];
+---
+
+<Layout
+  title="In welke situatie zit jij?"
+  fullTitle="Voor wie is Helder Nalaten? Kies je situatie | Helder Nalaten"
+  description="Wat je moet regelen, hangt af van je leven. Kies de situatie die het beste bij je past. Past geen van allen? Doe dan de check."
+  breadcrumbs={breadcrumbs}
+>
+  <div class="container page-top">
+    <div class="section-head">
+      <h1>In welke situatie zit jij?</h1>
+      <p class="lead">
+        Wat je moet regelen, hangt af van je leven. Kies de situatie die het beste bij je past. Past geen van
+        allen? Doe dan de check.
+      </p>
+    </div>
+    <div class="grid grid-3">
+      {situationTiles.map((tile) => <SituationTile {...tile} headingLevel="h2" />)}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-top {
+    padding: 8px var(--gutter) var(--section-pad);
+  }
+</style>

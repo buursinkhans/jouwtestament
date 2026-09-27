@@ -1,0 +1,60 @@
+---
+// Document card (docs/04): icon in accent + label "Document 1/2".
+import { FileText, Users } from '@lucide/astro';
+interface Props {
+  number: 1 | 2;
+  title: string;
+  text?: string;
+  bullets: string[];
+}
+const { number, title, text, bullets } = Astro.props;
+const Icon = number === 1 ? FileText : Users;
+---
+
+<article class="document-card">
+  <div class="top">
+    <Icon size={28} stroke-width={1.8} aria-hidden="true" />
+    <span class="eyebrow">Document {number}</span>
+  </div>
+  <h3>{title}</h3>
+  {text && <p>{text}</p>}
+  <ul>
+    {bullets.map((bullet) => <li>{bullet}</li>)}
+  </ul>
+</article>
+
+<style>
+  .document-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    box-shadow: var(--shadow-card);
+    padding: 28px;
+    height: 100%;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+
+  .top .eyebrow {
+    margin: 0;
+  }
+
+  p {
+    color: var(--color-ink-soft);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  li + li {
+    margin-top: 6px;
+  }
+</style>

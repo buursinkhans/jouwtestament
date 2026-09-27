@@ -1,325 +1,429 @@
 ---
+// Home (docs/05). Copy verbatim; prices from config/pricing.ts.
+// TODO(review-partner): hero panel and risk cards 01–05.
 import Layout from '../layouts/Layout.astro';
-import {
-  ScrollText,
-  ShieldCheck,
-  Sparkles,
-  Lock,
-  BadgeCheck,
-  BookOpen,
-  MessagesSquare,
-  Landmark,
-  CircleQuestionMark,
-  Coins,
-  Clock,
-} from '@lucide/astro';
-import { pricing, priceForTwo } from '../data/pricing';
+import SituationTile from '../components/content/SituationTile.astro';
+import TipCard from '../components/content/TipCard.astro';
+import DocumentCard from '../components/content/DocumentCard.astro';
+import PriceCard from '../components/content/PriceCard.astro';
+import Faq from '../components/content/Faq.astro';
+import Check from '../components/check/Check.astro';
+import { Home, PiggyBank, Landmark, ShieldCheck } from '@lucide/astro';
+import { site, canShow } from '../config/site';
+import { pricing, euro } from '../config/pricing';
+import { situationTiles } from '../data/segments';
+import { documents, priceCards, offerSchema } from '../data/offer';
+import { homeFaq } from '../data/faq';
 
-const faqItems = [
-  {
-    question: 'Is een testament verplicht?',
-    answer:
-      'Nee, een testament is niet verplicht. Zonder testament bepaalt de wet wie erft, en dat is niet altijd wat je wilt.',
-  },
-  {
-    question: 'Wat kost een testament?',
-    answer: `Eén vast bedrag van €${pricing.pricePerDocument} per document. Samen met je partner? Dan betaal je €${priceForTwo} voor twee documenten.`,
-  },
+const description = `Als jij het niet regelt, doet de wet het. Regel het nu, voor de mensen van wie je houdt: financieel advies vanaf ${euro(pricing.advice.min)}, testament vanaf ${euro(pricing.willSingle)}, vaste prijzen en vrije keuze van notaris.`;
+
+const heroPanel = [
+  ['Samenwonend, niet getrouwd?', 'Je partner erft niets.'],
+  ['Kinderen van je partner?', 'Stiefkinderen erven niets.'],
+  ['Jonge kinderen?', 'Zonder regeling krijgen ze alles op hun 18e.'],
+  ['Kun je zelf niet meer beslissen?', 'Rekeningen en je huis zitten vast tot de rechter iemand aanwijst.'],
 ];
+
+const estateTiles = [
+  { icon: Home, title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
+  { icon: PiggyBank, title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
+  { icon: Landmark, title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
+  { icon: ShieldCheck, title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
+];
+
+const risks = [
+  ['De woning', 'Zonder goede regeling kan je partner gedwongen worden het huis te verkopen, of kinderen uit te kopen.'],
+  ['Erfbelasting', 'Samenwonenden zonder notarieel samenlevingscontract betalen vaak het hoogste tarief. Goede keuzes voorkomen onnodige belasting.'],
+  ['Nabestaandenpensioen', 'Voor samenwoners geldt dit vaak alleen als je partner is aangemeld bij je pensioenfonds.'],
+  ['Geblokkeerde rekeningen', 'Word je wilsonbekwaam, dan kan niemand zomaar bij je geld. Bewindvoering via de rechter kost tijd en geld.'],
+  ['Trage afwikkeling', 'Zonder executeur moeten alle erfgenamen samen beslissen en tekenen. Dat vertraagt en kost vaak extra.'],
+  ['Ruzie in de familie', 'Waar onduidelijkheid is, ontstaat discussie. Die kost niet alleen geld, maar ook relaties.'],
+];
+
+const stats = [
+  ['€ 33,5 mld', 'nagelaten in 2023'],
+  ['1 op 4', 'kreeg ruzie of onenigheid bij een erfenis'],
+  ['8×', 'zo vaak geprocedeerd in 2015 als in 2003'],
+  ['± 6 maanden', 'vertraging als zonder levenstestament eerst bewind nodig is'],
+];
+
+const homeTips = ['jonge-kinderen', 'ex-partner', 'executeur', 'transparant', 'uitsluitingsclausule', 'digitaal'];
+
+const faq = homeFaq;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  url: site.url,
+  description: site.entityDescription,
+  slogan: site.tagline,
+  areaServed: 'NL',
+  makesOffer: offerSchema,
+};
 ---
 
 <Layout
-  title="Home"
-  description="Testament of levenstestament nodig? Lees waarom dit belangrijk is voor jou en je naasten, en zet eenvoudig de eerste stap."
-  pageKey="home"
-  faqItems={faqItems}
+  title="Regel je nalatenschap goed, voor iedereen"
+  fullTitle="Helder Nalaten – Regel je nalatenschap goed, voor iedereen"
+  description={description}
+  faqItems={faq}
+  schema={[serviceSchema]}
 >
-  <section>
-    <h1>Jouw testament regelen: eenvoudig, snel en betaalbaar</h1>
-    <p class="lead">
-      Bereid je testament of levenstestament online voor, en weet dat je
-      gezin goed geregeld is.
-    </p>
-
-    <div class="hero-actions">
-      <a class="button" href="/testament">
-        <ScrollText size={18} stroke-width={1.75} aria-hidden="true" />
-        Ik wil een testament
-      </a>
-      <a class="button button-secondary" href="/levenstestament">
-        <ShieldCheck size={18} stroke-width={1.75} aria-hidden="true" />
-        Ik wil een levenstestament
-      </a>
-    </div>
-  </section>
-
-  <section>
-    <h2>Waarom is dit belangrijk?</h2>
-    <p>
-      Zonder testament bepaalt de wet wie erft, en dat is niet altijd wat je
-      wilt. Zonder levenstestament beslist niemand voor je als je dat zelf
-      niet meer kunt, bijvoorbeeld door een ongeval of ziekte.
-    </p>
-    <p>
-      Dit raakt niet alleen jezelf. Je nabestaanden merken de gevolgen het
-      meest: zij moeten dan naar de rechter voor toestemming, zij weten niet
-      wat je had gewild, en zij kunnen hierover onderling in conflict raken.
-      Door dit nu te regelen, geef je hen duidelijkheid en rust op een
-      moeilijk moment.
-    </p>
-    <p>
-      Elk jaar regelen ruim 590.000 mensen in Nederland een testament of
-      levenstestament bij de notaris (bron: KNB, jaaroverzicht 2025). Toch
-      stelt een groot deel van de Nederlanders dit nog uit.
-    </p>
-  </section>
-
-  <section>
-    <h2>Testament of levenstestament: wat is het verschil?</h2>
-    <div class="route-grid">
-      <div class="route-card">
-        <ScrollText class="route-icon" size={32} stroke-width={1.5} aria-hidden="true" />
-        <h3>Testament</h3>
-        <p class="route-tagline">Voor na je overlijden</p>
-        <p>
-          Een testament regelt wie je bezittingen erft, wie voogd wordt over
-          je kinderen, en wat er met je nalatenschap gebeurt.
-        </p>
-        <ul>
-          <li>Bepaal zelf wie erft</li>
-          <li>Regel voogdij voor je kinderen</li>
-          <li>Bescherm je partner en stiefkinderen</li>
-        </ul>
-        <a class="button" href="/testament">Start met je testament</a>
-      </div>
-
-      <div class="route-card">
-        <ShieldCheck class="route-icon" size={32} stroke-width={1.5} aria-hidden="true" />
-        <h3>Levenstestament</h3>
-        <p class="route-tagline">Voor tijdens je leven</p>
-        <p>
-          Een levenstestament regelt wie voor je beslist als je dat zelf niet
-          meer kunt, bijvoorbeeld door een ongeval of ernstige ziekte.
-        </p>
-        <ul>
-          <li>Voorkom een gang naar de kantonrechter</li>
-          <li>Wijs zelf je vertrouwenspersoon aan</li>
-          <li>Regel financiële en medische beslissingen</li>
-        </ul>
-        <a class="button" href="/levenstestament">Start met je levenstestament</a>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Wat kost het?</h2>
-    <div class="home-price-box">
-      <Coins size={30} stroke-width={1.5} aria-hidden="true" class="home-price-icon" />
+  <!-- 1. Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
       <div>
-        <p class="home-price-amount">&euro;{pricing.pricePerDocument} <span>per testament of levenstestament</span></p>
-        <p class="home-price-detail">
-          Samen met je partner? Dan betaal je &euro;{priceForTwo} voor twee documenten
-          &mdash; &euro;{pricing.coupleDiscount} korting.
+        <span class="eyebrow">Regel het nu, voor de mensen van wie je houdt</span>
+        <h1>Als jij het niet regelt, doet de wet het. En die kent jouw familie niet.</h1>
+        <p class="lead">
+          Helder Nalaten helpt je je nalatenschap goed te regelen. Een adviseur zet op een rij wat er voor jou
+          geregeld moet worden. Je testament is het resultaat. Laagdrempelig, met vaste prijzen.
         </p>
-        <p class="home-price-detail">
-          <Clock size={16} stroke-width={1.75} aria-hidden="true" />
-          Je betaalt vooraf, met garantie dat je binnen {pricing.guaranteeWeeks} weken bij de notaris zit.
-        </p>
-        <a href="/kosten-van-een-testament">Bekijk alle details over de kosten &rarr;</a>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Waarom via jouwtestament?</h2>
-    <div class="trust-grid">
-      <div class="trust-item">
-        <Sparkles size={26} stroke-width={1.5} aria-hidden="true" />
-        <h3>Eenvoudig</h3>
-        <p>Heldere uitleg in gewone taal, zonder juridisch jargon.</p>
-      </div>
-      <div class="trust-item">
-        <Lock size={26} stroke-width={1.5} aria-hidden="true" />
-        <h3>Veilig</h3>
-        <p>
-          Je testament wordt opgemaakt door een notaris, en ingeschreven in
-          het Centraal Testamentenregister.
-        </p>
-      </div>
-      <div class="trust-item">
-        <BadgeCheck size={26} stroke-width={1.5} aria-hidden="true" />
-        <h3>Betrouwbaar</h3>
-        <p>
-          Onze informatie is gebaseerd op officiële bronnen, zoals de
-          Rijksoverheid, de KNB en de Belastingdienst.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Hoe werkt het?</h2>
-    <ol class="steps">
-      <li>
-        <BookOpen class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Lees de uitleg.</strong> Kies testament of levenstestament, en
-        lees wat erbij komt kijken.
-      </li>
-      <li>
-        <MessagesSquare class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Bereid je wensen voor.</strong> Denk na over wie moet erven,
-        wie voogd wordt, en welke bijzondere wensen je hebt.
-      </li>
-      <li>
-        <Landmark class="step-icon" size={20} stroke-width={1.75} aria-hidden="true" />
-        <strong>Ga naar de notaris.</strong> De notaris maakt je testament
-        officieel op. Dat kunnen wij niet voor je doen: wij zijn geen notaris.
-      </li>
-    </ol>
-  </section>
-
-  <section>
-    <h2><CircleQuestionMark class="heading-icon" size={22} stroke-width={1.75} aria-hidden="true" />Veelgestelde vragen</h2>
-    <dl>
-      {faqItems.map((item) => (
-        <div class="faq-item">
-          <dt>{item.question}</dt>
-          <dd>{item.answer}</dd>
+        <div class="btn-row">
+          <a class="btn-primary" href="/check">Doe de gratis check (2 minuten)</a>
+          <a class="btn-secondary" href="/tarieven">Bekijk de tarieven</a>
         </div>
-      ))}
-    </dl>
-    <p><a href="/veelgestelde-vragen">Bekijk alle veelgestelde vragen &rarr;</a></p>
+        <p class="trust">Voor iedereen · Vaste prijzen · Vrije keuze van notaris</p>
+      </div>
+      <aside class="hero-panel" aria-labelledby="hero-panel-title">
+        <h2 id="hero-panel-title">Zonder regeling beslist de wet</h2>
+        <dl>
+          {heroPanel.map(([question, answer]) => (
+            <div>
+              <dt>{question}</dt>
+              <dd>{answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+    </div>
   </section>
 
-  <section>
-    <p class="meta-line">Laatst gecontroleerd: 20 september 2026</p>
-    <p class="cta-row">
-      <a class="button" href="/testament#funnel-testament">Start het stappenplan</a>
-      <a class="button-secondary" href="/over-ons">Over ons</a>
-    </p>
+  <!-- 2. Situation choice -->
+  <section class="section section-surface" id="voor-wie">
+    <div class="container">
+      <div class="section-head">
+        <h2>In welke situatie zit jij?</h2>
+        <p class="lead">Wat je moet regelen, hangt af van je leven. Kies wat bij je past.</p>
+      </div>
+      <div class="grid grid-3">
+        {situationTiles.map((tile) => <SituationTile {...tile} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Bigger than you think -->
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div class="section-head">
+          <span class="eyebrow">Goed regelen is voor iedereen</span>
+          <h2>Jouw nalatenschap is waarschijnlijk groter dan je denkt</h2>
+          <p class="lead">
+            Je hoeft geen vermogend te zijn om iets na te laten. Een koophuis, spaargeld, pensioen en een
+            levensverzekering tellen samen al snel op. Hoe groter het bedrag, hoe belangrijker dat duidelijk is wie
+            wat krijgt, en wie het regelt.
+          </p>
+        </div>
+        <figure class="big-stat">
+          <p class="number">€ 368.000</p>
+          <p>
+            erven kinderen van ouders met een koopwoning gemiddeld. Bij ouders met een huurwoning is dat € 18.000.
+          </p>
+          {/* TODO(owner): link the original source */}
+          <figcaption class="source">Bron: berichtgeving op basis van CBS/ESB (2026)</figcaption>
+        </figure>
+      </div>
+      <div class="grid grid-4 estate">
+        {estateTiles.map(({ icon: Icon, title, text }) => (
+          <div class="card">
+            <Icon size={28} stroke-width={1.8} aria-hidden="true" class="estate-icon" />
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. What is at stake -->
+  <section class="section section-surface" id="waarom">
+    <div class="container">
+      <div class="section-head">
+        <h2>Wat gebeurt er als je niets regelt?</h2>
+        <p class="lead">
+          De wet heeft een standaardregeling. Die past lang niet altijd bij hoe jij leeft. De gevolgen komen terecht
+          bij de mensen die je juist wilt beschermen.
+        </p>
+      </div>
+      <ol class="grid grid-3 risks">
+        {risks.map(([title, text], index) => (
+          <li class="card risk">
+            <span class="risk-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </li>
+        ))}
+      </ol>
+      <dl class="grid grid-4 stats">
+        {stats.map(([number, label]) => (
+          <div class="stat">
+            <dt>{number}</dt>
+            <dd>{label}</dd>
+          </div>
+        ))}
+      </dl>
+      {/* TODO(owner): link the original sources */}
+      <p class="source">Bronnen: CBS (2023); RTL Nieuwspanel (2025); Rijksuniversiteit Groningen; KNB via NOS (2024).</p>
+    </div>
+  </section>
+
+  <!-- 5. Tips -->
+  <section class="section" id="tips">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Waar bijna niemand aan denkt</span>
+        <h2>Zes dingen die je beter nu kunt regelen dan later</h2>
+        <p class="lead">
+          Een goed testament gaat niet alleen over wie wat krijgt, maar ook over wanneer, door wie en hoe.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        {homeTips.map((slug) => <TipCard slug={slug} />)}
+      </div>
+      <p class="more"><a class="btn-secondary" href="/tips">Lees alle tips</a></p>
+    </div>
+  </section>
+
+  <!-- 6. What you get -->
+  <section class="section section-surface">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Financieel advies over je nalatenschap</span>
+        <h2>Eén gesprek. Twee heldere documenten. Je testament als resultaat.</h2>
+        <p class="lead">
+          Een adviseur brengt je situatie in kaart en adviseert over de beste keuzes. Daarna regel je het
+          testament bij een notaris naar keuze.
+        </p>
+      </div>
+      <div class="grid grid-2">
+        {documents.map((doc) => (
+          <DocumentCard number={doc.number} title={doc.title} bullets={doc.bullets.slice(0, 2)} />
+        ))}
+      </div>
+      <p class="more"><a class="link-arrow" href="/hoe-het-werkt">Zo werkt het precies →</a></p>
+    </div>
+  </section>
+
+  <!-- 7. Prices -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Helder geprijsd. Vooraf weet je waar je aan toe bent.</h2>
+      </div>
+      <div class="grid grid-3">
+        {priceCards.map((card) => <PriceCard {...card} />)}
+      </div>
+      <p class="more">Liever je eigen notaris? Dat kan. Je krijgt dezelfde instructie mee.</p>
+      <p><a class="link-arrow" href="/tarieven">Alle tarieven en rekenvoorbeelden →</a></p>
+    </div>
+  </section>
+
+  <!-- 8. Check -->
+  <section class="section section-surface check-section">
+    <div class="container">
+      <Check segmentPage="home" />
+    </div>
+  </section>
+
+  <!-- 9. For everyone -->
+  <section class="section">
+    <div class="container narrow">
+      <h2>Goed regelen hoeft niet ingewikkeld of duur te zijn.</h2>
+      <p class="lead">
+        Helder Nalaten is er voor iedereen. We stellen de vragen die je zelf misschien liever overslaat, leggen de
+        keuzes eerlijk naast elkaar en zeggen het ook als iets voor jou niet nodig is. We werken samen met
+        notarissen door het hele land, maar je bent vrij om je eigen notaris te kiezen.
+      </p>
+    </div>
+  </section>
+
+  <!-- 10. FAQ -->
+  <section class="section section-surface" id="veelgestelde-vragen">
+    <div class="container">
+      <div class="section-head">
+        <h2>Veelgestelde vragen</h2>
+      </div>
+      <Faq items={faq} />
+      <p class="more"><a class="link-arrow" href="/veelgestelde-vragen">Alle veelgestelde vragen →</a></p>
+    </div>
+  </section>
+
+  <!-- 11. Closing -->
+  <section class="section section-dark">
+    <div class="container narrow closing">
+      <h2>Regel het nu, voor de mensen van wie je houdt.</h2>
+      <p class="lead">
+        {canShow(site.contact.phone) ? (
+          <>Doe de gratis check van twee minuten, of bel <span class="placeholder">{site.contact.phone}</span>.</>
+        ) : (
+          <>Doe de gratis check van twee minuten.</>
+        )}
+      </p>
+      <a class="btn-light" href="/check">Doe de gratis check</a>
+    </div>
   </section>
 </Layout>
 
 <style>
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+  .hero {
+    padding: 48px 0 var(--section-pad);
   }
 
-  .hero-actions .button,
-  .hero-actions .button-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex: 1 1 220px;
-    text-align: center;
-  }
-
-  .route-grid {
+  .hero-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    gap: 40px;
+    align-items: center;
   }
 
-  .route-card {
-    background: #fff;
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    padding: 1.75rem;
-    display: flex;
-    flex-direction: column;
+  @media (min-width: 1024px) {
+    .hero {
+      padding-top: 80px;
+    }
+    .hero-grid {
+      grid-template-columns: 7fr 5fr;
+      gap: 64px;
+    }
   }
 
-  .route-icon {
-    color: var(--color-accent);
-    margin-bottom: 0.5rem;
+  .hero .lead {
+    margin: 24px 0 32px;
   }
 
-  .route-card h3 {
-    margin: 0 0 0.15rem;
-  }
-
-  .route-tagline {
-    color: var(--color-muted);
+  .trust {
+    margin-top: 24px;
     font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 0.75rem;
+    color: var(--color-muted);
   }
 
-  .route-card ul {
-    margin-bottom: 1.5rem;
+  .hero-panel {
+    background: var(--color-primary);
+    color: var(--color-on-primary-soft);
+    border-radius: var(--radius-panel);
+    padding: 32px;
   }
 
-  .route-card .button {
-    margin-top: auto;
+  .hero-panel h2 {
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .hero-panel dl {
+    margin: 0;
+  }
+
+  .hero-panel div {
+    border-top: 1px solid var(--color-primary-line);
+    padding: 14px 0;
+  }
+
+  .hero-panel dt {
+    font-size: 16px;
+  }
+
+  .hero-panel dd {
+    margin: 2px 0 0;
+    color: #fff;
+    font-weight: 700;
+    font-size: 19px;
+  }
+
+  .split {
+    display: grid;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  @media (min-width: 1024px) {
+    .split {
+      grid-template-columns: 3fr 2fr;
+      align-items: end;
+    }
+  }
+
+  .split .section-head {
+    margin-bottom: 0;
+  }
+
+  .big-stat {
+    margin: 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 28px;
+  }
+
+  .number,
+  .stat dt {
+    font-family: var(--font-display);
+    font-size: var(--fs-stat);
+    line-height: 1.1;
+    color: var(--color-accent);
+    margin: 0 0 8px;
+  }
+
+  :global(.estate-icon) {
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+
+  .estate p {
+    color: var(--color-ink-soft);
+  }
+
+  .risks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 48px;
+  }
+
+  .risk p {
+    color: var(--color-ink-soft);
+  }
+
+  .risk-number {
     display: block;
-    width: 100%;
+    font-family: var(--font-display);
+    font-size: 32px;
+    color: var(--color-accent);
+    margin-bottom: 8px;
+  }
+
+  .stats {
+    margin: 0 0 16px;
+  }
+
+  .stat {
+    background: var(--color-ground);
+    border-radius: var(--radius-card);
+    padding: 24px;
+  }
+
+  .stat dd {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .more {
+    margin-top: 32px;
+  }
+
+  .closing {
     text-align: center;
   }
 
-  .home-price-box {
-    display: flex;
-    gap: 1.25rem;
-    align-items: flex-start;
-    background: #fff;
-    border: 1px solid var(--color-border);
-    border-radius: 0.9rem;
-    padding: 1.5rem 1.75rem;
-    margin-top: 1.5rem;
-  }
-
-  .home-price-icon {
-    color: var(--color-accent);
-    flex-shrink: 0;
-    margin-top: 0.2rem;
-  }
-
-  .home-price-amount {
-    font-family: var(--font-heading);
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin: 0 0 0.5rem;
-  }
-
-  .home-price-amount span {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--color-text);
-  }
-
-  .home-price-detail {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--color-muted);
-    font-size: 0.95rem;
-    margin: 0 0 0.5rem;
-  }
-
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-  }
-
-  .trust-item svg {
-    color: var(--color-primary);
-    margin-bottom: 0.5rem;
-  }
-
-  .trust-item h3 {
-    margin: 0 0 0.35rem;
-    font-size: 1.1rem;
-  }
-
-  .trust-item p {
-    margin: 0;
+  .closing .lead {
+    margin-bottom: 28px;
   }
 </style>

@@ -1,0 +1,201 @@
+---
+// Template for the "Voor wie" segment pages (docs/06):
+// breadcrumb → H1 → short answer → if you do nothing → what you can arrange → figure
+// → tips → price example → check block (prefilled) → FAQ → closing CTA.
+// TODO(review-partner): legal content, not live without partner approval.
+import Layout from '../layouts/Layout.astro';
+import ShortAnswer from './content/ShortAnswer.astro';
+import TipCard from './content/TipCard.astro';
+import Faq from './content/Faq.astro';
+import Check from './check/Check.astro';
+import ReviewMeta from './content/ReviewMeta.astro';
+import type { Segment } from '../data/segments';
+
+interface Props {
+  segment: Segment;
+}
+
+const { segment } = Astro.props;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Voor wie', url: '/voor-wie' },
+  { name: segment.breadcrumb, url: `/voor-wie/${segment.slug}` },
+];
+
+const ListTag = segment.canArrange.ordered ? 'ol' : 'ul';
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: segment.h1,
+  description: segment.description,
+  inLanguage: 'nl-NL',
+};
+---
+
+<Layout
+  title={segment.h1}
+  fullTitle={segment.title}
+  description={segment.description}
+  faqItems={segment.faq}
+  breadcrumbs={breadcrumbs}
+  schema={[webPageSchema]}
+>
+  <article>
+    <div class="container narrow page-top">
+      <h1>{segment.h1}</h1>
+      <ReviewMeta />
+      <ShortAnswer>
+        <p>{segment.shortAnswer}</p>
+      </ShortAnswer>
+
+      <div class="prose">
+        <section id={slugify(segment.ifNothing.heading)}>
+          <h2>{segment.ifNothing.heading}</h2>
+          <ul>
+            {segment.ifNothing.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+
+        <section id={slugify(segment.canArrange.heading)}>
+          <h2>{segment.canArrange.heading}</h2>
+          <ListTag>
+            {segment.canArrange.items.map((item) => <li>{item}</li>)}
+          </ListTag>
+        </section>
+      </div>
+
+      {segment.share && (
+        <div class="btn-row share-row">
+          <a class="btn-primary" href="/check?ref=kind" data-share data-share-title="Nalatenschapscheck">
+            Stuur de check naar je ouders
+          </a>
+          <a class="btn-secondary" href="/tips" data-share data-share-title="Tips">
+            Deel de tips
+          </a>
+        </div>
+      )}
+
+      {segment.figure && (
+        <figure class="stat">
+          <p>{segment.figure.text}</p>
+          {/* TODO(owner): link the original source page (docs/02) */}
+          <figcaption class="source">Bron: {segment.figure.source}</figcaption>
+        </figure>
+      )}
+    </div>
+
+    <section class="container tips-section" id="tips">
+      <h2>Tips voor jouw situatie</h2>
+      <div class="grid grid-3">
+        {segment.tips.map((slug) => <TipCard slug={slug} />)}
+      </div>
+      <p><a class="link-arrow" href="/tips">Bekijk alle tips →</a></p>
+    </section>
+
+    {segment.priceExample && (
+      <section class="container narrow" id="kosten">
+        <h2>Wat kost het?</h2>
+        <p class="price-example">{segment.priceExample}</p>
+        <p><a class="link-arrow" href="/tarieven">Alle tarieven en rekenvoorbeelden →</a></p>
+      </section>
+    )}
+
+    <div class="container check-wrap">
+      <Check prefill={segment.checkQuery} segmentPage={segment.segmentPage} />
+    </div>
+
+    <section class="container narrow" id="veelgestelde-vragen">
+      <h2>Veelgestelde vragen</h2>
+      <Faq items={segment.faq} />
+    </section>
+
+    <section class="container narrow closing">
+      <h2>Regel het nu, voor de mensen van wie je houdt.</h2>
+      <div class="btn-row">
+        <a class="btn-primary" href="#check">Doe de gratis check (2 min)</a>
+        <a class="btn-secondary" href="/voor-wie">Bekijk andere situaties</a>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<script>
+  // Native share where available, otherwise a mailto link. No tracking (docs/06).
+  document.querySelectorAll<HTMLAnchorElement>('[data-share]').forEach((link) => {
+    link.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const url = new URL(link.getAttribute('href') ?? '/', window.location.origin).toString();
+      const title = link.dataset.shareTitle ?? document.title;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, url });
+        } catch {
+          // sharing cancelled
+        }
+        return;
+      }
+      window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+    });
+  });
+</script>
+
+<style>
+  .page-top {
+    padding-top: 8px;
+  }
+
+  .share-row {
+    margin: 8px 0 32px;
+  }
+
+  .stat {
+    margin: 40px 0 0;
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 28px;
+  }
+
+  .stat p {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+  }
+
+  .tips-section,
+  #kosten,
+  #veelgestelde-vragen,
+  .closing {
+    margin-top: 72px;
+  }
+
+  .tips-section h2 {
+    margin-bottom: 32px;
+  }
+
+  .tips-section p {
+    margin-top: 24px;
+  }
+
+  .price-example {
+    font-size: var(--fs-lead);
+  }
+
+  .check-wrap {
+    margin-top: 72px;
+  }
+
+  .closing {
+    margin-bottom: var(--section-pad);
+  }
+</style>

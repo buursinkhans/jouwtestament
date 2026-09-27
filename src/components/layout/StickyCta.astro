@@ -1,0 +1,71 @@
+---
+// Mobile sticky CTA bar (docs/03, docs/04): appears after 30% scroll,
+// hides while a check block is in view. Not rendered on /check and /bedankt.
+import { cta } from '../../config/navigation';
+---
+
+<div class="sticky-cta" data-sticky-cta aria-hidden="true">
+  <a class="btn-light" href={cta.href} tabindex="-1">{cta.labelLong}</a>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  const link = bar?.querySelector('a');
+  let checkVisible = false;
+
+  const update = () => {
+    if (!bar) return;
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const past30 = scrollable > 0 && window.scrollY / scrollable > 0.3;
+    const show = past30 && !checkVisible;
+    bar.classList.toggle('is-visible', show);
+    bar.setAttribute('aria-hidden', String(!show));
+    link?.setAttribute('tabindex', show ? '0' : '-1');
+  };
+
+  const checkBlocks = document.querySelectorAll('[data-check-block]');
+  if (checkBlocks.length > 0 && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      checkVisible = entries.some((entry) => entry.isIntersecting);
+      update();
+    });
+    checkBlocks.forEach((block) => observer.observe(block));
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+</script>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background: var(--color-primary);
+    padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+    transform: translateY(110%);
+    transition: transform 0.2s ease;
+  }
+
+  .sticky-cta.is-visible {
+    transform: translateY(0);
+  }
+
+  .sticky-cta a {
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .sticky-cta {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-cta {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+// Clickable situation tile (docs/04): the whole card is the link.
+import { ArrowRight } from '@lucide/astro';
+interface Props {
+  title: string;
+  sub: string;
+  href: string;
+  headingLevel?: 'h2' | 'h3';
+  segment?: string;
+}
+const { title, sub, href, headingLevel = 'h3', segment } = Astro.props;
+const Heading = headingLevel;
+---
+
+<a class="tile" href={href} data-segment-tile={segment}>
+  <Heading>{title}</Heading>
+  <p>{sub}</p>
+  <ArrowRight class="arrow" size={22} stroke-width={1.8} aria-hidden="true" />
+</a>
+
+<script>
+  import { track } from '../../lib/analytics';
+  document.querySelectorAll<HTMLAnchorElement>('[data-segment-tile]').forEach((tile) => {
+    tile.addEventListener('click', () => track('segment_tile_clicked', { segment: tile.dataset.segmentTile ?? '' }));
+  });
+</script>
+
+<style>
+  .tile {
+    position: relative;
+    display: block;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 24px 56px 24px 24px;
+    text-decoration: none;
+    color: var(--color-ink-soft);
+    transition: border-color 0.15s ease;
+    height: 100%;
+  }
+
+  .tile:hover {
+    border-color: var(--color-primary);
+  }
+
+  .tile h2,
+  .tile h3 {
+    font-family: var(--font-body);
+    font-size: var(--fs-card-title);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0 0 6px;
+  }
+
+  .tile p {
+    margin: 0;
+  }
+
+  .tile :global(.arrow) {
+    position: absolute;
+    right: 22px;
+    top: 26px;
+    color: var(--color-accent);
+  }
+</style>

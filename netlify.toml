@@ -4,3 +4,29 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Old jouwtestament pages → their Helder Nalaten equivalents (removed 2026-09-27)
+[[redirects]]
+  from = "/levenstestament"
+  to = "/voor-wie/55-plus"
+  status = 301
+
+[[redirects]]
+  from = "/kinderen-en-nalatenschap"
+  to = "/voor-wie/jonge-kinderen"
+  status = 301
+
+[[redirects]]
+  from = "/samengesteld-gezin"
+  to = "/voor-wie/samengesteld-gezin"
+  status = 301
+
+[[redirects]]
+  from = "/kosten-van-een-testament"
+  to = "/tarieven"
+  status = 301
+
+[[redirects]]
+  from = "/en/*"
+  to = "/"
+  status = 301

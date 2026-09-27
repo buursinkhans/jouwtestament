@@ -1,0 +1,20 @@
+---
+// /bedankt: after sending the check (also the no-JS fallback, docs/03, docs/10).
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Bedankt voor je aanvraag"
+  description="Een adviseur neemt binnen twee werkdagen contact met je op."
+  hideStickyCta
+  noindex
+>
+  <div class="container narrow page">
+    <h1>Bedankt!</h1>
+    <p class="lead">Een adviseur neemt binnen twee werkdagen contact met je op om dit samen door te lopen.</p>
+    <div class="btn-row">
+      <a class="btn-primary" href="/tips">Lees alvast de tips</a>
+      <a class="btn-secondary" href="/hoe-het-werkt">Zo werkt het</a>
+    </div>
+  </div>
+</Layout>

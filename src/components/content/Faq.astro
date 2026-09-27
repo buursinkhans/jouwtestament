@@ -1,0 +1,44 @@
+---
+// FAQ (docs/04): two columns on desktop, one on mobile. Answers are always in the HTML.
+interface Props {
+  items: { question: string; answer: string; id?: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {items.map((item) => (
+    <div class="faq-item" id={item.id}>
+      <h3>{item.question}</h3>
+      <p>{item.answer}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .faq {
+    display: grid;
+    gap: 24px 48px;
+  }
+
+  @media (min-width: 900px) {
+    .faq {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--color-border);
+    padding-top: 20px;
+  }
+
+  h3 {
+    font-size: 19px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+</style>

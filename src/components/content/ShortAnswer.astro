@@ -1,0 +1,41 @@
+---
+// "Kort antwoord" block (docs/04, docs/11): self-contained answer an AI can quote.
+interface Props {
+  id?: string;
+}
+const { id = 'kort-antwoord' } = Astro.props;
+---
+
+<section class="short-answer" aria-labelledby={id}>
+  <p class="label" id={id}>Kort antwoord</p>
+  <div class="text"><slot /></div>
+</section>
+
+<style>
+  .short-answer {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    padding: 24px 28px;
+    margin: 24px 0 40px;
+  }
+
+  .label {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    margin: 0 0 8px;
+  }
+
+  .text {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--color-ink);
+  }
+
+  .text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+// Simple Analytics (owner decision 2026-09-27): EU, cookieless, no consent banner needed.
+// Loaded in production builds only. Never send personal data or check answers (docs/09 §8, docs/10).
+const enabled = import.meta.env.PROD;
+---
+
+{
+  enabled && (
+    <>
+      <script is:inline>
+        window.sa_event =
+          window.sa_event ||
+          function () {
+            var a = [].slice.call(arguments);
+            window.sa_event.q ? window.sa_event.q.push(a) : (window.sa_event.q = [a]);
+          };
+      </script>
+      <script is:inline async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+      <noscript>
+        <img
+          src="https://queue.simpleanalyticscdn.com/noscript.gif"
+          alt=""
+          referrerpolicy="no-referrer-when-downgrade"
+        />
+      </noscript>
+    </>
+  )
+}
