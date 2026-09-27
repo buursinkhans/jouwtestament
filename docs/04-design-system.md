@@ -1,5 +1,12 @@
 # 04 — Design system
 
+> **Wijziging eigenaar (2026-09-27): rustiger ontwerp.** Dit gaat vóór wat hieronder staat.
+> - **Eén lettertype:** Source Sans 3 voor koppen én tekst (Fraunces vervalt).
+> - **Vijf lettergroottes:** H1 40/32px, H2 30/26px, H3 20px, tekst 18/17px, klein 15px (desktop/mobiel). Grote cijfers gebruiken H2 of H3.
+> - **Kleuren:** één tekstkleur, groen (`--color-primary`) voor koppen, links en accenten, oranje (`--color-accent`) **alleen** voor de primaire knop. Geen oranje cijfers, iconen of labels.
+> - **Geen donkere of gekleurde banden** midden op de pagina; één achtergrondkleur, witte kaarten. Alleen de footer is donker.
+> - **Eyebrows** klein en grijs, geen hoofdletters. Minder iconen en kaarten; opsommingen als rustige lijsten.
+
 Implementeer deze waarden als design tokens (CSS custom properties of Tailwind theme). Gebruik nergens losse hex-waarden in componenten.
 
 ## Kleuren
