@@ -1,73 +1,73 @@
-# jouwtestament.nl
+# CLAUDE.md — Helder Nalaten
 
-## Wat is dit project
-jouwtestament is een doorverwijs- en voorbereidingsplatform voor het (levens)testament in Nederland.
-Bezoekers vinden antwoorden, doen een intake (via website of AI-agent) en worden doorverwezen naar een partner voor de notariële afhandeling (nu De Nationale Notaris).
-Wij zijn GEEN notaris en geven GEEN persoonlijk juridisch advies. De notaris maakt de akte op, in het Nederlands.
-Er is altijd een notaris betrokken: de klant bereidt online voor (zelf), de notaris controleert, maakt de akte op en de klant ondertekent persoonlijk bij de notaris. Pas dan is het (levens)testament geldig.
-Doelgroep: gezinnen met kinderen, samengestelde gezinnen en gezinnen die in hun eigen taal geholpen willen worden.
+Lees dit bestand bij elke sessie. Lees daarna alleen de docs die bij je taak horen (zie tabel).
 
-## Businessmodel (kort)
-- Leadgeneratie- en activatiebusiness: lost uitstel op, niet gebrek aan informatie.
-- Hoofdpartner op de achtergrond: De Nationale Notaris (landelijk netwerk). Wij zijn de voorkant (voorlichting, activatie, eigen taal), zij verzorgen de afhandeling. Later mogelijk meer partners.
-- Bouw partner-onafhankelijk: partners staan in één configuratiebestand (naam, link, parameter, talen, regio's, actief). Hardcode geen partner.
-- Aanbod nu: testament (€399) en levenstestament (€399), prijzen volgens de eigenaar en nog te bevestigen met de partner (incl. of excl. btw?). Geen samenlevingscontract (voorlopig): geen CTA, prijs of aanbod.
-- Prijzen staan alleen in het partnerbestand (product, prijs, prijsdatum, btw-indicatie) en worden pas getoond na bevestiging.
-- Markt (KNB, 2025): 354.820 testamenten en 236.566 levenstestamenten gepasseerd, samen ongeveer 591.000 akten per jaar. Groei vlakte in 2025 af. Details en bronnen in businessmodel.md.
-- Inkomensdoel eigenaar: €6.000 per maand winst vóór belasting, ongeveer 82 afgeronde aanvragen per maand bij €75 (zie businessmodel.md).
-- Opbrengst via een partnerafspraak: verwachting €75 per afgeronde aanvraag (aanname eigenaar, te bevestigen met de partner). Startaanname voor conversie van bezoeker tot afgeronde aanvraag: 0,5% (5% doorklik × 10% afronding), te vervangen door meting. Later eventueel white label voor adviseurs.
-- **Smoketest-opzet (huidige situatie, vervangt de wachtlijst):** zolang er geen getekend partnercontract is, eindigt de hoofd-CTA niet bij een wachtlijst maar bij een interactief stappenplan (nut/noodzaak, situatie, wensen, gegevens, notaris kiezen, "betalen"). De laatste stap toont geen echt betaalformulier, maar een excuusscherm ("we zijn er nog niet, excuses") met een optioneel e-mailveld voor een seintje later. Niets van stap 1 t/m 5 wordt verstuurd of opgeslagen.
-- De partner staat op de achtergrond maar is niet verborgen: noem hem bij doorverwijzing, in de privacyverklaring en in de disclaimer, met de mogelijke vergoeding.
-- **Prijzen tijdens de smoketest:** de eigenaar heeft ervoor gekozen om, in afwijking van de oorspronkelijke regel "geen prijzen zonder partnerbevestiging", al wel €399 per document te tonen (€723 voor twee samen met partner, €75 korting), inclusief een operationele garantie ("binnen 3 weken bij de notaris"). Doel: kooprintentie meten tijdens de smoketest. Herzie dit zodra er een echte partner is bevestigd — de prijs en de garantie kunnen dan wijzigen.
-- Verkeer via GEO/SEO op life-event vragen (baby, huis, samenwonen, scheiding), aangevuld met kleine betaalde tests.
+## Het project in één alinea
 
-## Bedrijfsgegevens
-- Naam: jouwtestament
-- Vestigingsadres: Pablo Picassostraat 61, [postcode nog in te vullen] Rotterdam
-- E-mail: info@jouwtestament.nl
-- KvK-nummer: [nog in te vullen]
-- Btw-identificatienummer: [indien van toepassing, nog in te vullen]
-- **Op verzoek van de eigenaar staat het vestigingsadres nergens zichtbaar op de live site** (niet in de footer, niet op Over ons, niet in de structured data) — alleen naam en e-mailadres zijn publiek. Het adres blijft wel vastgelegd in `src/data/company.ts` voor eventueel toekomstig gebruik (bijvoorbeeld een KvK-registratie of privacyverklaring).
-- Verzin geen andere gegevens. Ontbrekende gegevens (KvK, btw) blijven als placeholder in de code en worden pas getoond zodra de eigenaar ze heeft bevestigd.
+**Helder Nalaten** helpt iedereen om zijn nalatenschap goed te regelen: laagdrempelig, transparant en met vaste prijzen. Kern is het **inzicht** dat je het gewoon goed moet regelen. Een professional (partner) geeft financieel advies (€ 500–1.000). Het resultaat is een heldere instructie voor de notaris en een heldere uitleg voor nabestaanden. Het testament (het resultaat) wordt vastgelegd bij een netwerknotaris (€ 500, of € 800 voor partners) of bij de eigen notaris van de klant.
 
-## Fase
-Fase 0-1 (smoke test, ongeveer 6 weken): basissite, antwoordpagina's (NL, daarna EN), stappenplan en tracking.
-Doel: meten of er genoeg vraag is voordat er verder wordt geïnvesteerd.
-Talen: Nederlands (standaard) en Engels eerst. Daarna Turks, Arabisch en Pools testen. Meertalig bouwen vanaf het begin, ook rechts-naar-links (Arabisch).
+**Pay-off:** Regel het nu, voor de mensen van wie je houdt.
 
-## Tech (voorlopig, bevestig met de eigenaar bij wijzigingen)
-- Website: Astro, statisch, met meertalige routes (Nederlands op /, Engels op /en/)
-- Hosting: Netlify of Cloudflare, code in GitHub. Domein staat bij Strato (alleen DNS-records aanpassen, geen nameservers wijzigen zonder overleg).
-- Analytics: privacyvriendelijk en zonder cookies (Plausible, Umami of Cloudflare Web Analytics)
-- Leads: Supabase of Airtable
-- Agent: Claude API via een serverless functie, met de site-inhoud als kennisbron
-- Geheimen (API-sleutels, wachtwoorden) staan alleen in een .env-bestand. Nooit in de code, nooit in md-bestanden, .env staat in .gitignore.
+De website heeft één hoofddoel: bezoekers laten **inzien waarom** ze het moeten regelen en ze de **gratis nalatenschapscheck** laten doen (= lead). Verdienmodel: € 200 per gesloten lead (zie `docs/09`).
 
-## Werkwijze met de eigenaar
-- De eigenaar is beginner met Claude Code en VS Code. Leg elke stap in het Nederlands kort uit en werk in kleine stappen.
-- Vraag toestemming voordat je bestanden verwijdert, pakketten installeert, externe diensten koppelt of iets online zet.
-- Maak alleen een Git-commit of push na goedkeuring van de eigenaar. Gebruik nooit force push.
-- Doe bij onduidelijkheid een voorstel en markeer dat als "nog te bevestigen", in plaats van te gokken.
+## Documenten
 
-## Regels voor alle teksten
-- Naam: altijd jouwtestament, één woord, kleine letters, zonder ".nl". Het webadres jouwtestament.nl gebruik je alleen waar mensen het moeten onthouden of intypen (footer, contactpagina, advertenties, e-mail). Zie naamregels in de stijlgids.
-- **Schrijf voor bezoekers in de je/jouw-vorm** (gewijzigd op verzoek van de eigenaar, sluit aan bij de merknaam), B1-taal, maximaal 20 woorden per zin, eerst het antwoord en dan de uitleg. Sluit elke tekst af met een vervolgstap.
-- Volg de GEO-controlelijst uit de stijlgids voor elke pagina.
-- Geen verzonnen cijfers of bronnen. Uitzondering: de prijs en de garantietermijn tijdens de smoketest (zie "Businessmodel" hierboven) zijn bewust door de eigenaar vastgesteld, niet door Claude verzonnen.
-- Zeg nooit dat een testament "klaar", "geldig" of "af" is voordat het bij de notaris is ondertekend. Gebruik "online voorbereiden" in plaats van "online testament maken" of "afsluiten".
-- Quizzen (stijlgids sectie 7): 3 vragen, uitleg na elk antwoord, geen score, geen opslag van antwoorden. Zet dezelfde inhoud ook als gewone tekst onder de quiz.
-- Zet het standaardblok "Wat doe jij zelf en wat doet de notaris?" (stijlgids) op elke pagina met een call-to-action.
-- Vermeld op pagina's de disclaimer en de datum "laatst gecontroleerd".
-- Juridische inhoud is een voorstel tot een notaris of jurist het heeft gecontroleerd. Markeer nieuwe juridische teksten daarom als "concept, nog te controleren".
+| Bestand | Lees bij |
+|---|---|
+| `docs/01-merk-en-positionering.md` | Alles met tekst, naam, toon, merkstructuur |
+| `docs/02-doelgroepen.md` | Segmentpagina's, copy, prioriteiten |
+| `docs/03-informatiearchitectuur.md` | Navigatie, sitemap, URL's, interne links, user journeys |
+| `docs/04-design-system.md` | Styling, componenten, knoppen |
+| `docs/05-content-home.md` | Homepage |
+| `docs/06-content-voor-wie.md` | De vijf doelgroeppagina's |
+| `docs/07-content-aanbod.md` | Hoe het werkt, Tarieven, Testament, Over ons |
+| `docs/08-content-tips.md` | Tipspagina en tip-artikelen |
+| `docs/09-nalatenschapscheck.md` | Check, logica, leadmodel, statussen |
+| `docs/10-techniek.md` | Stack, mappenstructuur, formulier, privacy, deployment |
+| `docs/11-geo-seo.md` | Vindbaarheid in Google en AI-antwoorden |
+| `docs/12-git-workflow.md` | Branches, commits, PR's, CI |
 
-## Regels voor privacy en meten
-- Geen trackingscripts of cookies toevoegen zonder toestemming van de eigenaar.
-- Stuur nooit persoonsgegevens of gesprekinhoud naar analysetools.
-- Bewaar of meet nooit de gekozen antwoorden van een quiz. Meet alleen voortgang.
-- Volg meten-en-privacy.md voor events en cookieregels.
+**Bron van waarheid voor copy:** docs 05–08. Neem teksten letterlijk over. Verzin geen nieuwe claims, cijfers of juridische uitspraken.
 
-## Meer details
-@docs/businessmodel.md
-@docs/stijlgids.md
-@docs/meten-en-privacy.md
-@docs/marketingplan.md
+## Werkafspraken
+
+- **Taal:** zichtbare tekst Nederlands, jij-vorm. Code, commentaar, commit messages en branchnamen in het Engels.
+- **Merknaam** altijd "Helder Nalaten" (twee woorden, beide met hoofdletter). Nooit "HelderNalaten" in lopende tekst.
+- **Configuratie op één plek:** merk, contact en domeinen in `src/config/site.ts`; prijzen in `src/config/pricing.ts`; navigatie in `src/config/navigation.ts`. Nooit hard in componenten.
+- **Placeholders** staan tussen `[BLOKHAKEN]` en blijven zichtbaar in development tot ze zijn ingevuld.
+- **Juridische/fiscale teksten** zijn gemarkeerd met `TODO(review-partner)`. Niet live zonder akkoord partner.
+- **Knoppen** altijd via `.btn-primary`, `.btn-secondary` of `.btn-light`. Globale linkstijlen mogen knoppen nooit overschrijven.
+- **Toegankelijkheid:** WCAG 2.1 AA. **Performance:** Lighthouse ≥ 95 op alle categorieën.
+- **Mobiel eerst:** vanaf 390 px, contentbreedte max 1200 px.
+- **GEO:** elke inhoudspagina voldoet aan de checklist in `docs/11-geo-seo.md`.
+
+## Werkwijze met Git (samenvatting, details in `docs/12`)
+
+- Werk nooit direct op `main`. Eén feature branch per taak: `feat/…`, `fix/…`, `content/…`, `chore/…`.
+- Kleine, logische commits met Conventional Commits (`feat(home): add hero section`).
+- Commit na elke afgeronde stap die bouwt en test. Draai vóór elke commit `npm run lint && npm run test && npm run build`.
+- Nooit geheimen committen. Alleen `.env.example` met lege waarden.
+- Stop en vraag de eigenaar bij: juridische teksten, prijzen, nieuwe dependencies van betekenis, en alles in "Buiten scope".
+
+## Commando's
+
+```bash
+npm install
+npm run dev        # ontwikkelserver
+npm run build      # productiebuild
+npm run preview    # build lokaal bekijken
+npm run lint
+npm run test       # unit tests (o.a. check-logica)
+```
+
+## Definition of done (per pagina/sectie)
+
+1. Copy komt exact overeen met de content-docs.
+2. Werkt op 390, 768 en 1280 px; toetsenbord en screenreader werken.
+3. Voldoet aan de GEO-checklist.
+4. Lint, tests en build slagen; geen console errors.
+5. Gecommit op een feature branch met duidelijke commit message.
+
+## Buiten scope (niet bouwen zonder overleg)
+
+Accounts/inloggen, online betalen, opslag van juridische documenten, chatbots of AI-advies op de site, een aparte website op jouwtestament.nl (dat domein verwijst alleen door, zie `docs/01`).
