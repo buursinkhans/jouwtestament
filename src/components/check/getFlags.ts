@@ -1,5 +1,7 @@
 // Attention points shown as the check result (docs/09, section 4).
 // Rules are evaluated in this order; at least one flag is always returned.
+// all_good (owner decision 2026-09-27): shown when nothing applies, or when "review" is the only
+// flag (both documents, no other risks). Its text already advises a short check of the documents.
 // TODO(review-partner): all flag texts.
 import type { Answers, FlagId } from './types.ts';
 
@@ -27,7 +29,8 @@ const rules: { id: Exclude<FlagId, 'all_good'>; applies: (a: Answers) => boolean
 
 export function getFlags(answers: Answers): FlagId[] {
   const flags: FlagId[] = rules.filter((rule) => rule.applies(answers)).map((rule) => rule.id);
-  return flags.length > 0 ? flags : ['all_good'];
+  const onlyReview = flags.length === 1 && flags[0] === 'review';
+  return flags.length === 0 || onlyReview ? ['all_good'] : flags;
 }
 
 export const flagContent: Record<FlagId, FlagContent> = {

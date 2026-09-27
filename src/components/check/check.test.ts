@@ -47,24 +47,31 @@ test('no_lpa: anything but both documents', () => {
 });
 
 test('review: has or might have documents', () => {
-  for (const documents of ['will_only', 'both', 'unknown'] as const) {
+  for (const documents of ['will_only', 'unknown'] as const) {
     assert.ok(getFlags(a({ documents })).includes('review'));
   }
+  assert.ok(getFlags(a({ documents: 'both', home: 'yes' })).includes('review'));
   assert.ok(!getFlags(a({ documents: 'nothing' })).includes('review'));
 });
 
 test('every answer set yields at least one flag', () => {
-  // Note: with the rules in docs/09, no_lpa or review always applies, so all_good is
-  // currently unreachable. TODO(owner): confirm whether that is intended.
   for (const situation of ['married', 'cohabiting', 'single'] as const)
     for (const children of ['joint', 'blended', 'none'] as const)
       for (const minors of [undefined, 'yes', 'no'] as const)
         for (const home of ['yes', 'no'] as const)
           for (const documents of ['both', 'will_only', 'nothing', 'unknown'] as const) {
-            const flags = getFlags({ situation, children, minors, home, documents });
-            assert.ok(flags.length >= 1);
-            assert.ok(!flags.includes('all_good'));
+            assert.ok(getFlags({ situation, children, minors, home, documents }).length >= 1);
           }
+});
+
+test('all_good: both documents and no other risks', () => {
+  assert.deepEqual(getFlags(a({ documents: 'both' })), ['all_good']);
+  assert.deepEqual(getFlags(a({ children: 'joint', minors: 'no', documents: 'both' })), ['all_good']);
+});
+
+test('all_good is not shown when there is another risk', () => {
+  assert.deepEqual(getFlags(a({ documents: 'both', home: 'yes' })), ['home_owner', 'review']);
+  assert.ok(!getFlags(a({ documents: 'will_only' })).includes('all_good'));
 });
 
 test('flags keep the documented order', () => {
