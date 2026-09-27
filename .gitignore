@@ -23,3 +23,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# eval output (regenerable; transcripts can be large)
+.claude/hillclimb/**/traces/
+.claude/hillclimb/**/report.html
+.claude/hillclimb/**/state.json
+.claude/hillclimb/**/trajectory/
+.claude/hillclimb/**/progress.txt
