@@ -121,8 +121,28 @@ export type StreamEvent =
   | { type: 'history'; history: History }
   | { type: 'document'; document: unknown }
   | { type: 'ping' }
+  | { type: 'meta'; model: string; usage: UsageTotals; stop_reason: string | null; rounds: number }
   | { type: 'error'; message: string }
   | { type: 'done' };
+
+// Token usage summed over all API calls in one request (for evals and cost tracking; no content)
+export interface UsageTotals {
+  input_tokens: number;
+  output_tokens: number;
+  cache_read_input_tokens: number;
+  cache_creation_input_tokens: number;
+}
+
+export const emptyUsage = (): UsageTotals => ({
+  input_tokens: 0,
+  output_tokens: 0,
+  cache_read_input_tokens: 0,
+  cache_creation_input_tokens: 0,
+});
+
+export function addUsage(total: UsageTotals, usage: Partial<Record<keyof UsageTotals, number | null>>): void {
+  for (const key of Object.keys(total) as (keyof UsageTotals)[]) total[key] += usage[key] ?? 0;
+}
 
 export function ndjsonStream(run: (send: (event: StreamEvent) => void) => Promise<void>): Response {
   const encoder = new TextEncoder();

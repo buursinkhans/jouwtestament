@@ -3,7 +3,7 @@
 // well under the 60 s streaming limit. Streams pings while writing, then the document as JSON.
 // TODO(owner): payment (€ 200) must be verified here before generating; now in test mode (no payment).
 import { documentSchema, documentSystem, type DocumentKind } from './lib/agentPrompt.ts';
-import { client, config as agentConfig, deriveState, fallback, json, ndjsonStream, transcript, validateHistory } from './lib/agentCore.ts';
+import { addUsage, client, config as agentConfig, deriveState, emptyUsage, fallback, json, ndjsonStream, transcript, validateHistory } from './lib/agentCore.ts';
 import { dossierFields } from '../../src/components/agent/dossier.ts';
 
 export const config = {
@@ -60,6 +60,9 @@ export default async (req: Request): Promise<Response> => {
         ...fallback,
       });
       const message = await stream.finalMessage();
+      const usage = emptyUsage();
+      addUsage(usage, message.usage);
+      send({ type: 'meta', model: message.model, usage, stop_reason: message.stop_reason, rounds: 1 });
       if (message.stop_reason === 'refusal' || message.stop_reason === 'max_tokens') {
         send({ type: 'error', message: 'Het document kon niet worden gemaakt. Probeer het opnieuw.' });
         return;

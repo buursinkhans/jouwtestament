@@ -4,8 +4,10 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { systemBlocks, tools } from './lib/agentPrompt.ts';
 import {
+  addUsage,
   client,
   config as agentConfig,
+  emptyUsage,
   deriveState,
   fallback,
   json,
@@ -56,6 +58,10 @@ export default async (req: Request): Promise<Response> => {
 
   return ndjsonStream(async (send) => {
     const messages: History = [...history];
+    const usage = emptyUsage();
+    let model = agentConfig.model;
+    let stopReason: string | null = null;
+    let rounds = 0;
 
     for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
       const stream = anthropic.beta.messages.stream({
@@ -70,6 +76,10 @@ export default async (req: Request): Promise<Response> => {
       });
       stream.on('text', (delta) => send({ type: 'text', text: delta }));
       const message = await stream.finalMessage();
+      rounds++;
+      model = message.model;
+      stopReason = message.stop_reason;
+      addUsage(usage, message.usage);
 
       if (message.stop_reason === 'refusal') {
         send({ type: 'error', message: 'Daar kan de assistent niet mee helpen. Probeer het anders te formuleren.' });
@@ -94,6 +104,7 @@ export default async (req: Request): Promise<Response> => {
     }
 
     send({ type: 'state', state: deriveState(messages) });
+    send({ type: 'meta', model, usage, stop_reason: stopReason, rounds });
     send({ type: 'history', history: messages });
   });
 };
