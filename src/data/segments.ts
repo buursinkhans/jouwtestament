@@ -9,7 +9,6 @@ export interface FaqItem {
 
 export interface Segment {
   slug: string;
-  pageKey: string;
   breadcrumb: string;
   title: string;
   description: string;
@@ -41,7 +40,6 @@ export const segments: Segment[] = [
     priority: 1,
     segmentPage: 'samenwonen',
     tileSub: 'Niet getrouwd? Dan erft je partner niets.',
-    pageKey: 'voorWieSamenwonen',
     breadcrumb: 'Samenwonen',
     title: 'Samenwonen en je nalatenschap: je partner erft niets zonder regeling | Helder Nalaten',
     description: `Woon je samen zonder huwelijk of geregistreerd partnerschap? Dan erft je partner zonder testament niets. Zo regel je het goed, vanaf ${euro(pricing.advice.min)}.`,
@@ -98,7 +96,6 @@ export const segments: Segment[] = [
     priority: 2,
     segmentPage: 'jonge-kinderen',
     tileSub: 'Wie zorgt er voor hen, en voor hun geld?',
-    pageKey: 'voorWieJongeKinderen',
     breadcrumb: 'Jonge kinderen',
     title: 'Jonge kinderen: voogdij en erfenis goed regelen | Helder Nalaten',
     description:
@@ -153,7 +150,6 @@ export const segments: Segment[] = [
     priority: 3,
     segmentPage: 'samengesteld-gezin',
     tileSub: 'Bescherm je partner én alle kinderen.',
-    pageKey: 'voorWieSamengesteldGezin',
     breadcrumb: 'Samengesteld gezin',
     title: 'Samengesteld gezin en erfenis: bescherm partner én kinderen | Helder Nalaten',
     description:
@@ -212,7 +208,6 @@ export const segments: Segment[] = [
     priority: 4,
     segmentPage: '55-plus',
     tileSub: 'Je woning is je grootste nalatenschap.',
-    pageKey: 'voorWie55Plus',
     breadcrumb: '55-plus',
     title: '55-plus met een eigen huis: regel je nalatenschap en levenstestament | Helder Nalaten',
     description:
@@ -270,7 +265,6 @@ export const segments: Segment[] = [
     priority: 5,
     segmentPage: 'je-ouders',
     tileSub: 'Help ze het te regelen, voordat het te laat is.',
-    pageKey: 'voorWieJeOuders',
     breadcrumb: 'Je ouders',
     title: 'Je ouders helpen hun nalatenschap te regelen | Helder Nalaten',
     description:
