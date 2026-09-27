@@ -1,0 +1,45 @@
+---
+// Breadcrumb trail (docs/03, docs/04). The BreadcrumbList schema is rendered by the layout.
+interface Props {
+  items: { name: string; url: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav class="breadcrumbs" aria-label="Kruimelpad">
+  <ol>
+    {items.map((item, index) =>
+      index < items.length - 1 ? (
+        <li><a href={item.url}>{item.name}</a></li>
+      ) : (
+        <li><span aria-current="page">{item.name}</span></li>
+      )
+    )}
+  </ol>
+</nav>
+
+<style>
+  ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 24px;
+    padding: 0;
+    font-size: 15px;
+    color: var(--color-muted);
+  }
+
+  li + li::before {
+    content: '›';
+    margin-right: 6px;
+  }
+
+  a {
+    color: var(--color-muted);
+  }
+
+  a:hover {
+    color: var(--color-primary);
+  }
+</style>

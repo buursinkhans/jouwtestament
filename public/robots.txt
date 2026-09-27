@@ -1,4 +1,31 @@
-User-agent: *
+# Search and AI crawlers are welcome (docs/11).
+# TODO(owner): decide whether training crawlers (GPTBot, Google-Extended) are welcome.
+User-agent: GPTBot
 Allow: /
 
-Sitemap: https://jouwtestament.nl/sitemap-index.xml
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: *
+Allow: /
+Disallow: /bedankt
+
+Sitemap: https://heldernalaten.nl/sitemap-index.xml

@@ -1,0 +1,66 @@
+---
+// Steps (docs/04): 52px accent circle with number, title, text.
+interface Props {
+  steps: { title: string; text: string; optional?: boolean }[];
+}
+const { steps } = Astro.props;
+---
+
+<ol class="steps">
+  {steps.map((step, index) => (
+    <li>
+      <span class="number" aria-hidden="true">{index + 1}</span>
+      <div>
+        <h3>
+          {step.optional && <span class="optional">(Optioneel) </span>}
+          {step.title}
+        </h3>
+        <p>{step.text}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 28px;
+  }
+
+  li {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .number {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h3 {
+    margin: 10px 0 4px;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+</style>
