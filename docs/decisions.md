@@ -17,3 +17,4 @@
 | 2026-09-27 | Site draait voorlopig op jouwtestament.nl (`site.url`, `astro.config.mjs`, robots.txt) | Eigenaar moet heldernalaten.nl nog kopen. Daarna terugzetten en jouwtestament.nl laten doorverwijzen naar /testament (docs/01). |
 | 2026-09-27 | Placeholders alleen zichtbaar in development; op de live site vervalt de hele zin of het blok (`devOnly`/`canShow` in `src/config/site.ts`) | docs/10: placeholders verborgen in productie. Contact-e-mail info@jouwtestament.nl (eerder door eigenaar opgegeven). |
 | 2026-09-27 | Rustiger ontwerp: één lettertype (Source Sans 3), vijf lettergroottes, oranje alleen voor de hoofdknop, geen gekleurde banden | Eigenaar vond de homepage te rommelig. Vastgelegd bovenaan docs/04. |
+| 2026-09-27 | Digitale assistent voor optie 1 (zelf regelen, € 200) met Claude Opus 5 via `@anthropic-ai/sdk`; check leidt naar twee opties | Besluit eigenaar: kern van de opzet. Zie docs/13-agent.md. Betalen nog niet gekoppeld (testfase). |

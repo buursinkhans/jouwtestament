@@ -1,0 +1,49 @@
+# 13 — Digitale assistent (optie 1: zelf regelen)
+
+Status: **testfase**. Inhoud is een concept en moet nog door een notaris/adviseur worden gecontroleerd (`TODO(review-partner)`). Betalen is nog niet gekoppeld.
+
+## Klantreis (besluit eigenaar, 27-09-2026)
+
+1. **Gratis check** (`/check`, docs/09): is het zinvol om iets te regelen, en wat zijn de aandachtspunten?
+2. Daarna twee keuzes:
+   - **Optie 1 – Zelf regelen met de assistent (€ 200):** de klant voert een gesprek met de digitale assistent en krijgt twee documenten: een heldere instructie voor de notaris en een heldere uitleg voor de nabestaanden. Pagina: `/regel-het-zelf`.
+   - **Optie 2 – Afspraak met een adviseur:** bij een ingewikkelde situatie of als de klant het niet zelf wil doen. Contactformulier in de check (lead, docs/09).
+3. Met de instructie gaat de klant naar een notaris uit het netwerk of de eigen notaris. Pas na ondertekening is het testament geldig.
+
+Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de adviseur. De assistent raadt zelf een adviseur aan bij o.a. een onderneming, buitenland, groot vermogen/fiscale wensen, kind met beperking, conflicten of twijfel over wilsbekwaamheid. De klant mag daarna toch verder.
+
+## Techniek
+
+| Onderdeel | Bestand |
+|---|---|
+| Pagina en chat-UI | `src/pages/regel-het-zelf.astro`, `src/components/agent/AgentChat.astro` |
+| Dossiervelden (gedeeld) | `src/components/agent/dossier.ts` |
+| Chat (1 beurt, streaming) | `netlify/functions/agent-chat.ts` → `POST /api/agent/chat` |
+| Documenten (1 per aanroep) | `netlify/functions/agent-documents.ts` → `POST /api/agent/documents` |
+| Systeemprompt, tools, documentprompts | `netlify/functions/lib/agentPrompt.ts` |
+| Kennisbank met bronnen | `netlify/functions/lib/agentKnowledge.ts` |
+| Gedeelde serverlogica + tests | `netlify/functions/lib/agentCore.ts`, `agentCore.test.ts` |
+
+- **Model:** Claude Opus 5 (`claude-opus-5`) via de officiële SDK `@anthropic-ai/sdk`, adaptief nadenken, effort `medium` voor het gesprek en `high` voor de documenten (instelbaar). Server-side fallback (`fallbacks: "default"`) als het model een verzoek weigert.
+- **Tools van de assistent:** `update_dossier` (legt feiten en keuzes vast), `recommend_adviser` (optie 2), `mark_ready` (alleen na bevestiging van de samenvatting én als alle verplichte velden zijn ingevuld).
+- **Stateless:** de browser bewaart het volledige gesprek (incl. tool-aanroepen) in `sessionStorage` van dat tabblad en stuurt het elke beurt mee. De server leidt het dossier af door de tool-aanroepen opnieuw af te spelen. Helder Nalaten slaat niets op.
+- **Documenten:** gestructureerde JSON (titel, intro, secties, open punten), veilig weergegeven, af te drukken als pdf of te downloaden als HTML.
+- **Limieten:** Netlify streaming-functies max. 60 s; rate limit 30 chatberichten/min en 6 documenten/min per IP; max. 160 berichten per gesprek, max. 4.000 tekens per bericht.
+- **Prompt caching** op de systeemprompt (vast deel eerst).
+- **Metingen (Simple Analytics, zonder inhoud):** `check_option_selfservice`, `check_option_adviser`, `agent_started`, `agent_adviser_recommended`, `agent_option_adviser`, `agent_ready`, `agent_documents_created`.
+
+## Instellingen (Netlify → Environment variables)
+
+| Variabele | Waarde |
+|---|---|
+| `ANTHROPIC_API_KEY` | API-sleutel (geheim, nooit in code) |
+| `AGENT_ENABLED` | `true` om de assistent aan te zetten (anders: "niet beschikbaar") |
+| `AGENT_MODEL` | optioneel, standaard `claude-opus-5` |
+| `AGENT_EFFORT` / `AGENT_DOC_EFFORT` | optioneel, standaard `medium` / `high` |
+
+## Nog te doen
+
+- `TODO(owner)`: **betalen** (€ 200) koppelen, bijv. Mollie, en in `agent-documents.ts` controleren vóór het maken van de documenten. Nu staat er "Testfase: je betaalt nu niets".
+- `TODO(review-partner)`: kennisbank, systeemprompt en documentopbouw laten controleren door notaris/adviseur.
+- `TODO(owner)`: privacyverklaring aanvullen (Anthropic als verwerker, geen opslag door Helder Nalaten, bewaartermijn bij Anthropic volgens hun voorwaarden).
+- Testen met echte gesprekken; een set testcasussen (samenwoners, samengesteld gezin, 55-plus, ondernemer) om de antwoorden te beoordelen.

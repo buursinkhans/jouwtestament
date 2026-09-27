@@ -26,6 +26,7 @@ De website heeft één hoofddoel: bezoekers laten **inzien waarom** ze het moete
 | `docs/10-techniek.md` | Stack, mappenstructuur, formulier, privacy, deployment |
 | `docs/11-geo-seo.md` | Vindbaarheid in Google en AI-antwoorden |
 | `docs/12-git-workflow.md` | Branches, commits, PR's, CI |
+| `docs/13-agent.md` | Digitale assistent (optie 1: zelf regelen, € 200) |
 
 **Bron van waarheid voor copy:** docs 05–08. Neem teksten letterlijk over. Verzin geen nieuwe claims, cijfers of juridische uitspraken.
 
@@ -70,4 +71,4 @@ npm run test       # unit tests (o.a. check-logica)
 
 ## Buiten scope (niet bouwen zonder overleg)
 
-Accounts/inloggen, online betalen, opslag van juridische documenten, chatbots of AI-advies op de site, een aparte website op jouwtestament.nl (dat domein verwijst alleen door, zie `docs/01`).
+Accounts/inloggen, online betalen (de betaling van optie 1 volgt na overleg), opslag van juridische documenten. De digitale assistent voor optie 1 is wél in scope (besluit eigenaar 27-09-2026, zie `docs/13-agent.md`), maar geeft geen persoonlijk juridisch advies.
