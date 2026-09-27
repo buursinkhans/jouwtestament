@@ -50,7 +50,7 @@ Toon alle regels die waar zijn, in deze volgorde; altijd minstens één. Elk aan
 | `home_owner` | home = yes | Je woning is je grootste nalatenschap | Denk na over wie in de woning mag blijven wonen en hoe de waarde wordt verdeeld, zodat niemand gedwongen moet verkopen of in discussie belandt. | `/voor-wie/55-plus` |
 | `no_lpa` | documents ≠ both | Geen levenstestament | Als je zelf niet meer kunt beslissen, kan niemand zomaar bij je rekeningen of je huis verkopen. Dan moet eerst de rechter iemand aanwijzen, wat al snel maanden duurt. | `/tips#actueel` |
 | `review` | documents ∈ {will_only, both, unknown} | Klopt je regeling nog? | Een testament dat een paar jaar oud is, past vaak niet meer bij je leven, je vermogen of de regels. Laat het periodiek checken. | `/tips#actueel` |
-| `all_good` | geen van bovenstaande | Goed bezig | Op basis van je antwoorden zien we geen directe knelpunten. Een korte check van je documenten geeft zekerheid. | `/tarieven` |
+| `all_good` | geen van bovenstaande, óf alleen `review` van toepassing (documents = both, verder geen aandachtspunten; `review` vervalt dan) | Goed bezig | Op basis van je antwoorden zien we geen directe knelpunten. Een korte check van je documenten geeft zekerheid. | `/tarieven` |
 
 Onder de aandachtspunten: "Bedankt! Een adviseur neemt binnen twee werkdagen contact met je op om dit samen door te lopen." + indicatie van de kosten ("Advies vanaf € 500, testament € 500 / € 800 voor partners") + knop "Opnieuw invullen".
 
