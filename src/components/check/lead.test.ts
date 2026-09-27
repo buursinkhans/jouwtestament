@@ -68,7 +68,7 @@ test('builds the lead with server-side flags, segment and score', () => {
   assert.equal(lead.status, 'nieuw');
   assert.equal(lead.referralChild, false);
   assert.ok(lead.flags.includes('partner_unprotected'));
-  assert.equal(lead.source.domain, 'heldernalaten.nl');
+  assert.equal(lead.source.domain, 'jouwtestament.nl');
   assert.deepEqual(lead.statusHistory, [{ status: 'nieuw', at: '2026-09-27T10:00:00.000Z', by: 'website' }]);
 });
 

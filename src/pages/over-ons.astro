@@ -1,7 +1,7 @@
 ---
 // /over-ons (docs/07). Placeholders until the owner provides the texts.
 import Layout from '../layouts/Layout.astro';
-import { site } from '../config/site';
+import { site, canShow, devOnly } from '../config/site';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -17,9 +17,12 @@ const breadcrumbs = [
 >
   <div class="container narrow page prose">
     <h1>Wie zijn wij?</h1>
-    <p><span class="placeholder">[Waarom Helder Nalaten bestaat — 2 alinea's, eigenaar]</span></p>
+    {devOnly && <p><span class="placeholder">[Waarom Helder Nalaten bestaat — 2 alinea's, eigenaar]</span></p>}
     <p class="lead">{site.entityDescription}</p>
 
+    {/* The sections below are placeholders: shown in development only */}
+    {devOnly && (
+    <>
     <section id="adviseurs">
       <h2>Onze adviseurs</h2>
       {/* TODO(owner): per adviser name, photo, qualifications, experience, Person schema with sameAs (LinkedIn) */}
@@ -41,14 +44,16 @@ const breadcrumbs = [
       {/* TODO(owner): agree this text with the partner */}
       <p><span class="placeholder">[Hoe we verdienen, af te stemmen met partner]</span></p>
     </section>
+    </>
+    )}
 
     {/* Owner decision: no address on the site (only KvK and contact) */}
     <section id="bedrijfsgegevens">
       <h2>Bedrijfsgegevens</h2>
       <ul>
-        <li>KvK: <span class="placeholder">{site.kvk}</span></li>
-        <li>Telefoon: <span class="placeholder">{site.contact.phone}</span></li>
-        <li>E-mail: <span class="placeholder">{site.contact.email}</span></li>
+        {canShow(site.kvk) && <li>KvK: <span class="placeholder">{site.kvk}</span></li>}
+        {canShow(site.contact.phone) && <li>Telefoon: <span class="placeholder">{site.contact.phone}</span></li>}
+        <li>E-mail: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
       </ul>
     </section>
 

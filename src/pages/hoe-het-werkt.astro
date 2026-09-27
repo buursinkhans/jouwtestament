@@ -6,6 +6,7 @@ import Steps from '../components/content/Steps.astro';
 import DocumentCard from '../components/content/DocumentCard.astro';
 import ReviewMeta from '../components/content/ReviewMeta.astro';
 import { steps, optionalStep, documents } from '../data/offer';
+import { devOnly } from '../config/site';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -50,9 +51,13 @@ const breadcrumbs = [
 
   <section class="section" id="adviseur">
     <div class="container narrow">
-      <h2>Wie is je adviseur?</h2>
-      <p><span class="placeholder">[NAAM, KWALIFICATIE, KORTE BIO, FOTO]</span></p>
-      <p><a class="link-arrow" href="/over-ons">Over ons →</a></p>
+      {devOnly && (
+        <>
+          <h2>Wie is je adviseur?</h2>
+          <p><span class="placeholder">[NAAM, KWALIFICATIE, KORTE BIO, FOTO]</span></p>
+          <p><a class="link-arrow" href="/over-ons">Over ons →</a></p>
+        </>
+      )}
       <div class="btn-row cta">
         <a class="btn-primary" href="/check">Doe de gratis check (2 min)</a>
         <a class="btn-secondary" href="/tarieven">Bekijk de tarieven</a>

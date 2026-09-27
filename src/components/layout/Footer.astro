@@ -1,7 +1,10 @@
 ---
 // Footer with four columns (docs/03).
-import { site } from '../../config/site';
+import { site, canShow, devOnly } from '../../config/site';
 import { voorWieItems, footerMore, footerLegal } from '../../config/navigation';
+
+// Terms are not written yet: only link them in development.
+const legalLinks = footerLegal.filter((item) => devOnly || item.href !== '/voorwaarden');
 
 const shortDescription =
   'Financieel advies over je nalatenschap, met een instructie voor de notaris en een uitleg voor je nabestaanden.';
@@ -14,8 +17,8 @@ const shortDescription =
       <p>{site.tagline}</p>
       <p>{shortDescription}</p>
       <p>
-        <span class="placeholder">{site.contact.phone}</span><br />
-        <span class="placeholder">{site.contact.email}</span>
+        {canShow(site.contact.phone) && <><span class="placeholder">{site.contact.phone}</span><br /></>}
+        {canShow(site.contact.email) && <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>}
       </p>
     </div>
     <div>
@@ -33,11 +36,13 @@ const shortDescription =
     <div>
       <h2>Juridisch</h2>
       <ul>
-        {footerLegal.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        <li>KvK <span class="placeholder">{site.kvk}</span></li>
-        <li>
-          Inhoud gecontroleerd door <a href={`/over-ons#${site.reviewer.anchor}`}>{site.reviewer.name}</a>
-        </li>
+        {legalLinks.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        {canShow(site.kvk) && <li>KvK <span class="placeholder">{site.kvk}</span></li>}
+        {canShow(site.reviewer.name) && (
+          <li>
+            Inhoud gecontroleerd door <a href={`/over-ons#${site.reviewer.anchor}`}>{site.reviewer.name}</a>
+          </li>
+        )}
       </ul>
     </div>
   </div>

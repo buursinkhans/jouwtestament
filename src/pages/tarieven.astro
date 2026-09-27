@@ -5,6 +5,7 @@ import ShortAnswer from '../components/content/ShortAnswer.astro';
 import ReviewMeta from '../components/content/ReviewMeta.astro';
 import { pricing, euro, euroRange } from '../config/pricing';
 import { priceTable, priceExamples, offerSchema } from '../data/offer';
+import { devOnly } from '../config/site';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -76,7 +77,7 @@ const adviceRange = `${euro(pricing.advice.min)} tot ${euro(pricing.advice.max)}
     </section>
 
     {/* TODO(owner): VAT, what notary rates include, prices of living will / cohabitation agreement */}
-    <p class="small">Alle prijzen <span class="placeholder">[inclusief btw]</span>.</p>
+    {devOnly && <p class="small">Alle prijzen <span class="placeholder">[inclusief btw]</span>.</p>}
 
     <div class="btn-row cta">
       <a class="btn-primary" href="/check">Doe de gratis check (2 min)</a>

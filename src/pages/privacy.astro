@@ -1,17 +1,30 @@
 ---
-// /privacy. TODO(owner): privacy statement must be written and reviewed before launch (docs/10):
+// /privacy. TODO(owner): privacy statement must be written and reviewed before leads are collected (docs/10):
 // purpose, legal basis (consent), retention period, recipient (adviser), rights.
 // Mention processors: Google (Sheets, lead storage), Netlify (hosting), Simple Analytics (cookieless statistics).
 import Layout from '../layouts/Layout.astro';
+import { site, devOnly } from '../config/site';
 const breadcrumbs = [
   { name: 'Home', url: '/' },
   { name: 'Privacy', url: '/privacy' },
 ];
 ---
 
-<Layout title="Privacyverklaring" description="Hoe Helder Nalaten omgaat met je gegevens." breadcrumbs={breadcrumbs}>
+<Layout title="Privacyverklaring" description="Hoe Helder Nalaten omgaat met je gegevens." breadcrumbs={breadcrumbs} noindex={!devOnly}>
   <div class="container narrow page">
     <h1>Privacyverklaring</h1>
-    <p><span class="placeholder">[PRIVACYVERKLARING: doel, grondslag, bewaartermijn, ontvangers, je rechten]</span></p>
+    {
+      devOnly ? (
+        <p><span class="placeholder">[PRIVACYVERKLARING: doel, grondslag, bewaartermijn, ontvangers, je rechten]</span></p>
+      ) : (
+        // TODO(owner): replace with the reviewed privacy statement
+        <>
+          <p>We werken nog aan onze volledige privacyverklaring. We gebruiken geen cookies.</p>
+          <p>
+            Heb je een vraag over je gegevens? Mail naar <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+          </p>
+        </>
+      )
+    }
   </div>
 </Layout>

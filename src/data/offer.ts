@@ -1,11 +1,15 @@
 // Shared offer content (docs/07): steps, the two documents, price rows and examples.
 import { pricing, euro, euroRange, coupleSaving } from '../config/pricing';
+import { devOnly } from '../config/site';
 
 export const steps = [
   { title: 'Doe de check', text: 'Vier vragen, twee minuten. Direct je belangrijkste aandachtspunten.' },
   {
     title: 'Adviesgesprek',
-    text: 'Een adviseur bespreekt je situatie en adviseert over de financiële keuzes. Online of [op locatie]. Je hoort vooraf de prijs.',
+    // "[op locatie]" is not confirmed yet: that sentence is left out on the live site
+    text: devOnly
+      ? 'Een adviseur bespreekt je situatie en adviseert over de financiële keuzes. Online of [op locatie]. Je hoort vooraf de prijs.'
+      : 'Een adviseur bespreekt je situatie en adviseert over de financiële keuzes. Je hoort vooraf de prijs.',
   },
   {
     title: 'Twee documenten',
@@ -55,7 +59,7 @@ export const priceCards = [
   { title: 'Voor partners', price: euro(pricing.willCouple), note: 'voor 2 testamenten', highlight: true },
 ];
 
-export const priceTable = [
+const allPriceRows = [
   {
     item: 'Financieel advies over je nalatenschap',
     price: euroRange(pricing.advice),
@@ -77,6 +81,9 @@ export const priceTable = [
   { item: 'Levenstestament', price: euro(pricing.livingWill), included: '' },
   { item: 'Samenlevingscontract', price: euro(pricing.cohabitationAgreement), included: '' },
 ];
+
+// Rows without a confirmed price are only shown in development
+export const priceTable = allPriceRows.filter((row) => devOnly || !row.price.includes('[PRIJS]'));
 
 const { advice, adviceComplex, willSingle, willCouple } = pricing;
 export const priceExamples = [

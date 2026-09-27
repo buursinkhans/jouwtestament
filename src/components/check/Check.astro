@@ -3,6 +3,7 @@
 // Server-rendered form with real radio inputs; the script adds prefill, validation and results.
 // TODO(review-partner): all texts.
 import { pricing, euro } from '../../config/pricing';
+import { devOnly } from '../../config/site';
 
 interface Props {
   prefill?: string; // e.g. "?situatie=samenwonend" (docs/03)
@@ -176,10 +177,19 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
       <p><strong>Bedankt!</strong> Een adviseur neemt binnen twee werkdagen contact met je op om dit samen door te lopen.</p>
     </div>
     <div class="dev-notice" data-not-connected hidden>
-      <p>
-        <span class="placeholder">[LEAD-OPSLAG NOG NIET GEKOPPELD]</span> Je gegevens zijn niet verstuurd. Zie
-        docs/10, stap 4 (<code>submit-lead</code>).
-      </p>
+      {
+        devOnly ? (
+          <p>
+            <span class="placeholder">[LEAD-OPSLAG NOG NIET GEKOPPELD]</span> Je gegevens zijn niet verstuurd. Zie
+            .env.example (<code>PUBLIC_LEAD_ENDPOINT</code>).
+          </p>
+        ) : (
+          // TODO(owner): factual status message while lead storage is not connected
+          <p>
+            Let op: we nemen op dit moment nog geen aanvragen aan. Je gegevens zijn niet verstuurd of opgeslagen.
+          </p>
+        )
+      }
     </div>
     <div class="send-failed" data-send-failed hidden role="alert">
       <p>Het versturen is niet gelukt. Probeer het later nog eens.</p>
@@ -315,7 +325,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
             utm_medium: pageParams.get('utm_medium') ?? undefined,
             utm_campaign: pageParams.get('utm_campaign') ?? undefined,
             referrer: document.referrer || undefined,
-            domain: pageParams.get('utm_source') === 'jouwtestament' ? 'jouwtestament.nl' : 'heldernalaten.nl',
+            domain: window.location.hostname.endsWith('heldernalaten.nl') ? 'heldernalaten.nl' : 'jouwtestament.nl',
           },
         };
         try {

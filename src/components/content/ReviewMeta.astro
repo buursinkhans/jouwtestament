@@ -1,18 +1,37 @@
 ---
-// Reviewer + last updated (docs/11, E-E-A-T). Placeholders until the owner fills them in.
-import { site } from '../../config/site';
+// Reviewer + last updated (docs/11, E-E-A-T). Unconfirmed values are shown in development only.
+import { site, canShow, devOnly } from '../../config/site';
 interface Props {
   updated?: string; // e.g. "27 september 2026"; leave empty until content is reviewed
   readingTime?: string;
 }
 const { updated, readingTime } = Astro.props;
+
+const parts = [
+  canShow(site.reviewer.name) && 'reviewer',
+  (updated || devOnly) && 'updated',
+  readingTime && 'reading',
+].filter(Boolean) as string[];
 ---
 
-<p class="review-meta">
-  Gecontroleerd door <a href={`/over-ons#${site.reviewer.anchor}`}>{site.reviewer.name}</a>
-  · Laatst bijgewerkt: {updated ?? <span class="placeholder">[DATUM]</span>}
-  {readingTime && <> · Leestijd: {readingTime}</>}
-</p>
+{
+  parts.length > 0 && (
+    <p class="review-meta">
+      {parts.map((part, index) => (
+        <>
+          {index > 0 && ' · '}
+          {part === 'reviewer' && (
+            <>
+              Gecontroleerd door <a href={`/over-ons#${site.reviewer.anchor}`}>{site.reviewer.name}</a>
+            </>
+          )}
+          {part === 'updated' && <>Laatst bijgewerkt: {updated ?? <span class="placeholder">[DATUM]</span>}</>}
+          {part === 'reading' && <>Leestijd: {readingTime}</>}
+        </>
+      ))}
+    </p>
+  )
+}
 
 <style>
   .review-meta {

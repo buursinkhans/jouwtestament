@@ -1,6 +1,11 @@
 // Content for the "Voor wie" segment pages. Copy is taken verbatim from docs/06-content-voor-wie.md.
 // TODO(review-partner): all legal content on these pages needs partner approval before going live.
 import { pricing, euro } from '../config/pricing';
+import { devOnly } from '../config/site';
+
+// Adds "Label: price." only when the price is known (or in development)
+const priceNote = (label: string, amount: number | null) =>
+  amount !== null || devOnly ? ` ${label}: ${euro(amount)}.` : '';
 
 export interface FaqItem {
   question: string;
@@ -69,7 +74,7 @@ export const segments: Segment[] = [
       source: 'NJi o.b.v. CBS, 2025',
     },
     tips: ['pensioen', 'verzekering', 'jonge-kinderen'],
-    priceExample: `${standardExample} Samenlevingscontract: ${euro(pricing.cohabitationAgreement)}.`,
+    priceExample: `${standardExample}${priceNote('Samenlevingscontract', pricing.cohabitationAgreement)}`,
     checkQuery: '?situatie=samenwonend',
     faq: [
       {
@@ -238,7 +243,7 @@ export const segments: Segment[] = [
       source: 'Kamerbrief VWS 2026 o.b.v. Alzheimer Nederland',
     },
     tips: ['actueel', 'executeur', 'codicil'],
-    priceExample: `${standardExample} Levenstestament: ${euro(pricing.livingWill)}.`,
+    priceExample: `${standardExample}${priceNote('Levenstestament', pricing.livingWill)}`,
     checkQuery: '?woning=ja',
     faq: [
       {
