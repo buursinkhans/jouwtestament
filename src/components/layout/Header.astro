@@ -91,6 +91,8 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
 </header>
 
 <script>
+  import { track } from '../../lib/analytics';
+
   const header = document.querySelector<HTMLElement>('[data-header]');
   window.addEventListener(
     'scroll',
@@ -107,6 +109,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
   const setOpen = (open: boolean, focusFirst = false) => {
     if (!button || !panel) return;
     button.setAttribute('aria-expanded', String(open));
+    if (open && panel.hidden) track('nav_voor_wie_opened');
     panel.hidden = !open;
     if (open && focusFirst) items()[0]?.focus();
   };

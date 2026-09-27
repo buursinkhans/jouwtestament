@@ -192,6 +192,9 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 <script>
   import { getFlags, flagContent } from './getFlags.ts';
   import { prefill } from './prefill.ts';
+  import { getSegment } from './getSegment.ts';
+  import { getScore, getPriority } from './score.ts';
+  import { track } from '../../lib/analytics';
   import type { Answers } from './types.ts';
 
   const phonePattern = /^(\+31|0031|0)[1-9]\d{8}$/;
@@ -225,8 +228,21 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
       if (input) input.checked = true;
     }
     updateMinors();
+    // Analytics: progress only, never the chosen answers (docs/09 §8)
+    let started = false;
+    const answered = new Set<string>();
+    const questionKeys = ['situation', 'children', 'minors', 'home', 'documents', 'notary'];
     form.addEventListener('change', (event) => {
-      if ((event.target as HTMLInputElement).name === 'children') updateMinors();
+      const changed = (event.target as HTMLInputElement).name;
+      if (!started) {
+        started = true;
+        track('check_started');
+      }
+      if (questionKeys.includes(changed) && !answered.has(changed)) {
+        answered.add(changed);
+        track('check_question_answered', { question: changed });
+      }
+      if (changed === 'children') updateMinors();
       const name = (event.target as HTMLInputElement).name;
       root.querySelector<HTMLElement>(`[data-error-for="${name}"]`)?.setAttribute('hidden', '');
     });
@@ -273,6 +289,13 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
         ...(value('notary') ? { notary: value('notary') } : {}),
       } as Answers;
 
+      const score = getScore(answers, value('phone').trim() !== '');
+      track('check_submitted', {
+        segment: getSegment(answers, root.dataset.segmentPage || undefined),
+        priority: getPriority(score),
+        landingPage: window.location.pathname,
+      });
+
       // Honeypot filled: behave as if sent, send nothing (docs/10)
       const isBot = value('company_website') !== '';
       const endpoint = root.dataset.endpoint ?? '';
@@ -302,6 +325,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
             body: JSON.stringify(payload),
           });
           sent = response.ok;
+          if (sent) track('contact_requested');
         } catch {
           sent = false;
         }

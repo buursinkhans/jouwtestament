@@ -18,6 +18,13 @@ const Heading = headingLevel;
   <ArrowRight class="arrow" size={22} stroke-width={1.8} aria-hidden="true" />
 </a>
 
+<script>
+  import { track } from '../../lib/analytics';
+  document.querySelectorAll<HTMLAnchorElement>('[data-segment-tile]').forEach((tile) => {
+    tile.addEventListener('click', () => track('segment_tile_clicked', { segment: tile.dataset.segmentTile ?? '' }));
+  });
+</script>
+
 <style>
   .tile {
     position: relative;

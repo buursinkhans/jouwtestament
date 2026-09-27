@@ -9,6 +9,7 @@ import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import StickyCta from '../components/layout/StickyCta.astro';
 import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import Analytics from '../components/layout/Analytics.astro';
 import { site } from '../config/site';
 
 interface FaqItem {
@@ -123,6 +124,7 @@ const jsonLd = [organizationSchema, websiteSchema, breadcrumbSchema, faqSchema, 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     {jsonLd.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+    <Analytics />
   </head>
   <body>
     <a class="skip-link" href="#main">Naar de inhoud</a>
