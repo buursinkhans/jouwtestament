@@ -3,7 +3,6 @@
 // Server-rendered form with real radio inputs; the script adds prefill, validation and results.
 // TODO(review-partner): all texts.
 import { pricing, euro } from '../../config/pricing';
-import { devOnly } from '../../config/site';
 
 interface Props {
   prefill?: string; // e.g. "?situatie=samenwonend" (docs/03)
@@ -16,8 +15,6 @@ const { prefill = '', segmentPage = '', isPageTitle = false, idPrefix = 'check' 
 const Heading = isPageTitle ? 'h1' : 'h2';
 const id = (name: string) => `${idPrefix}-${name}`;
 
-// Lead endpoint (docs/10: serverless function). Empty = not connected yet.
-const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT ?? '';
 
 const questions = [
   {
@@ -77,8 +74,6 @@ const questions = [
   },
 ] as const;
 
-const consentText =
-  'Ik ga akkoord dat mijn antwoorden en contactgegevens worden gedeeld met een adviseur van Helder Nalaten om contact met mij op te nemen.';
 const selfPrice = euro(pricing.selfService);
 const adviceFrom = euro(pricing.advice.min);
 ---
@@ -91,8 +86,6 @@ const adviceFrom = euro(pricing.advice.min);
   data-check-block
   data-prefill={prefill}
   data-segment-page={segmentPage}
-  data-endpoint={endpoint}
-  data-consent-text={consentText}
 >
   <div class="check-intro">
     <span class="eyebrow">Gratis nalatenschapscheck</span>
@@ -104,7 +97,7 @@ const adviceFrom = euro(pricing.advice.min);
     <p class="small">De check geeft een eerste indicatie en is geen juridisch of financieel advies.</p>
   </div>
 
-  <form class="check-form" method="post" action={endpoint || '/api/submit-lead'} novalidate data-check-form>
+  <form class="check-form" novalidate data-check-form>
     {questions.map((question, index) => (
       <fieldset
         class="question"
@@ -159,75 +152,18 @@ const adviceFrom = euro(pricing.advice.min);
           <span class="recommended" hidden data-recommended>Aanbevolen voor jouw situatie</span>
           <h4>Afspraak met een adviseur</h4>
           <p>
-            Voor een ingewikkelde situatie, of als je het liever niet zelf doet. Een adviseur neemt binnen twee
-            werkdagen contact op.
+            Voor een ingewikkelde situatie, of als je het liever niet zelf doet. Kies een moment dat jou uitkomt; we
+            nemen binnen 24 uur contact op.
           </p>
           <p class="option-price">Advies vanaf {adviceFrom}</p>
-          <button type="button" class="btn-secondary" data-option-adviser>Kies een adviseur</button>
+          <button type="button" class="btn-secondary" data-option-adviser>Plan een gesprek</button>
         </div>
       </div>
       <button type="button" class="link-button" data-check-reset>Antwoorden aanpassen</button>
     </div>
 
-    <fieldset class="contact" id="adviseur" data-contact>
-      <legend>Waar mag de adviseur je bereiken?</legend>
-      <div class="field">
-        <label for={id('name')}>Naam</label>
-        <input id={id('name')} name="name" type="text" autocomplete="name" required minlength="2" />
-        <p class="error" hidden data-error-for="name">Vul je naam in.</p>
-      </div>
-      <div class="field">
-        <label for={id('email')}>E-mailadres</label>
-        <input id={id('email')} name="email" type="email" autocomplete="email" required />
-        <p class="error" hidden data-error-for="email">Vul een geldig e-mailadres in.</p>
-      </div>
-      <div class="field">
-        <label for={id('phone')}>Telefoonnummer <span class="optional">(optioneel)</span></label>
-        <input id={id('phone')} name="phone" type="tel" autocomplete="tel" inputmode="tel" />
-        <p class="error" hidden data-error-for="phone">Vul een Nederlands telefoonnummer in, bijvoorbeeld 06 12345678.</p>
-      </div>
-      <div class="honeypot" aria-hidden="true">
-        <label for={id('company_website')}>Laat dit veld leeg</label>
-        <input id={id('company_website')} name="company_website" type="text" tabindex="-1" autocomplete="off" />
-      </div>
-      <label class="consent">
-        <input type="checkbox" name="consent" value="yes" required />
-        <span>{consentText} <a href="/privacy">Privacyverklaring</a></span>
-      </label>
-      <p class="error" hidden data-error-for="consent">Geef toestemming om verder te gaan.</p>
-    </fieldset>
-
-    <input type="hidden" name="consentText" value={consentText} />
-    <input type="hidden" name="landingPage" value={Astro.url.pathname} />
-    <input type="hidden" name="segmentPage" value={segmentPage} />
-
-    <p class="contact-error error" hidden data-contact-error role="alert">Controleer de gemarkeerde velden.</p>
-    <button type="submit" class="btn-primary submit" data-contact-submit>Vraag een gesprek aan</button>
   </form>
 
-  <div class="sent" hidden tabindex="-1" data-sent>
-    <div class="thanks" data-thanks hidden>
-      <p><strong>Bedankt!</strong> Een adviseur neemt binnen twee werkdagen contact met je op om dit samen door te lopen.</p>
-    </div>
-    <div class="dev-notice" data-not-connected hidden>
-      {
-        devOnly ? (
-          <p>
-            <span class="placeholder">[LEAD-OPSLAG NOG NIET GEKOPPELD]</span> Je gegevens zijn niet verstuurd. Zie
-            .env.example (<code>PUBLIC_LEAD_ENDPOINT</code>).
-          </p>
-        ) : (
-          // TODO(owner): factual status message while lead storage is not connected
-          <p>
-            Let op: we nemen op dit moment nog geen aanvragen aan. Je gegevens zijn niet verstuurd of opgeslagen.
-          </p>
-        )
-      }
-    </div>
-    <div class="send-failed" data-send-failed hidden role="alert">
-      <p>Het versturen is niet gelukt. Probeer het later nog eens.</p>
-    </div>
-  </div>
 </section>
 
 <script>
@@ -238,8 +174,6 @@ const adviceFrom = euro(pricing.advice.min);
   import { track } from '../../lib/analytics';
   import type { Answers } from './types.ts';
 
-  const phonePattern = /^(\+31|0031|0)[1-9]\d{8}$/;
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   document.querySelectorAll<HTMLElement>('[data-check]').forEach((root) => {
     const form = root.querySelector<HTMLFormElement>('[data-check-form]')!;
@@ -297,35 +231,13 @@ const adviceFrom = euro(pricing.advice.min);
     };
 
     const stepActions = root.querySelector<HTMLElement>('[data-step-actions]')!;
-    const contact = root.querySelector<HTMLElement>('[data-contact]')!;
-    const contactSubmit = root.querySelector<HTMLElement>('[data-contact-submit]')!;
-    const contactError = root.querySelector<HTMLElement>('[data-contact-error]')!;
-    const sentBlock = root.querySelector<HTMLElement>('[data-sent]')!;
     const questionSets = Array.from(root.querySelectorAll<HTMLElement>('fieldset.question'));
-
-    // With JavaScript the contact form only appears after choosing the adviser option
-    const setContactVisible = (visible: boolean) => {
-      contact.hidden = !visible;
-      contactSubmit.hidden = !visible;
-    };
-    setContactVisible(false);
 
     const validateQuestions = () => {
       const invalid: string[] = [];
       const required = ['situation', 'children', 'home', 'documents'];
       if (!minorsQuestion.hidden) required.push('minors');
       for (const name of required) if (showError(name, !value(name))) invalid.push(name);
-      return invalid;
-    };
-
-    const validateContact = () => {
-      const invalid: string[] = [];
-      if (showError('name', value('name').trim().length < 2)) invalid.push('name');
-      if (showError('email', !emailPattern.test(value('email').trim()))) invalid.push('email');
-      const phone = value('phone').replace(/[\s-]/g, '');
-      if (showError('phone', phone !== '' && !phonePattern.test(phone))) invalid.push('phone');
-      const consent = form.querySelector<HTMLInputElement>('[name="consent"]')!.checked;
-      if (showError('consent', !consent)) invalid.push('consent');
       return invalid;
     };
 
@@ -391,73 +303,25 @@ const adviceFrom = euro(pricing.advice.min);
       window.location.href = '/regel-het-zelf';
     });
 
-    // Option 2: adviser - show the contact form
+    // Option 2: adviser - plan a conversation on /afspraak (answers go along in this tab only)
     root.querySelector('[data-option-adviser]')!.addEventListener('click', () => {
+      try {
+        sessionStorage.setItem('hn_check_answers', JSON.stringify(currentAnswers()));
+      } catch {
+        // storage unavailable: the appointment page works without the check answers
+      }
       track('check_option_adviser');
-      setContactVisible(true);
-      form.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+      window.location.href = '/afspraak';
     });
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const invalid = [...validateQuestions(), ...validateContact()];
-      contactError.hidden = invalid.length === 0;
-      if (invalid.length > 0) {
-        form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
-        return;
-      }
-
-      const answers = currentAnswers();
-      // Honeypot filled: behave as if sent, send nothing (docs/10)
-      const isBot = value('company_website') !== '';
-      const endpoint = root.dataset.endpoint ?? '';
-      let sent = false;
-
-      if (endpoint && !isBot) {
-        const phone = value('phone').replace(/[\s-]/g, '');
-        const payload = {
-          answers,
-          contact: { name: value('name').trim(), email: value('email').trim(), ...(phone ? { phone } : {}) },
-          consent: { given: true, text: root.dataset.consentText, at: new Date().toISOString() },
-          source: {
-            landingPage: window.location.pathname,
-            segmentPage: root.dataset.segmentPage || undefined,
-            ref: pageParams.get('ref') ?? undefined,
-            utm_source: pageParams.get('utm_source') ?? undefined,
-            utm_medium: pageParams.get('utm_medium') ?? undefined,
-            utm_campaign: pageParams.get('utm_campaign') ?? undefined,
-            referrer: document.referrer || undefined,
-            domain: window.location.hostname.endsWith('heldernalaten.nl') ? 'heldernalaten.nl' : 'jouwtestament.nl',
-          },
-        };
-        try {
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-          sent = response.ok;
-          if (sent) track('contact_requested');
-        } catch {
-          sent = false;
-        }
-      }
-
-      root.querySelector<HTMLElement>('[data-thanks]')!.hidden = !(sent || isBot);
-      root.querySelector<HTMLElement>('[data-not-connected]')!.hidden = endpoint !== '' || isBot;
-      root.querySelector<HTMLElement>('[data-send-failed]')!.hidden = endpoint === '' || sent || isBot;
-      if (sent || isBot) form.hidden = true;
-      sentBlock.hidden = false;
-      sentBlock.focus();
-    });
+    // Without JavaScript the form cannot be submitted; with JavaScript step 1 shows the results
+    form.addEventListener('submit', (event) => event.preventDefault());
 
     root.querySelector('[data-check-reset]')?.addEventListener('click', () => {
       questionSets.forEach((set) => (set.hidden = false));
       updateMinors();
       stepActions.hidden = false;
       result.hidden = true;
-      setContactVisible(false);
-      sentBlock.hidden = true;
       form.querySelector<HTMLInputElement>('input')?.focus();
     });
   });

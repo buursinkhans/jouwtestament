@@ -1,5 +1,7 @@
 # 04 — Design system
 
+> **Wijziging eigenaar (2026-09-28, avond): alle knoppen rood.** `.btn-primary` en `.btn-secondary` hebben dezelfde gevulde stijl in `--color-accent` (rood-oranje), met `--color-accent-hover` bij hover. Kleine bedieningsknoppen die geen actie zijn (animatie pauzeren) gebruiken `.btn-quiet` (neutraal, klein).
+
 > **Wijziging eigenaar (2026-09-28): moderner en strakker.** Dit gaat vóór alles hieronder.
 > - **Lettertype:** Inter (variabel, self-hosted via `@fontsource-variable/inter`) voor koppen én tekst.
 > - **Kleuren:** witte pagina, neutrale lichtgrijze banden (`--color-ground` #F7F7F5) om secties te scheiden, koppen in bijna-zwart (`--color-ink` #141C1A). Groen (`--color-primary`) alleen als klein accent (vinkjes, geselecteerde keuzes, stapnummers). Oranje alleen voor de primaire knop.

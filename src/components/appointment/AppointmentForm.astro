@@ -1,0 +1,490 @@
+---
+// Appointment request (owner 2026-09-28): the visitor picks preferred moments in the coming two
+// weeks (morning from 9:00, afternoon, evening until 21:00) and leaves e-mail or phone.
+// We contact them within 24 hours to confirm. Stored as a lead via submit-lead (docs/09, docs/10).
+// TODO(owner): confirm opening days (now Monday-Saturday) and block times.
+import { devOnly } from '../../config/site';
+
+const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT ?? '';
+const consentText =
+  'Ik ga akkoord dat mijn gegevens en voorkeuren worden gedeeld met een adviseur van Helder Nalaten om contact met mij op te nemen.';
+const blocks = [
+  { key: 'ochtend', label: 'Ochtend', time: '9:00 – 12:00' },
+  { key: 'middag', label: 'Middag', time: '12:00 – 17:00' },
+  { key: 'avond', label: 'Avond', time: '17:00 – 21:00' },
+];
+---
+
+<div class="appointment" data-appointment data-endpoint={endpoint} data-consent-text={consentText}>
+  <form method="post" action={endpoint || '/api/submit-lead'} novalidate data-appointment-form>
+    <fieldset class="step">
+      <legend><span class="step-number">1</span> Wanneer komt het je uit?</legend>
+      <p class="hint">
+        Kies één of meer momenten in de komende twee weken. Hoe meer je aanvinkt, hoe sneller we een moment vinden.
+      </p>
+      <ul class="block-legend" aria-label="Dagdelen">
+        {blocks.map((block) => <li><strong>{block.label}</strong> {block.time}</li>)}
+      </ul>
+      <div class="calendar" data-calendar data-blocks={JSON.stringify(blocks)}>
+        <noscript><p>Zet JavaScript aan om een moment te kiezen, of mail ons.</p></noscript>
+      </div>
+      <p class="error" hidden data-error-for="preferences" role="alert">Kies minstens één moment.</p>
+      <p class="selected" aria-live="polite" data-selected></p>
+    </fieldset>
+
+    <fieldset class="step">
+      <legend><span class="step-number">2</span> Hoe kunnen we je bereiken?</legend>
+      <p class="hint">Vul je e-mailadres of telefoonnummer in, of allebei.</p>
+      <div class="fields">
+        <div class="field">
+          <label for="appt-name">Naam</label>
+          <input id="appt-name" name="name" type="text" autocomplete="name" required minlength="2" />
+          <p class="error" hidden data-error-for="name">Vul je naam in.</p>
+        </div>
+        <div class="field">
+          <label for="appt-email">E-mailadres</label>
+          <input id="appt-email" name="email" type="email" autocomplete="email" />
+          <p class="error" hidden data-error-for="email">Vul een geldig e-mailadres in.</p>
+        </div>
+        <div class="field">
+          <label for="appt-phone">Telefoonnummer</label>
+          <input id="appt-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+          <p class="error" hidden data-error-for="phone">Vul een Nederlands telefoonnummer in, bijvoorbeeld 06 12345678.</p>
+        </div>
+      </div>
+      <p class="error" hidden data-error-for="reach">Vul je e-mailadres of je telefoonnummer in.</p>
+      <div class="honeypot" aria-hidden="true">
+        <label for="appt-company">Laat dit veld leeg</label>
+        <input id="appt-company" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <p class="check-note" hidden data-check-note>Je antwoorden uit de gratis check gaan mee, zodat de adviseur zich kan voorbereiden.</p>
+      <label class="consent">
+        <input type="checkbox" name="consent" value="yes" required />
+        <span>{consentText}{' '}<a href="/privacy">Privacyverklaring</a></span>
+      </label>
+      <p class="error" hidden data-error-for="consent">Geef toestemming om verder te gaan.</p>
+    </fieldset>
+
+    <input type="hidden" name="consentText" value={consentText} />
+    <input type="hidden" name="landingPage" value="/afspraak" />
+    <button type="submit" class="btn-primary submit">Vraag een gesprek aan</button>
+    <p class="small after">We nemen binnen 24 uur contact met je op om de afspraak definitief te maken.</p>
+  </form>
+
+  <div class="done" hidden tabindex="-1" data-done>
+    <h2 data-done-title>Bedankt!</h2>
+    <p data-thanks hidden>
+      We nemen binnen 24 uur contact met je op om de afspraak definitief te maken. Je voorkeuren:
+    </p>
+    <ul data-done-list hidden></ul>
+    <div data-not-connected hidden>
+      {
+        devOnly ? (
+          <p>
+            <span class="placeholder">[LEAD-OPSLAG NOG NIET GEKOPPELD]</span> Je aanvraag is niet verstuurd. Zie
+            .env.example (<code>PUBLIC_LEAD_ENDPOINT</code>).
+          </p>
+        ) : (
+          // TODO(owner): factual status message while lead storage is not connected
+          <p>
+            Let op: we nemen op dit moment nog geen aanvragen aan. Je gegevens zijn niet verstuurd of opgeslagen.
+          </p>
+        )
+      }
+    </div>
+    <p data-send-failed hidden role="alert" class="failed">Het versturen is niet gelukt. Probeer het later nog eens.</p>
+  </div>
+</div>
+
+<script>
+  import { track } from '../../lib/analytics';
+
+  const DAYS = 14;
+  const phonePattern = /^(\+31|0031|0)[1-9]\d{8}$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  const root = document.querySelector<HTMLElement>('[data-appointment]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-appointment-form]')!;
+    const calendar = root.querySelector<HTMLElement>('[data-calendar]')!;
+    const blocks: { key: string; label: string; time: string }[] = JSON.parse(calendar.dataset.blocks ?? '[]');
+    const selectedEl = root.querySelector<HTMLElement>('[data-selected]')!;
+
+    // Local date as YYYY-MM-DD
+    const iso = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const dayLabel = (d: Date) => d.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
+
+    // Build the next two weeks (from tomorrow), Monday to Saturday
+    const days: Date[] = [];
+    const cursor = new Date();
+    cursor.setHours(12, 0, 0, 0);
+    for (let i = 1; days.length < 12 && i <= DAYS + 3; i++) {
+      const d = new Date(cursor);
+      d.setDate(cursor.getDate() + i);
+      if (d.getDay() !== 0) days.push(d);
+    }
+
+    calendar.replaceChildren(
+      ...days.map((d) => {
+        const fieldset = document.createElement('fieldset');
+        fieldset.className = 'day';
+        const legend = document.createElement('legend');
+        const weekday = d.toLocaleDateString('nl-NL', { weekday: 'short' });
+        legend.innerHTML = `<span class="weekday"></span><span class="date"></span>`;
+        legend.querySelector('.weekday')!.textContent = weekday;
+        legend.querySelector('.date')!.textContent = d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+        fieldset.append(legend);
+        for (const block of blocks) {
+          const label = document.createElement('label');
+          label.className = 'slot';
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.name = 'pref';
+          input.value = `${iso(d)}|${block.key}`;
+          input.setAttribute('aria-label', `${dayLabel(d)}, ${block.label.toLowerCase()} (${block.time})`);
+          const span = document.createElement('span');
+          span.textContent = block.label;
+          label.append(input, span);
+          fieldset.append(label);
+        }
+        return fieldset;
+      })
+    );
+
+    const chosen = () => Array.from(form.querySelectorAll<HTMLInputElement>('input[name="pref"]:checked'));
+    const describe = (value: string) => {
+      const [date, block] = value.split('|');
+      const d = new Date(`${date}T12:00:00`);
+      const b = blocks.find((x) => x.key === block);
+      return `${dayLabel(d)}, ${b?.label.toLowerCase()} (${b?.time})`;
+    };
+    form.addEventListener('change', (event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.name === 'pref') {
+        const n = chosen().length;
+        selectedEl.textContent = n === 0 ? '' : n === 1 ? '1 moment gekozen' : `${n} momenten gekozen`;
+        root.querySelector<HTMLElement>('[data-error-for="preferences"]')!.hidden = true;
+      } else {
+        root.querySelector<HTMLElement>(`[data-error-for="${target.name}"]`)?.setAttribute('hidden', '');
+      }
+    });
+
+    // Hide a field's error as soon as the visitor types; e-mail and phone also clear "reach"
+    form.addEventListener('input', (event) => {
+      const name = (event.target as HTMLInputElement).name;
+      const related = name === 'email' || name === 'phone' ? [name, 'reach'] : [name];
+      for (const key of related) root.querySelector<HTMLElement>(`[data-error-for="${key}"]`)?.setAttribute('hidden', '');
+    });
+
+    // Check answers from the check (this tab only)
+    let checkAnswers: Record<string, string> | undefined;
+    try {
+      const raw = sessionStorage.getItem('hn_check_answers');
+      checkAnswers = raw ? JSON.parse(raw) : undefined;
+    } catch {
+      checkAnswers = undefined;
+    }
+    root.querySelector<HTMLElement>('[data-check-note]')!.hidden = !checkAnswers;
+
+    const value = (name: string) => (form.elements.namedItem(name) as HTMLInputElement | null)?.value.trim() ?? '';
+    const show = (name: string, visible: boolean) => {
+      const el = root.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      if (el) el.hidden = !visible;
+      return visible;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = value('email');
+      const phone = value('phone').replace(/[\s-]/g, '');
+      const invalid = [
+        show('preferences', chosen().length === 0) && 'pref',
+        show('name', value('name').length < 2) && 'name',
+        show('email', email !== '' && !emailPattern.test(email)) && 'email',
+        show('phone', phone !== '' && !phonePattern.test(phone)) && 'phone',
+        show('reach', email === '' && phone === '') && 'email',
+        show('consent', !form.querySelector<HTMLInputElement>('[name="consent"]')!.checked) && 'consent',
+      ].filter(Boolean) as string[];
+      if (invalid.length) {
+        form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
+        return;
+      }
+
+      const preferences = chosen().map((input) => {
+        const [date, block] = input.value.split('|');
+        return { date, block };
+      });
+      const isBot = value('company_website') !== '';
+      const endpoint = root.dataset.endpoint ?? '';
+      let sent = false;
+      if (endpoint && !isBot) {
+        const params = new URLSearchParams(window.location.search);
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...(checkAnswers ? { answers: checkAnswers } : {}),
+              preferences,
+              contact: { name: value('name'), ...(email ? { email } : {}), ...(phone ? { phone } : {}) },
+              consent: { given: true, text: root.dataset.consentText, at: new Date().toISOString() },
+              source: {
+                landingPage: '/afspraak',
+                ref: params.get('ref') ?? undefined,
+                utm_source: params.get('utm_source') ?? undefined,
+                utm_medium: params.get('utm_medium') ?? undefined,
+                utm_campaign: params.get('utm_campaign') ?? undefined,
+                referrer: document.referrer || undefined,
+                domain: window.location.hostname.endsWith('heldernalaten.nl') ? 'heldernalaten.nl' : 'jouwtestament.nl',
+              },
+            }),
+          });
+          sent = response.ok;
+        } catch {
+          sent = false;
+        }
+      }
+      if (sent) track('appointment_requested', { preferences: String(preferences.length) });
+
+      const done = root.querySelector<HTMLElement>('[data-done]')!;
+      const list = root.querySelector<HTMLElement>('[data-done-list]')!;
+      list.replaceChildren(...chosen().map((input) => Object.assign(document.createElement('li'), { textContent: describe(input.value) })));
+      const ok = sent || isBot;
+      root.querySelector<HTMLElement>('[data-done-title]')!.textContent = ok ? `Bedankt, ${value('name')}!` : 'Nog niet verstuurd';
+      root.querySelector<HTMLElement>('[data-thanks]')!.hidden = !ok;
+      list.hidden = !ok;
+      root.querySelector<HTMLElement>('[data-not-connected]')!.hidden = endpoint !== '' || isBot;
+      root.querySelector<HTMLElement>('[data-send-failed]')!.hidden = endpoint === '' || ok;
+      if (ok) form.hidden = true;
+      done.hidden = false;
+      done.focus();
+    });
+  }
+</script>
+
+<style>
+  .step {
+    border: 0;
+    padding: 0;
+    margin: 0 0 40px;
+    min-width: 0;
+  }
+
+  legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding: 0;
+  }
+
+  .step-number {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-tint);
+    color: var(--color-primary);
+    font-size: var(--fs-small);
+  }
+
+  .hint {
+    color: var(--color-muted);
+    margin-bottom: 12px;
+  }
+
+  .block-legend {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    padding: 0;
+    margin: 0 0 20px;
+    font-size: var(--fs-small);
+    color: var(--color-muted);
+  }
+
+  .block-legend strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  @media (min-width: 640px) {
+    .calendar {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .calendar {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  .calendar :global(.day) {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-surface);
+    padding: 12px;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .calendar :global(.day legend) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-size: var(--fs-small);
+    margin-bottom: 4px;
+    float: left; /* keeps the legend inside the card border */
+    width: 100%;
+  }
+
+  .calendar :global(.weekday) {
+    text-transform: capitalize;
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .calendar :global(.slot) {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .calendar :global(.slot input) {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .calendar :global(.slot span) {
+    display: block;
+    text-align: center;
+    padding: 8px 6px;
+    border: 1.5px solid var(--color-input-border);
+    border-radius: var(--radius-input);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    background: var(--color-surface);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .calendar :global(.slot:hover span) {
+    border-color: var(--color-primary);
+  }
+
+  .calendar :global(.slot input:checked + span) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .calendar :global(.slot input:focus-visible + span) {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .selected {
+    margin: 12px 0 0;
+    font-size: var(--fs-small);
+    color: var(--color-muted);
+  }
+
+  .fields {
+    display: grid;
+    gap: 16px;
+    max-width: 560px;
+  }
+
+  .field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .field input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    font: inherit;
+    border: 1.5px solid var(--color-input-border);
+    border-radius: var(--radius-input);
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  .field input:focus-visible {
+    border-color: var(--color-primary);
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .check-note {
+    margin: 20px 0 0;
+    font-size: var(--fs-small);
+    color: var(--color-muted);
+  }
+
+  .consent {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 20px;
+    font-size: var(--fs-small);
+    cursor: pointer;
+    max-width: 640px;
+  }
+
+  .consent input {
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    accent-color: var(--color-primary);
+  }
+
+  .error,
+  .failed {
+    color: var(--color-accent-hover);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    margin: 8px 0 0;
+  }
+
+  .after {
+    margin-top: 12px;
+  }
+
+  .done {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 28px;
+    max-width: 640px;
+  }
+
+  .done:focus {
+    outline: none;
+  }
+</style>

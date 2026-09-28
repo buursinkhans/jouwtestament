@@ -22,7 +22,7 @@ const [check, talk, docs, notary] = steps;
 <section class="steps-anim" id={id} aria-labelledby={heading ? `${id}-title` : undefined} aria-label={heading ? undefined : 'Stappen'} data-steps-anim>
   <div class="head">
     {heading && <Heading id={`${id}-title`}>{heading}</Heading>}
-    <button class="btn-secondary pause" type="button" aria-pressed="false" data-steps-pause>Pauzeer animatie</button>
+    <button class="btn-quiet pause" type="button" aria-pressed="false" data-steps-pause>Pauzeer animatie</button>
   </div>
 
   <div class="track" aria-hidden="true"><span class="track-dot"></span></div>
@@ -165,9 +165,6 @@ const [check, talk, docs, notary] = steps;
   }
 
   .pause {
-    min-height: 40px;
-    padding: 8px 18px;
-    font-size: var(--fs-small);
     margin-left: auto;
   }
 

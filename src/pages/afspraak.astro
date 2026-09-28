@@ -1,0 +1,29 @@
+---
+// /afspraak: request a conversation with an adviser (option 2, owner 2026-09-28).
+import Layout from '../layouts/Layout.astro';
+import AppointmentForm from '../components/appointment/AppointmentForm.astro';
+import { pricing, euro } from '../config/pricing';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Afspraak met een adviseur', url: '/afspraak' },
+];
+---
+
+<Layout
+  title="Plan een gesprek met een adviseur"
+  description={`Kies wanneer het jou uitkomt: ochtend, middag of avond. We nemen binnen 24 uur contact op voor een definitieve afspraak. Advies vanaf ${euro(pricing.advice.min)}, de prijs hoor je vooraf.`}
+  breadcrumbs={breadcrumbs}
+  hideStickyCta
+>
+  <div class="container page">
+    <div class="section-head">
+      <h1>Plan een gesprek met een adviseur</h1>
+      <p class="lead">
+        Kies wanneer het jou uitkomt. We nemen binnen 24 uur contact met je op om de afspraak definitief te maken.
+        Het advies kost vanaf {euro(pricing.advice.min)}; de prijs hoor je altijd vooraf.
+      </p>
+    </div>
+    <AppointmentForm />
+  </div>
+</Layout>

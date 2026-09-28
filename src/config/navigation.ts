@@ -21,6 +21,7 @@ export const cta = { label: 'Doe de gratis check', labelLong: 'Doe de gratis che
 
 export const footerMore = [
   { label: 'Zelf regelen met de assistent', href: '/regel-het-zelf' },
+  { label: 'Afspraak met een adviseur', href: '/afspraak' },
   { label: 'Hoe het werkt', href: '/hoe-het-werkt' },
   { label: 'Tarieven', href: '/tarieven' },
   { label: 'Testament', href: '/testament' },
