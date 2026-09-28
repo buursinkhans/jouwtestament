@@ -245,7 +245,8 @@ a:not([class]):hover {
   margin-bottom: 0;
 }
 
-/* Buttons (docs/04) */
+/* Buttons (docs/04). Owner 2026-09-28: all buttons are red (same filled style);
+   btn-secondary is kept as a class name but looks like btn-primary. */
 .btn-primary,
 .btn-secondary,
 .btn-light {
@@ -268,27 +269,39 @@ a:not([class]):hover {
     color 0.15s ease;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-secondary {
   background: var(--color-accent);
   color: #fff;
 }
 
 .btn-primary:hover,
-.btn-primary:active {
+.btn-primary:active,
+.btn-secondary:hover,
+.btn-secondary:active {
   background: var(--color-accent-hover);
   color: #fff;
 }
 
-.btn-secondary {
-  background: transparent;
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+/* Small neutral control (e.g. pause animation, clear chat): not a call to action */
+.btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  cursor: pointer;
 }
 
-.btn-secondary:hover,
-.btn-secondary:active {
-  background: var(--color-primary);
-  color: #fff;
+.btn-quiet:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
 }
 
 .btn-light {
