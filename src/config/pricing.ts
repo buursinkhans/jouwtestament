@@ -18,12 +18,15 @@ export const PRICE_PLACEHOLDER = '[PRIJS]';
 
 const nl = (amount: number) => amount.toLocaleString('nl-NL');
 
-/** "€ 1.300", or [PRIJS] for an unconfirmed price. */
+// Non-breaking space so an amount never wraps between "€" and the number
+const NBSP = ' ';
+
+/** "€ 1.300", or [PRIJS] for an unconfirmed price. */
 export function euro(amount: number | null): string {
-  return amount === null ? PRICE_PLACEHOLDER : `€ ${nl(amount)}`;
+  return amount === null ? PRICE_PLACEHOLDER : `€${NBSP}${nl(amount)}`;
 }
 
-/** "€ 500 – 1.000" */
+/** "€ 500 – 1.000" */
 export function euroRange(range: { min: number; max: number }): string {
-  return `€ ${nl(range.min)} – ${nl(range.max)}`;
+  return `€${NBSP}${nl(range.min)}${NBSP}– ${nl(range.max)}`;
 }

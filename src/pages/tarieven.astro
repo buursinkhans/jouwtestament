@@ -18,7 +18,7 @@ const adviceRange = `${euro(pricing.advice.min)} tot ${euro(pricing.advice.max)}
 <Layout
   title="Wat kost het om je nalatenschap goed te regelen?"
   fullTitle={`Tarieven: advies vanaf ${euro(pricing.advice.min)}, testament ${euro(pricing.willSingle)} | Helder Nalaten`}
-  description={`Vaste prijzen, vooraf bekend. Financieel advies over je nalatenschap ${euroRange(pricing.advice).replace(' – ', '–')}, testament ${euro(pricing.willSingle)}, voor partners ${euro(pricing.willCouple)} voor twee testamenten.`}
+  description={`Vaste prijzen, vooraf bekend. Financieel advies over je nalatenschap ${euroRange(pricing.advice).replace(/\s–\s/, '–')}, testament ${euro(pricing.willSingle)}, voor partners ${euro(pricing.willCouple)} voor twee testamenten.`}
   breadcrumbs={breadcrumbs}
   schema={[{ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Tarieven', inLanguage: 'nl-NL', offers: offerSchema }]}
 >

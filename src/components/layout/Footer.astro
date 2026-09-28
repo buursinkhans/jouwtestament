@@ -52,10 +52,12 @@ const shortDescription =
 </footer>
 
 <style>
+  /* Light footer: no large coloured areas (docs/04, 2026-09-28) */
   .site-footer {
-    background: var(--color-primary);
-    color: var(--color-on-primary-soft);
-    padding: 64px 0 calc(96px + env(safe-area-inset-bottom));
+    background: var(--color-ground);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    padding: 56px 0 calc(96px + env(safe-area-inset-bottom));
     font-size: var(--fs-small);
   }
 
@@ -69,23 +71,22 @@ const shortDescription =
       grid-template-columns: 1.4fr 1fr 1fr 1fr;
     }
     .site-footer {
-      padding-bottom: 48px;
+      padding-bottom: 40px;
     }
   }
 
   .footer-name {
     font-weight: 700;
     font-size: var(--fs-h3);
-    color: #fff;
+    color: var(--color-ink);
     margin-bottom: 8px;
   }
 
   h2 {
-    font-family: var(--font-body);
     font-size: var(--fs-small);
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 16px;
+    font-weight: 600;
+    color: var(--color-ink);
+    margin-bottom: 14px;
   }
 
   ul {
@@ -99,21 +100,18 @@ const shortDescription =
   }
 
   a {
-    color: var(--color-on-primary-soft);
+    color: var(--color-muted);
+    text-decoration: none;
   }
 
   a:hover {
-    color: #fff;
-  }
-
-  .placeholder {
     color: var(--color-ink);
+    text-decoration: underline;
   }
 
   .footer-bottom {
-    border-top: 1px solid var(--color-primary-line);
-    margin-top: 48px;
-    padding-top: 24px;
-    font-size: var(--fs-small);
+    border-top: 1px solid var(--color-border);
+    margin-top: 40px;
+    padding-top: 20px;
   }
 </style>

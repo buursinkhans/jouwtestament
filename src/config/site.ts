@@ -8,7 +8,7 @@ export const site = {
   redirectDomains: [] as string[],
   // Fixed entity description (docs/01): identical everywhere (FAQ, Over ons, schema, llms.txt).
   entityDescription:
-    'Helder Nalaten helpt je je nalatenschap goed te regelen. Een adviseur geeft financieel advies voor € 500 tot € 1.000, met een instructie voor de notaris en een uitleg voor je nabestaanden. Je testament laat je vastleggen bij een netwerknotaris (€ 500, of € 800 voor partners) of bij je eigen notaris.',
+    'Helder Nalaten helpt je je nalatenschap goed te regelen. Een adviseur geeft financieel advies voor € 500 tot € 1.000, met een instructie voor de notaris en een uitleg voor je nabestaanden. Je testament laat je vastleggen bij een netwerknotaris (€ 500, of € 800 voor partners) of bij je eigen notaris.',
   contact: { phone: '[TELEFOON]', email: 'info@jouwtestament.nl' },
   kvk: '[KVK]',
   reviewer: { name: '[NAAM ADVISEUR]', anchor: '[naam]' },

@@ -1,41 +1,42 @@
-/* Design tokens and base styles (docs/04-design-system.md, calmer version 2026-09-27).
+/* Design tokens and base styles (docs/04-design-system.md, modern version 2026-09-28).
    Components use these tokens only, never loose hex values.
-   Rules: one typeface, five font sizes (h1, h2, h3, body, small), accent colour only for the
-   primary button. */
+   Rules: one typeface (Inter), five font sizes (h1, h2, h3, body, small), neutral light
+   backgrounds, near-black headings, green only as a small accent, orange only for the
+   primary button. No large coloured areas. */
 
 :root {
-  --color-ground: #f6f4ef;
+  --color-ground: #f7f7f5;
   --color-surface: #ffffff;
-  --color-ink: #1b2b27;
-  --color-ink-soft: #1b2b27; /* same as ink: one text colour */
-  --color-muted: #5b6763;
+  --color-ink: #141c1a;
+  --color-ink-soft: #141c1a; /* same as ink: one text colour */
+  --color-muted: #5d6865;
   --color-primary: #1f3d36;
   --color-primary-line: #3c5a52;
   --color-on-primary-soft: #c9d6d1;
   --color-accent: #a8552b;
   --color-accent-hover: #8a3f1c;
-  --color-border: #ddd8cd;
-  --color-input-border: #bdb6a8;
-  --color-tint: #e7eeeb; /* light primary tint, e.g. inactive step numbers */
+  --color-border: #e5e5e1;
+  --color-input-border: #c8c8c3;
+  --color-tint: #eaf0ee; /* light primary tint, e.g. inactive step numbers */
 
-  --font-body: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', 'Segoe UI', system-ui, sans-serif;
 
   --content-max: 1200px;
   --gutter: 20px;
   --section-pad: 64px;
-  --radius-card: 20px;
-  --radius-panel: 24px;
-  --radius-small: 16px;
-  --radius-input: 12px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
+  --radius-small: 12px;
+  --radius-input: 10px;
   --radius-pill: 999px;
-  --shadow-card: 0 12px 32px rgba(31, 61, 54, 0.08);
+  --shadow-card: 0 8px 24px rgba(20, 28, 26, 0.06);
 
   /* Five sizes only */
   --fs-h1: 32px;
   --fs-h2: 26px;
   --fs-h3: 20px;
-  --fs-body: 17px;
-  --fs-small: 15px;
+  --fs-body: 16px;
+  --fs-small: 14px;
   /* aliases, kept so components stay on the same five sizes */
   --fs-stat: var(--fs-h2);
   --fs-card-title: var(--fs-h3);
@@ -47,9 +48,10 @@
   :root {
     --gutter: 40px;
     --section-pad: 96px;
-    --fs-h1: 40px;
+    --fs-h1: 44px;
     --fs-h2: 30px;
-    --fs-body: 18px;
+    --fs-body: 17px;
+    --fs-small: 14px;
   }
 }
 
@@ -70,12 +72,12 @@ html {
 
 body {
   margin: 0;
-  line-height: 1.6;
-  background: var(--color-ground);
+  background: var(--color-surface);
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: var(--fs-body);
-  line-height: 1.5;
+  line-height: 1.6;
+  font-feature-settings: 'cv11', 'ss01';
   -webkit-font-smoothing: antialiased;
 }
 
@@ -84,14 +86,15 @@ h2,
 h3 {
   font-family: var(--font-body);
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-ink);
   margin: 0 0 0.5em;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 h1 {
   font-size: var(--fs-h1);
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
 }
 
 h2 {
@@ -166,22 +169,12 @@ a:not([class]):hover {
 }
 
 .section-surface {
-  background: var(--color-surface);
+  /* subtle neutral band to separate sections (no coloured areas) */
+  background: var(--color-ground);
 }
 
-.section-dark {
-  background: var(--color-primary);
-  color: var(--color-on-primary-soft);
-}
 
-.section-dark h2,
-.section-dark h3 {
-  color: #fff;
-}
 
-.section-dark a:not([class]) {
-  color: #fff;
-}
 
 .page {
   padding-top: 32px;
@@ -201,9 +194,6 @@ a:not([class]):hover {
   margin-bottom: 8px;
 }
 
-.section-dark .eyebrow {
-  color: var(--color-on-primary-soft);
-}
 
 .lead {
   font-size: var(--fs-lead);
@@ -211,9 +201,6 @@ a:not([class]):hover {
   color: var(--color-ink-soft);
 }
 
-.section-dark .lead {
-  color: var(--color-on-primary-soft);
-}
 
 .small,
 .source {
