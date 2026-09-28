@@ -18,12 +18,20 @@ import { homeFaq } from '../data/faq';
 
 const description = `Wij helpen je je testament goed te regelen: je wensen helder op een rij, een instructie voor de notaris en een uitleg voor je nabestaanden. Zelf met onze assistent voor ${euro(pricing.selfService)}, of met een adviseur vanaf ${euro(pricing.advice.min)}.`;
 
-// "What we arrange for you" (hero checklist)
-const weArrange = [
-  ['Inzicht', 'Een gratis check laat zien wat er voor jou geregeld moet worden.'],
-  ['Je wensen op een rij', `Met onze digitale assistent (${euro(pricing.selfService)}) of met een adviseur (vanaf ${euro(pricing.advice.min)}).`],
-  ['Twee heldere documenten', 'Een instructie voor de notaris en een uitleg voor je nabestaanden.'],
-  ['Vastgelegd bij de notaris', `Uit ons netwerk (${euro(pricing.willSingle)}, ${euro(pricing.willCouple)} voor partners) of je eigen notaris.`],
+// Why now, and why with help (owner 2026-09-28). TODO(review-partner)
+const motivations = [
+  {
+    title: 'De wet kent jouw familie niet',
+    text: 'Zonder testament bepaalt de wet wie erft. Een partner met wie je samenwoont en stiefkinderen krijgen dan niets.',
+  },
+  {
+    title: 'Later kan het niet meer',
+    text: 'Een testament maak je alleen als je zelf nog goed kunt beslissen. De notaris controleert dat. Nu regelen geeft rust.',
+  },
+  {
+    title: 'Hulp voorkomt vergeten keuzes',
+    text: 'Een standaardformulier regelt wat je invult, niet wat je vergeet. Met hulp komen de vragen aan bod waar je zelf niet aan dacht.',
+  },
 ];
 
 // The two routes (owner 2026-09-27): option 1 self-service, option 2 adviser
@@ -35,7 +43,7 @@ const routes = [
     bullets: [
       'In je eigen tempo, wanneer het jou uitkomt',
       'De assistent legt de keuzes uit en zet je wensen op een rij',
-      'Je ontvangt direct beide documenten',
+      'Direct een instructie voor de notaris en een uitleg voor je nabestaanden',
     ],
     cta: { label: 'Start met de assistent', href: '/regel-het-zelf', primary: true },
   },
@@ -46,7 +54,7 @@ const routes = [
     bullets: [
       'Voor een ingewikkelde situatie, of als je het liever niet zelf doet',
       'Een persoonlijk gesprek met een professional',
-      'Advies over de financiële keuzes, de prijs hoor je vooraf',
+      'Dezelfde twee documenten, de prijs hoor je vooraf',
     ],
     cta: { label: 'Plan een gesprek', href: '/check#adviseur', primary: false },
   },
@@ -105,49 +113,21 @@ const serviceSchema = {
   faqItems={faq}
   schema={[serviceSchema]}
 >
-  <!-- 1. Hero -->
+  <!-- 1. Hero: proposition + the two choices -->
   <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <span class="eyebrow">Regel het nu, voor de mensen van wie je houdt</span>
+    <div class="container">
+      <div class="hero-intro">
         <h1>Wij helpen je je testament goed te regelen</h1>
         <p class="lead">
           Je beantwoordt eenvoudige vragen, wij zetten je wensen helder op een rij. Je krijgt een instructie voor de
           notaris en een uitleg voor je nabestaanden. De notaris legt je testament vast.
         </p>
-        <div class="btn-row">
-          <a class="btn-primary" href="/check">Doe de gratis check (2 minuten)</a>
-          <a class="btn-secondary" href="#wat-we-regelen">Zo werkt het</a>
-        </div>
-        <p class="trust">Vaste prijzen · Vanaf {euro(pricing.selfService)} · Vrije keuze van notaris</p>
       </div>
-      <aside class="hero-panel" aria-labelledby="hero-panel-title">
-        <h2 id="hero-panel-title">Wat we voor je regelen</h2>
-        <ul>
-          {weArrange.map(([title, text]) => (
-            <li>
-              <CheckIcon size={20} stroke-width={2} aria-hidden="true" />
-              <span><strong>{title}</strong> {text}</span>
-            </li>
-          ))}
-        </ul>
-      </aside>
-    </div>
-  </section>
-
-  <!-- 1b. What we arrange for you: steps + two routes -->
-  <section class="section section-surface" id="wat-we-regelen">
-    <div class="container">
-      <div class="section-head">
-        <h2>Wat regelen we voor je?</h2>
-        <p class="lead">Van de eerste vraag tot je testament bij de notaris. Jij kiest hoeveel hulp je wilt.</p>
-      </div>
-      <StepsAnimation id="stappen-home" />
       <div class="grid grid-2 routes">
         {routes.map((route) => (
           <article class="card route">
             <span class="eyebrow">{route.label}</span>
-            <h3>{route.title}</h3>
+            <h2>{route.title}</h2>
             <p class="route-price">{route.price}</p>
             <ul>
               {route.bullets.map((bullet) => (
@@ -158,6 +138,39 @@ const serviceSchema = {
           </article>
         ))}
       </div>
+      <p class="hero-more">
+        Twijfel je wat bij je past? <a href="/check">Doe eerst de gratis check (2 minuten)</a>
+        <span class="trust"> · Vaste prijzen · Vrije keuze van notaris</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- 1a. Why now, and why with help -->
+  <section class="section section-surface" id="waarom-nu">
+    <div class="container">
+      <div class="section-head">
+        <h2>Waarom nu regelen, en waarom met hulp?</h2>
+      </div>
+      <ol class="motivations">
+        {motivations.map((item, index) => (
+          <li>
+            <span class="motivation-number" aria-hidden="true">{index + 1}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 1b. What we arrange for you: the steps -->
+  <section class="section" id="wat-we-regelen">
+    <div class="container">
+      <div class="section-head">
+        <h2>Wat regelen we voor je?</h2>
+        <p class="lead">Van de eerste vraag tot je testament bij de notaris. Jij kiest hoeveel hulp je wilt.</p>
+      </div>
+      <StepsAnimation id="stappen-home" />
       <p class="more small">
         Daarna leg je het testament vast bij een notaris uit ons netwerk voor {euro(pricing.willSingle)}{' '}
         ({euro(pricing.willCouple)} voor twee testamenten), of bij je eigen notaris met dezelfde instructie.
@@ -348,73 +361,93 @@ const serviceSchema = {
 
 <style>
   .hero {
-    padding: 40px 0 var(--section-pad);
-  }
-
-  .hero-grid {
-    display: grid;
-    gap: 40px;
-    align-items: start;
+    padding: 40px 0 56px;
   }
 
   @media (min-width: 1024px) {
     .hero {
-      padding-top: 72px;
+      padding: 64px 0 72px;
     }
-    .hero-grid {
-      grid-template-columns: 7fr 5fr;
-      gap: 64px;
-    }
+  }
+
+  .hero-intro {
+    max-width: 760px;
   }
 
   .hero .lead {
-    margin: 20px 0 28px;
+    margin: 16px 0 0;
+  }
+
+  .hero-more {
+    margin: 24px 0 0;
+    font-size: var(--fs-small);
   }
 
   .trust {
-    margin-top: 20px;
-    font-size: var(--fs-small);
     color: var(--color-muted);
   }
 
-  .hero-panel {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    padding: 28px;
-  }
-
-  .hero-panel h2 {
-    font-size: var(--fs-h3);
-    margin-bottom: 16px;
-  }
-
-  .hero-panel ul,
   .route ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 14px;
   }
 
-  .hero-panel li,
   .route li {
     display: flex;
     gap: 12px;
     align-items: flex-start;
   }
 
-  .hero-panel li :global(svg),
   .route li :global(svg) {
     flex-shrink: 0;
     margin-top: 3px;
     color: var(--color-primary);
   }
 
+  .route h2 {
+    font-size: var(--fs-h3);
+    margin: 0;
+  }
+
+  .motivations {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 768px) {
+    .motivations {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .motivation-number {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-tint);
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: var(--fs-small);
+    margin-bottom: 12px;
+  }
+
+  .motivations h3 {
+    margin-bottom: 6px;
+  }
+
+  .motivations p {
+    margin: 0;
+  }
+
   .routes {
-    margin-top: 40px;
+    margin-top: 32px;
   }
 
   .route {

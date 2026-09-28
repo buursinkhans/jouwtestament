@@ -11,7 +11,22 @@ Neem teksten letterlijk over. Prijzen uit `pricing.ts`.
 
 > **Wijziging eigenaar (2026-09-28):** de propositie moest duidelijker ("Wat regelen we voor je?"). De hero en een nieuwe sectie 1b zijn hieronder aangepast; sectie 4 heeft een nieuwe kop en sectie 6 bevat geen animatie meer (die staat in 1b).
 
-## 1. Hero (nieuw, 2026-09-28)
+## 1. Hero (versie 2, 2026-09-28 avond)
+
+- De pay-off "Regel het nu, voor de mensen van wie je houdt" staat voortaan in de header, direct onder het merk (geen eyebrow meer in de hero).
+- **H1** en **lead** zoals hieronder; direct daaronder **de twee keuzes** als kaarten: *Met onze digitale assistent – € 200* (knop "Start met de assistent") en *Met een adviseur – vanaf € 500* (knop "Plan een gesprek").
+- Regel eronder: "Twijfel je wat bij je past? Doe eerst de gratis check (2 minuten) · Vaste prijzen · Vrije keuze van notaris".
+- Het paneel "Wat we voor je regelen" vervalt (de stappenanimatie in 1b laat dat zien).
+
+## 1a. Waarom nu regelen, en waarom met hulp? (`#waarom-nu`, nieuw)
+
+1. **De wet kent jouw familie niet** – Zonder testament bepaalt de wet wie erft. Een partner met wie je samenwoont en stiefkinderen krijgen dan niets.
+2. **Later kan het niet meer** – Een testament maak je alleen als je zelf nog goed kunt beslissen. De notaris controleert dat. Nu regelen geeft rust.
+3. **Hulp voorkomt vergeten keuzes** – Een standaardformulier regelt wat je invult, niet wat je vergeet. Met hulp komen de vragen aan bod waar je zelf niet aan dacht.
+
+`TODO(review-partner)`
+
+## 1. Hero (versie 1, 2026-09-28, vervangen)
 
 - **Eyebrow:** Regel het nu, voor de mensen van wie je houdt
 - **H1:** Wij helpen je je testament goed te regelen
@@ -25,7 +40,7 @@ Neem teksten letterlijk over. Prijzen uit `pricing.ts`.
 - **H2:** Wat regelen we voor je?
 - **Lead:** Van de eerste vraag tot je testament bij de notaris. Jij kiest hoeveel hulp je wilt.
 - Stappenanimatie (4 stappen uit `07`).
-- Twee routekaarten: **Met onze digitale assistent – € 200** (in je eigen tempo; de assistent legt keuzes uit en zet je wensen op een rij; je ontvangt direct beide documenten; knop "Start met de assistent" → `/regel-het-zelf`) en **Met een adviseur – vanaf € 500** (voor een ingewikkelde situatie of als je het niet zelf wilt; persoonlijk gesprek; advies over financiële keuzes, prijs vooraf; knop "Plan een gesprek" → `/check#adviseur`).
+- *(Routekaarten verplaatst naar de hero, versie 2.)* Twee routekaarten: **Met onze digitale assistent – € 200** (in je eigen tempo; de assistent legt keuzes uit en zet je wensen op een rij; je ontvangt direct beide documenten; knop "Start met de assistent" → `/regel-het-zelf`) en **Met een adviseur – vanaf € 500** (voor een ingewikkelde situatie of als je het niet zelf wilt; persoonlijk gesprek; advies over financiële keuzes, prijs vooraf; knop "Plan een gesprek" → `/check#adviseur`).
 - Regel: Daarna leg je het testament vast bij een notaris uit ons netwerk voor € 500 (€ 800 voor twee testamenten), of bij je eigen notaris met dezelfde instructie.
 
 ## 1-oud. Hero (tot 2026-09-27, vervangen)
