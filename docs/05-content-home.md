@@ -9,7 +9,26 @@ Neem teksten letterlijk over. Prijzen uit `pricing.ts`.
 
 ---
 
-## 1. Hero
+> **Wijziging eigenaar (2026-09-28):** de propositie moest duidelijker ("Wat regelen we voor je?"). De hero en een nieuwe sectie 1b zijn hieronder aangepast; sectie 4 heeft een nieuwe kop en sectie 6 bevat geen animatie meer (die staat in 1b).
+
+## 1. Hero (nieuw, 2026-09-28)
+
+- **Eyebrow:** Regel het nu, voor de mensen van wie je houdt
+- **H1:** Wij helpen je je testament goed te regelen
+- **Lead:** Je beantwoordt eenvoudige vragen, wij zetten je wensen helder op een rij. Je krijgt een instructie voor de notaris en een uitleg voor je nabestaanden. De notaris legt je testament vast.
+- **Knoppen:** Doe de gratis check (2 minuten) → `/check` · Zo werkt het → `#wat-we-regelen`
+- **Vertrouwensregel:** Vaste prijzen · Vanaf € 200 · Vrije keuze van notaris
+- **Paneel rechts — "Wat we voor je regelen"** (vinkjes): Inzicht (gratis check) · Je wensen op een rij (assistent € 200 of adviseur vanaf € 500) · Twee heldere documenten · Vastgelegd bij de notaris (netwerk € 500 / € 800 partners, of eigen notaris).
+
+## 1b. Wat regelen we voor je? (`#wat-we-regelen`, nieuw)
+
+- **H2:** Wat regelen we voor je?
+- **Lead:** Van de eerste vraag tot je testament bij de notaris. Jij kiest hoeveel hulp je wilt.
+- Stappenanimatie (4 stappen uit `07`).
+- Twee routekaarten: **Met onze digitale assistent – € 200** (in je eigen tempo; de assistent legt keuzes uit en zet je wensen op een rij; je ontvangt direct beide documenten; knop "Start met de assistent" → `/regel-het-zelf`) en **Met een adviseur – vanaf € 500** (voor een ingewikkelde situatie of als je het niet zelf wilt; persoonlijk gesprek; advies over financiële keuzes, prijs vooraf; knop "Plan een gesprek" → `/check#adviseur`).
+- Regel: Daarna leg je het testament vast bij een notaris uit ons netwerk voor € 500 (€ 800 voor twee testamenten), of bij je eigen notaris met dezelfde instructie.
+
+## 1-oud. Hero (tot 2026-09-27, vervangen)
 
 - **Eyebrow:** Regel het nu, voor de mensen van wie je houdt
 - **H1:** Als jij het niet regelt, doet de wet het. En die kent jouw familie niet.
@@ -60,7 +79,7 @@ Vier tegels: **Je woning** (Vaak het grootste deel. Wie mag erin blijven wonen?)
 
 ## 4. Wat staat er op het spel? (`#waarom`)
 
-- **H2:** Wat gebeurt er als je niets regelt?
+- **H2:** Als jij het niet regelt, doet de wet het *(was: Wat gebeurt er als je niets regelt?; het paneel "Zonder regeling beslist de wet" staat nu boven de risicokaarten)*
 - **Lead:** De wet heeft een standaardregeling. Die past lang niet altijd bij hoe jij leeft. De gevolgen komen terecht bij de mensen die je juist wilt beschermen.
 
 | # | Titel | Tekst |

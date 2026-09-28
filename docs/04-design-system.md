@@ -1,5 +1,19 @@
 # 04 — Design system
 
+> **Wijziging eigenaar (2026-09-28): moderner en strakker.** Dit gaat vóór alles hieronder.
+> - **Lettertype:** Inter (variabel, self-hosted via `@fontsource-variable/inter`) voor koppen én tekst.
+> - **Kleuren:** witte pagina, neutrale lichtgrijze banden (`--color-ground` #F7F7F5) om secties te scheiden, koppen in bijna-zwart (`--color-ink` #141C1A). Groen (`--color-primary`) alleen als klein accent (vinkjes, geselecteerde keuzes, stapnummers). Oranje alleen voor de primaire knop.
+> - **Geen grote gekleurde vlakken**, ook de footer is licht.
+> - Lettergroottes: H1 44/32px, H2 30/26px, H3 20px, tekst 17/16px, klein 14px. Radius 16px (kaarten).
+> - Bedragen altijd met een vaste spatie (`€ 200` breekt nooit af).
+>
+> **Wijziging eigenaar (2026-09-27): rustiger ontwerp.**
+> - **Eén lettertype:** Source Sans 3 voor koppen én tekst (Fraunces vervalt). *(Vervangen door Inter, 2026-09-28.)*
+> - **Vijf lettergroottes:** H1 40/32px, H2 30/26px, H3 20px, tekst 18/17px, klein 15px (desktop/mobiel). Grote cijfers gebruiken H2 of H3.
+> - **Kleuren:** één tekstkleur, groen (`--color-primary`) voor koppen, links en accenten, oranje (`--color-accent`) **alleen** voor de primaire knop. Geen oranje cijfers, iconen of labels.
+> - **Geen donkere of gekleurde banden** midden op de pagina; één achtergrondkleur, witte kaarten. Alleen de footer is donker.
+> - **Eyebrows** klein en grijs, geen hoofdletters. Minder iconen en kaarten; opsommingen als rustige lijsten.
+
 Implementeer deze waarden als design tokens (CSS custom properties of Tailwind theme). Gebruik nergens losse hex-waarden in componenten.
 
 ## Kleuren

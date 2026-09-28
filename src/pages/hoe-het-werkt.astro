@@ -2,10 +2,10 @@
 // /hoe-het-werkt (docs/07)
 import Layout from '../layouts/Layout.astro';
 import ShortAnswer from '../components/content/ShortAnswer.astro';
-import Steps from '../components/content/Steps.astro';
+import StepsAnimation from '../components/content/StepsAnimation.astro';
 import DocumentCard from '../components/content/DocumentCard.astro';
 import ReviewMeta from '../components/content/ReviewMeta.astro';
-import { steps, optionalStep, documents } from '../data/offer';
+import { documents } from '../data/offer';
 import { devOnly } from '../config/site';
 
 const breadcrumbs = [
@@ -17,25 +17,24 @@ const breadcrumbs = [
 <Layout
   title="Zo regel je het goed, in vier stappen"
   fullTitle="Hoe het werkt: van check tot testament | Helder Nalaten"
-  description="In vier stappen je nalatenschap goed geregeld: gratis check, adviesgesprek, twee heldere documenten en je testament bij de notaris van jouw keuze."
+  description="In vier stappen je nalatenschap goed geregeld: gratis check, je wensen op een rij met onze assistent of een adviseur, twee heldere documenten en je testament bij de notaris van jouw keuze."
   breadcrumbs={breadcrumbs}
   schema={[{ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Hoe het werkt', inLanguage: 'nl-NL' }]}
 >
-  <div class="container narrow top">
+  <div class="container narrow">
     <h1>Zo regel je het goed, in vier stappen</h1>
     <ReviewMeta />
     <ShortAnswer>
       <p>
-        Je doet een gratis check, hebt een adviesgesprek met een professional, ontvangt een instructie voor de
-        notaris en een uitleg voor je nabestaanden, en legt je testament vast bij een netwerknotaris of je eigen
-        notaris.
+        Je doet een gratis check en zet je wensen op een rij: zelf met onze digitale assistent, of met een
+        adviseur. Je ontvangt een instructie voor de notaris en een uitleg voor je nabestaanden, en legt je
+        testament vast bij een netwerknotaris of je eigen notaris.
       </p>
     </ShortAnswer>
+  </div>
 
-    <section id="stappen">
-      <h2>Stappen</h2>
-      <Steps steps={[...steps, optionalStep]} />
-    </section>
+  <div class="container top">
+    <StepsAnimation heading="Stappen" id="stappen" showOptional />
   </div>
 
   <section class="section section-surface" id="wat-je-krijgt">
@@ -69,10 +68,6 @@ const breadcrumbs = [
 <style>
   .top {
     padding-bottom: var(--section-pad);
-  }
-
-  #stappen h2 {
-    margin-bottom: 32px;
   }
 
   .cta {

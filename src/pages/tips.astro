@@ -111,29 +111,28 @@ const articleSchema = {
     </section>
   </div>
 
-  <section class="section section-dark cta-section">
+  <section class="section section-surface cta-section">
     <div class="container narrow">
       <h2>Welke punten gelden voor jou?</h2>
       <p class="lead">
         Doe de gratis check van twee minuten. Daarna bespreek je het met een adviseur, vanaf {euro(pricing.advice.min)}.
       </p>
-      <a class="btn-light" href="/check">Doe de gratis check</a>
+      <a class="btn-primary" href="/check">Doe de gratis check</a>
     </div>
   </section>
 </Layout>
 
 <style>
   .summary {
-    background: var(--color-primary);
-    color: var(--color-on-primary-soft);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-panel);
     padding: 28px 32px;
     margin: 32px 0;
   }
 
   .summary h2 {
-    color: #fff;
-    font-size: 26px;
+    font-size: var(--fs-h3);
   }
 
   .summary ul {
@@ -146,7 +145,7 @@ const articleSchema = {
   }
 
   .toc h2 {
-    font-size: 26px;
+    font-size: var(--fs-h3);
   }
 
   .toc ol {
@@ -162,16 +161,12 @@ const articleSchema = {
     padding-top: 8px;
   }
 
-  .tip h2 {
-    font-size: calc(var(--fs-h2) * 0.8);
-  }
-
   .tip :global(.short-answer) {
     margin: 16px 0 24px;
   }
 
   .related {
-    font-size: 16px;
+    font-size: var(--fs-small);
     color: var(--color-muted);
   }
 
@@ -180,7 +175,7 @@ const articleSchema = {
   }
 
   .sources h2 {
-    font-size: 26px;
+    font-size: var(--fs-h3);
   }
 
   .cta-section {

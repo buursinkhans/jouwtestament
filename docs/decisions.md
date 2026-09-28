@@ -16,3 +16,7 @@
 | 2026-09-27 | Analytics: Simple Analytics, alleen in productie, events zonder persoonsgegevens of antwoorden (`src/lib/analytics.ts`) | Keuze eigenaar. Cookieloos, EU. |
 | 2026-09-27 | Site draait voorlopig op jouwtestament.nl (`site.url`, `astro.config.mjs`, robots.txt) | Eigenaar moet heldernalaten.nl nog kopen. Daarna terugzetten en jouwtestament.nl laten doorverwijzen naar /testament (docs/01). |
 | 2026-09-27 | Placeholders alleen zichtbaar in development; op de live site vervalt de hele zin of het blok (`devOnly`/`canShow` in `src/config/site.ts`) | docs/10: placeholders verborgen in productie. Contact-e-mail info@jouwtestament.nl (eerder door eigenaar opgegeven). |
+| 2026-09-27 | Rustiger ontwerp: één lettertype (Source Sans 3), vijf lettergroottes, oranje alleen voor de hoofdknop, geen gekleurde banden | Eigenaar vond de homepage te rommelig. Vastgelegd bovenaan docs/04. |
+| 2026-09-27 | Digitale assistent voor optie 1 (zelf regelen, € 200) met Claude Opus 5 via `@anthropic-ai/sdk`; check leidt naar twee opties | Besluit eigenaar: kern van de opzet. Zie docs/13-agent.md. Betalen nog niet gekoppeld (testfase). |
+| 2026-09-28 | Moderner ontwerp: Inter, witte pagina met neutrale grijze banden, koppen bijna-zwart, geen groene vlakken (ook footer licht) | Verzoek eigenaar. Vastgelegd bovenaan docs/04. |
+| 2026-09-28 | Duidelijkere propositie op home: hero 'Wij helpen je je testament goed te regelen' + sectie 'Wat regelen we voor je?' met animatie en twee routes | Verzoek eigenaar; docs/05 en docs/07 bijgewerkt. |

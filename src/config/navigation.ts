@@ -11,6 +11,7 @@ export const voorWieItems = [...segments]
   }));
 
 export const mainNav = [
+  { label: 'Zelf regelen', href: '/regel-het-zelf' },
   { label: 'Hoe het werkt', href: '/hoe-het-werkt' },
   { label: 'Tarieven', href: '/tarieven' },
   { label: 'Tips', href: '/tips' },
@@ -19,6 +20,7 @@ export const mainNav = [
 export const cta = { label: 'Doe de gratis check', labelLong: 'Doe de gratis check (2 min)', href: '/check' };
 
 export const footerMore = [
+  { label: 'Zelf regelen met de assistent', href: '/regel-het-zelf' },
   { label: 'Hoe het werkt', href: '/hoe-het-werkt' },
   { label: 'Tarieven', href: '/tarieven' },
   { label: 'Testament', href: '/testament' },

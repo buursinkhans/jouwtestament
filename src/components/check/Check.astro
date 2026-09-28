@@ -79,7 +79,8 @@ const questions = [
 
 const consentText =
   'Ik ga akkoord dat mijn antwoorden en contactgegevens worden gedeeld met een adviseur van Helder Nalaten om contact met mij op te nemen.';
-const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${euro(pricing.willSingle)} / ${euro(pricing.willCouple)} voor partners`;
+const selfPrice = euro(pricing.selfService);
+const adviceFrom = euro(pricing.advice.min);
 ---
 
 <section
@@ -97,8 +98,8 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
     <span class="eyebrow">Gratis nalatenschapscheck</span>
     <Heading id={id('title')}>Hoe staat jouw regeling ervoor?</Heading>
     <p class="lead">
-      Beantwoord een paar vragen en zie direct waar je op moet letten. Wil je het verder uitzoeken? Dan neemt
-      een adviseur binnen twee werkdagen contact op.
+      Beantwoord een paar vragen en zie direct waar je op moet letten. Daarna kies je: zelf regelen met onze
+      assistent, of een gesprek met een adviseur.
     </p>
     <p class="small">De check geeft een eerste indicatie en is geen juridisch of financieel advies.</p>
   </div>
@@ -132,7 +133,43 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
       </fieldset>
     ))}
 
-    <fieldset class="contact">
+    <div class="step-actions" data-step-actions>
+      <p class="form-error error" hidden data-form-error role="alert">
+        Niet alle vragen zijn ingevuld. Kijk de gemarkeerde vragen na.
+      </p>
+      <button type="button" class="btn-primary submit" data-show-result>Bekijk mijn aandachtspunten</button>
+    </div>
+
+    <div class="result" hidden tabindex="-1" data-check-result>
+      <h3>Jouw aandachtspunten</h3>
+      <ul class="flags" data-flag-list></ul>
+
+      <h3>Wat wil je nu doen?</h3>
+      <div class="options">
+        <div class="option">
+          <h4>Regel het zelf met onze assistent</h4>
+          <p>
+            Onze digitale assistent stelt je de vragen en zet je wensen op een rij. Je krijgt een instructie voor de
+            notaris en een uitleg voor je nabestaanden.
+          </p>
+          <p class="option-price">{selfPrice}</p>
+          <button type="button" class="btn-primary" data-option-self>Start met de assistent</button>
+        </div>
+        <div class="option" data-option-adviser-card>
+          <span class="recommended" hidden data-recommended>Aanbevolen voor jouw situatie</span>
+          <h4>Afspraak met een adviseur</h4>
+          <p>
+            Voor een ingewikkelde situatie, of als je het liever niet zelf doet. Een adviseur neemt binnen twee
+            werkdagen contact op.
+          </p>
+          <p class="option-price">Advies vanaf {adviceFrom}</p>
+          <button type="button" class="btn-secondary" data-option-adviser>Kies een adviseur</button>
+        </div>
+      </div>
+      <button type="button" class="link-button" data-check-reset>Antwoorden aanpassen</button>
+    </div>
+
+    <fieldset class="contact" id="adviseur" data-contact>
       <legend>Waar mag de adviseur je bereiken?</legend>
       <div class="field">
         <label for={id('name')}>Naam</label>
@@ -164,15 +201,11 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
     <input type="hidden" name="landingPage" value={Astro.url.pathname} />
     <input type="hidden" name="segmentPage" value={segmentPage} />
 
-    <p class="form-error error" hidden data-form-error role="alert">
-      Niet alle vragen zijn ingevuld. Kijk de gemarkeerde vragen na.
-    </p>
-    <button type="submit" class="btn-primary submit">Bekijk mijn aandachtspunten</button>
+    <p class="contact-error error" hidden data-contact-error role="alert">Controleer de gemarkeerde velden.</p>
+    <button type="submit" class="btn-primary submit" data-contact-submit>Vraag een gesprek aan</button>
   </form>
 
-  <div class="result" hidden tabindex="-1" data-check-result>
-    <h3>Jouw aandachtspunten</h3>
-    <ul class="flags" data-flag-list></ul>
+  <div class="sent" hidden tabindex="-1" data-sent>
     <div class="thanks" data-thanks hidden>
       <p><strong>Bedankt!</strong> Een adviseur neemt binnen twee werkdagen contact met je op om dit samen door te lopen.</p>
     </div>
@@ -194,8 +227,6 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
     <div class="send-failed" data-send-failed hidden role="alert">
       <p>Het versturen is niet gelukt. Probeer het later nog eens.</p>
     </div>
-    <p class="small">{costIndication}</p>
-    <button type="button" class="btn-secondary" data-check-reset>Opnieuw invullen</button>
   </div>
 </section>
 
@@ -265,12 +296,30 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
       return show;
     };
 
-    const validate = () => {
+    const stepActions = root.querySelector<HTMLElement>('[data-step-actions]')!;
+    const contact = root.querySelector<HTMLElement>('[data-contact]')!;
+    const contactSubmit = root.querySelector<HTMLElement>('[data-contact-submit]')!;
+    const contactError = root.querySelector<HTMLElement>('[data-contact-error]')!;
+    const sentBlock = root.querySelector<HTMLElement>('[data-sent]')!;
+    const questionSets = Array.from(root.querySelectorAll<HTMLElement>('fieldset.question'));
+
+    // With JavaScript the contact form only appears after choosing the adviser option
+    const setContactVisible = (visible: boolean) => {
+      contact.hidden = !visible;
+      contactSubmit.hidden = !visible;
+    };
+    setContactVisible(false);
+
+    const validateQuestions = () => {
       const invalid: string[] = [];
       const required = ['situation', 'children', 'home', 'documents'];
       if (!minorsQuestion.hidden) required.push('minors');
       for (const name of required) if (showError(name, !value(name))) invalid.push(name);
+      return invalid;
+    };
 
+    const validateContact = () => {
+      const invalid: string[] = [];
       if (showError('name', value('name').trim().length < 2)) invalid.push('name');
       if (showError('email', !emailPattern.test(value('email').trim()))) invalid.push('email');
       const phone = value('phone').replace(/[\s-]/g, '');
@@ -280,32 +329,85 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
       return invalid;
     };
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const invalid = validate();
-      formError.hidden = invalid.length === 0;
-      if (invalid.length > 0) {
-        const first = form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`);
-        first?.focus();
-        return;
-      }
-
-      const answers = {
+    const currentAnswers = () =>
+      ({
         situation: value('situation'),
         children: value('children'),
         home: value('home'),
         documents: value('documents'),
         ...(value('minors') ? { minors: value('minors') } : {}),
         ...(value('notary') ? { notary: value('notary') } : {}),
-      } as Answers;
+      }) as Answers;
 
-      const score = getScore(answers, value('phone').trim() !== '');
+    // Step 1: show the attention points and the two options
+    root.querySelector('[data-show-result]')!.addEventListener('click', () => {
+      const invalid = validateQuestions();
+      formError.hidden = invalid.length === 0;
+      if (invalid.length > 0) {
+        form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
+        return;
+      }
+      const answers = currentAnswers();
       track('check_submitted', {
         segment: getSegment(answers, root.dataset.segmentPage || undefined),
-        priority: getPriority(score),
+        priority: getPriority(getScore(answers, false)),
         landingPage: window.location.pathname,
       });
 
+      flagList.replaceChildren(
+        ...getFlags(answers).map((flag) => {
+          const content = flagContent[flag];
+          const item = document.createElement('li');
+          item.className = 'flag';
+          const title = document.createElement('h4');
+          title.textContent = content.title;
+          const text = document.createElement('p');
+          text.textContent = content.text;
+          const link = document.createElement('a');
+          link.href = content.href;
+          link.className = 'link-arrow';
+          link.textContent = 'Lees meer →';
+          item.append(title, text, link);
+          return item;
+        })
+      );
+      // A blended family is usually more complex: recommend the adviser
+      root.querySelector<HTMLElement>('[data-recommended]')!.hidden = answers.children !== 'blended';
+
+      questionSets.forEach((set) => (set.hidden = true));
+      stepActions.hidden = true;
+      result.hidden = false;
+      result.focus();
+    });
+
+    // Option 1: self-service with the assistant (answers go along in this tab only)
+    root.querySelector('[data-option-self]')!.addEventListener('click', () => {
+      try {
+        sessionStorage.setItem('hn_check_answers', JSON.stringify(currentAnswers()));
+      } catch {
+        // storage unavailable: the assistant simply starts without the check answers
+      }
+      track('check_option_selfservice');
+      window.location.href = '/regel-het-zelf';
+    });
+
+    // Option 2: adviser - show the contact form
+    root.querySelector('[data-option-adviser]')!.addEventListener('click', () => {
+      track('check_option_adviser');
+      setContactVisible(true);
+      form.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const invalid = [...validateQuestions(), ...validateContact()];
+      contactError.hidden = invalid.length === 0;
+      if (invalid.length > 0) {
+        form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
+        return;
+      }
+
+      const answers = currentAnswers();
       // Honeypot filled: behave as if sent, send nothing (docs/10)
       const isBot = value('company_website') !== '';
       const endpoint = root.dataset.endpoint ?? '';
@@ -341,37 +443,21 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
         }
       }
 
-      flagList.replaceChildren(
-        ...getFlags(answers).map((flag) => {
-          const content = flagContent[flag];
-          const item = document.createElement('li');
-          item.className = 'flag';
-          const title = document.createElement('h4');
-          title.textContent = content.title;
-          const text = document.createElement('p');
-          text.textContent = content.text;
-          const link = document.createElement('a');
-          link.href = content.href;
-          link.className = 'link-arrow';
-          link.textContent = 'Lees meer →';
-          item.append(title, text, link);
-          return item;
-        })
-      );
-
       root.querySelector<HTMLElement>('[data-thanks]')!.hidden = !(sent || isBot);
       root.querySelector<HTMLElement>('[data-not-connected]')!.hidden = endpoint !== '' || isBot;
       root.querySelector<HTMLElement>('[data-send-failed]')!.hidden = endpoint === '' || sent || isBot;
-      form.hidden = true;
-      result.hidden = false;
-      result.focus();
+      if (sent || isBot) form.hidden = true;
+      sentBlock.hidden = false;
+      sentBlock.focus();
     });
 
     root.querySelector('[data-check-reset]')?.addEventListener('click', () => {
-      form.reset();
+      questionSets.forEach((set) => (set.hidden = false));
       updateMinors();
+      stepActions.hidden = false;
       result.hidden = true;
-      form.hidden = false;
+      setContactVisible(false);
+      sentBlock.hidden = true;
       form.querySelector<HTMLInputElement>('input')?.focus();
     });
   });
@@ -417,14 +503,14 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 
   legend {
     font-weight: 700;
-    font-size: 19px;
+    font-size: var(--fs-body);
     color: var(--color-primary);
     margin-bottom: 12px;
     padding: 0;
   }
 
   .q-number {
-    color: var(--color-accent);
+    color: var(--color-muted);
     margin-right: 6px;
   }
 
@@ -528,7 +614,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
     display: flex;
     gap: 12px;
     align-items: flex-start;
-    font-size: 16px;
+    font-size: var(--fs-small);
     color: var(--color-ink-soft);
     cursor: pointer;
   }
@@ -543,7 +629,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 
   .error {
     color: var(--color-accent-hover);
-    font-size: 15px;
+    font-size: var(--fs-small);
     font-weight: 600;
     margin: 8px 0 0;
   }
@@ -562,13 +648,9 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
     }
   }
 
-  .result {
-    grid-column: 2;
-  }
-
-  @media (max-width: 1023px) {
-    .result {
-      grid-column: auto;
+  @media (min-width: 1024px) {
+    .sent {
+      grid-column: 2;
     }
   }
 
@@ -592,7 +674,7 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
 
   .flags :global(h4) {
     margin: 0 0 6px;
-    font-size: 19px;
+    font-size: var(--fs-body);
     color: var(--color-primary);
   }
 
@@ -604,6 +686,76 @@ const costIndication = `Advies vanaf ${euro(pricing.advice.min)}, testament ${eu
   .send-failed p {
     color: var(--color-accent-hover);
     font-weight: 600;
+  }
+
+  .result h3 {
+    font-size: var(--fs-h3);
+    margin: 0 0 16px;
+  }
+
+  .result h3 + .flags {
+    margin-bottom: 32px;
+  }
+
+  .options {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .options {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .option {
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-small);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .option h4 {
+    margin: 0;
+    font-size: var(--fs-body);
+    color: var(--color-primary);
+  }
+
+  .option p {
+    margin: 0;
+  }
+
+  .option-price {
+    font-weight: 700;
+    color: var(--color-primary);
+    flex-grow: 1;
+  }
+
+  .recommended {
+    font-size: var(--fs-small);
+    background: var(--color-tint);
+    color: var(--color-primary);
+    border-radius: var(--radius-pill);
+    padding: 2px 10px;
+  }
+
+  .link-button {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--color-muted);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-bottom: 24px;
+  }
+
+  .sent:focus {
+    outline: none;
   }
 
   .thanks,

@@ -6,7 +6,14 @@ type EventName =
   | 'check_submitted'
   | 'contact_requested'
   | 'segment_tile_clicked'
-  | 'nav_voor_wie_opened';
+  | 'nav_voor_wie_opened'
+  | 'check_option_selfservice'
+  | 'check_option_adviser'
+  | 'agent_started'
+  | 'agent_adviser_recommended'
+  | 'agent_option_adviser'
+  | 'agent_ready'
+  | 'agent_documents_created';
 
 declare global {
   interface Window {

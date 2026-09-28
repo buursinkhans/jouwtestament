@@ -1,21 +1,56 @@
 ---
-// Home (docs/05). Copy verbatim; prices from config/pricing.ts.
+// Home (docs/05, proposition updated 2026-09-28 on request of the owner). Prices from config/pricing.ts.
 // TODO(review-partner): hero panel and risk cards 01–05.
 import Layout from '../layouts/Layout.astro';
 import SituationTile from '../components/content/SituationTile.astro';
 import TipCard from '../components/content/TipCard.astro';
 import DocumentCard from '../components/content/DocumentCard.astro';
+import StepsAnimation from '../components/content/StepsAnimation.astro';
 import PriceCard from '../components/content/PriceCard.astro';
 import Faq from '../components/content/Faq.astro';
 import Check from '../components/check/Check.astro';
-import { Home, PiggyBank, Landmark, ShieldCheck } from '@lucide/astro';
+import { Check as CheckIcon } from '@lucide/astro';
 import { site, canShow } from '../config/site';
 import { pricing, euro } from '../config/pricing';
 import { situationTiles } from '../data/segments';
 import { documents, priceCards, offerSchema } from '../data/offer';
 import { homeFaq } from '../data/faq';
 
-const description = `Als jij het niet regelt, doet de wet het. Regel het nu, voor de mensen van wie je houdt: financieel advies vanaf ${euro(pricing.advice.min)}, testament vanaf ${euro(pricing.willSingle)}, vaste prijzen en vrije keuze van notaris.`;
+const description = `Wij helpen je je testament goed te regelen: je wensen helder op een rij, een instructie voor de notaris en een uitleg voor je nabestaanden. Zelf met onze assistent voor ${euro(pricing.selfService)}, of met een adviseur vanaf ${euro(pricing.advice.min)}.`;
+
+// "What we arrange for you" (hero checklist)
+const weArrange = [
+  ['Inzicht', 'Een gratis check laat zien wat er voor jou geregeld moet worden.'],
+  ['Je wensen op een rij', `Met onze digitale assistent (${euro(pricing.selfService)}) of met een adviseur (vanaf ${euro(pricing.advice.min)}).`],
+  ['Twee heldere documenten', 'Een instructie voor de notaris en een uitleg voor je nabestaanden.'],
+  ['Vastgelegd bij de notaris', `Uit ons netwerk (${euro(pricing.willSingle)}, ${euro(pricing.willCouple)} voor partners) of je eigen notaris.`],
+];
+
+// The two routes (owner 2026-09-27): option 1 self-service, option 2 adviser
+const routes = [
+  {
+    label: 'Zelf regelen',
+    title: 'Met onze digitale assistent',
+    price: euro(pricing.selfService),
+    bullets: [
+      'In je eigen tempo, wanneer het jou uitkomt',
+      'De assistent legt de keuzes uit en zet je wensen op een rij',
+      'Je ontvangt direct beide documenten',
+    ],
+    cta: { label: 'Start met de assistent', href: '/regel-het-zelf', primary: true },
+  },
+  {
+    label: 'Met hulp',
+    title: 'Met een adviseur',
+    price: `vanaf ${euro(pricing.advice.min)}`,
+    bullets: [
+      'Voor een ingewikkelde situatie, of als je het liever niet zelf doet',
+      'Een persoonlijk gesprek met een professional',
+      'Advies over de financiële keuzes, de prijs hoor je vooraf',
+    ],
+    cta: { label: 'Plan een gesprek', href: '/check#adviseur', primary: false },
+  },
+];
 
 const heroPanel = [
   ['Samenwonend, niet getrouwd?', 'Je partner erft niets.'],
@@ -25,10 +60,10 @@ const heroPanel = [
 ];
 
 const estateTiles = [
-  { icon: Home, title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
-  { icon: PiggyBank, title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
-  { icon: Landmark, title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
-  { icon: ShieldCheck, title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
+  { title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
+  { title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
+  { title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
+  { title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
 ];
 
 const risks = [
@@ -41,7 +76,7 @@ const risks = [
 ];
 
 const stats = [
-  ['€ 33,5 mld', 'nagelaten in 2023'],
+  ['€ 33,5 mld', 'nagelaten in 2023'],
   ['1 op 4', 'kreeg ruzie of onenigheid bij een erfenis'],
   ['8×', 'zo vaak geprocedeerd in 2015 als in 2003'],
   ['± 6 maanden', 'vertraging als zonder levenstestament eerst bewind nodig is'],
@@ -75,33 +110,63 @@ const serviceSchema = {
     <div class="container hero-grid">
       <div>
         <span class="eyebrow">Regel het nu, voor de mensen van wie je houdt</span>
-        <h1>Als jij het niet regelt, doet de wet het. En die kent jouw familie niet.</h1>
+        <h1>Wij helpen je je testament goed te regelen</h1>
         <p class="lead">
-          Helder Nalaten helpt je je nalatenschap goed te regelen. Een adviseur zet op een rij wat er voor jou
-          geregeld moet worden. Je testament is het resultaat. Laagdrempelig, met vaste prijzen.
+          Je beantwoordt eenvoudige vragen, wij zetten je wensen helder op een rij. Je krijgt een instructie voor de
+          notaris en een uitleg voor je nabestaanden. De notaris legt je testament vast.
         </p>
         <div class="btn-row">
           <a class="btn-primary" href="/check">Doe de gratis check (2 minuten)</a>
-          <a class="btn-secondary" href="/tarieven">Bekijk de tarieven</a>
+          <a class="btn-secondary" href="#wat-we-regelen">Zo werkt het</a>
         </div>
-        <p class="trust">Voor iedereen · Vaste prijzen · Vrije keuze van notaris</p>
+        <p class="trust">Vaste prijzen · Vanaf {euro(pricing.selfService)} · Vrije keuze van notaris</p>
       </div>
       <aside class="hero-panel" aria-labelledby="hero-panel-title">
-        <h2 id="hero-panel-title">Zonder regeling beslist de wet</h2>
-        <dl>
-          {heroPanel.map(([question, answer]) => (
-            <div>
-              <dt>{question}</dt>
-              <dd>{answer}</dd>
-            </div>
+        <h2 id="hero-panel-title">Wat we voor je regelen</h2>
+        <ul>
+          {weArrange.map(([title, text]) => (
+            <li>
+              <CheckIcon size={20} stroke-width={2} aria-hidden="true" />
+              <span><strong>{title}</strong> {text}</span>
+            </li>
           ))}
-        </dl>
+        </ul>
       </aside>
     </div>
   </section>
 
+  <!-- 1b. What we arrange for you: steps + two routes -->
+  <section class="section section-surface" id="wat-we-regelen">
+    <div class="container">
+      <div class="section-head">
+        <h2>Wat regelen we voor je?</h2>
+        <p class="lead">Van de eerste vraag tot je testament bij de notaris. Jij kiest hoeveel hulp je wilt.</p>
+      </div>
+      <StepsAnimation id="stappen-home" />
+      <div class="grid grid-2 routes">
+        {routes.map((route) => (
+          <article class="card route">
+            <span class="eyebrow">{route.label}</span>
+            <h3>{route.title}</h3>
+            <p class="route-price">{route.price}</p>
+            <ul>
+              {route.bullets.map((bullet) => (
+                <li><CheckIcon size={18} stroke-width={2} aria-hidden="true" />{bullet}</li>
+              ))}
+            </ul>
+            <a class={route.cta.primary ? 'btn-primary' : 'btn-secondary'} href={route.cta.href}>{route.cta.label}</a>
+          </article>
+        ))}
+      </div>
+      <p class="more small">
+        Daarna leg je het testament vast bij een notaris uit ons netwerk voor {euro(pricing.willSingle)}{' '}
+        ({euro(pricing.willCouple)} voor twee testamenten), of bij je eigen notaris met dezelfde instructie.
+      </p>
+    </div>
+  </section>
+
   <!-- 2. Situation choice -->
-  <section class="section section-surface" id="voor-wie">
+  <section class="section" id="voor-wie">
     <div class="container">
       <div class="section-head">
         <h2>In welke situatie zit jij?</h2>
@@ -127,41 +192,47 @@ const serviceSchema = {
           </p>
         </div>
         <figure class="big-stat">
-          <p class="number">€ 368.000</p>
+          <p class="number">€ 368.000</p>
           <p>
-            erven kinderen van ouders met een koopwoning gemiddeld. Bij ouders met een huurwoning is dat € 18.000.
+            erven kinderen van ouders met een koopwoning gemiddeld. Bij ouders met een huurwoning is dat € 18.000.
           </p>
           {/* TODO(owner): link the original source */}
           <figcaption class="source">Bron: berichtgeving op basis van CBS/ESB (2026)</figcaption>
         </figure>
       </div>
-      <div class="grid grid-4 estate">
-        {estateTiles.map(({ icon: Icon, title, text }) => (
-          <div class="card">
-            <Icon size={28} stroke-width={1.8} aria-hidden="true" class="estate-icon" />
+      <ul class="plain-list estate">
+        {estateTiles.map(({ title, text }) => (
+          <li>
             <h3>{title}</h3>
             <p>{text}</p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
   <!-- 4. What is at stake -->
-  <section class="section section-surface" id="waarom">
+  <section class="section" id="waarom">
     <div class="container">
       <div class="section-head">
-        <h2>Wat gebeurt er als je niets regelt?</h2>
+        <h2>Als jij het niet regelt, doet de wet het</h2>
         <p class="lead">
           De wet heeft een standaardregeling. Die past lang niet altijd bij hoe jij leeft. De gevolgen komen terecht
           bij de mensen die je juist wilt beschermen.
         </p>
       </div>
-      <ol class="grid grid-3 risks">
+      <dl class="law-list">
+        {heroPanel.map(([question, answer]) => (
+          <div>
+            <dt>{question}</dt>
+            <dd>{answer}</dd>
+          </div>
+        ))}
+      </dl>
+      <ol class="plain-list risks">
         {risks.map(([title, text], index) => (
-          <li class="card risk">
-            <span class="risk-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            <h3>{title}</h3>
+          <li>
+            <h3><span class="risk-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{title}</h3>
             <p>{text}</p>
           </li>
         ))}
@@ -197,13 +268,12 @@ const serviceSchema = {
   </section>
 
   <!-- 6. What you get -->
-  <section class="section section-surface">
+  <section class="section">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Financieel advies over je nalatenschap</span>
-        <h2>Eén gesprek. Twee heldere documenten. Je testament als resultaat.</h2>
+        <h2>Wat je krijgt: twee heldere documenten</h2>
         <p class="lead">
-          Een adviseur brengt je situatie in kaart en adviseert over de beste keuzes. Daarna regel je het
+          Of je nu met de assistent of met een adviseur werkt, je krijgt dezelfde twee documenten. Daarna regel je het
           testament bij een notaris naar keuze.
         </p>
       </div>
@@ -222,7 +292,7 @@ const serviceSchema = {
       <div class="section-head">
         <h2>Helder geprijsd. Vooraf weet je waar je aan toe bent.</h2>
       </div>
-      <div class="grid grid-3">
+      <div class="grid grid-4">
         {priceCards.map((card) => <PriceCard {...card} />)}
       </div>
       <p class="more">Liever je eigen notaris? Dat kan. Je krijgt dezelfde instructie mee.</p>
@@ -231,7 +301,7 @@ const serviceSchema = {
   </section>
 
   <!-- 8. Check -->
-  <section class="section section-surface check-section">
+  <section class="section check-section">
     <div class="container">
       <Check segmentPage="home" />
     </div>
@@ -250,7 +320,7 @@ const serviceSchema = {
   </section>
 
   <!-- 10. FAQ -->
-  <section class="section section-surface" id="veelgestelde-vragen">
+  <section class="section" id="veelgestelde-vragen">
     <div class="container">
       <div class="section-head">
         <h2>Veelgestelde vragen</h2>
@@ -261,7 +331,7 @@ const serviceSchema = {
   </section>
 
   <!-- 11. Closing -->
-  <section class="section section-dark">
+  <section class="section">
     <div class="container narrow closing">
       <h2>Regel het nu, voor de mensen van wie je houdt.</h2>
       <p class="lead">
@@ -271,25 +341,25 @@ const serviceSchema = {
           <>Doe de gratis check van twee minuten.</>
         )}
       </p>
-      <a class="btn-light" href="/check">Doe de gratis check</a>
+      <a class="btn-primary" href="/check">Doe de gratis check</a>
     </div>
   </section>
 </Layout>
 
 <style>
   .hero {
-    padding: 48px 0 var(--section-pad);
+    padding: 40px 0 var(--section-pad);
   }
 
   .hero-grid {
     display: grid;
     gap: 40px;
-    align-items: center;
+    align-items: start;
   }
 
   @media (min-width: 1024px) {
     .hero {
-      padding-top: 80px;
+      padding-top: 72px;
     }
     .hero-grid {
       grid-template-columns: 7fr 5fr;
@@ -298,52 +368,116 @@ const serviceSchema = {
   }
 
   .hero .lead {
-    margin: 24px 0 32px;
+    margin: 20px 0 28px;
   }
 
   .trust {
-    margin-top: 24px;
-    font-weight: 600;
+    margin-top: 20px;
+    font-size: var(--fs-small);
     color: var(--color-muted);
   }
 
   .hero-panel {
-    background: var(--color-primary);
-    color: var(--color-on-primary-soft);
-    border-radius: var(--radius-panel);
-    padding: 32px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 28px;
   }
 
   .hero-panel h2 {
-    color: #fff;
-    font-size: 28px;
-    margin-bottom: 20px;
+    font-size: var(--fs-h3);
+    margin-bottom: 16px;
   }
 
-  .hero-panel dl {
+  .hero-panel ul,
+  .route ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .hero-panel li,
+  .route li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .hero-panel li :global(svg),
+  .route li :global(svg) {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--color-primary);
+  }
+
+  .routes {
+    margin-top: 40px;
+  }
+
+  .route {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .route h3 {
     margin: 0;
   }
 
-  .hero-panel div {
-    border-top: 1px solid var(--color-primary-line);
-    padding: 14px 0;
-  }
-
-  .hero-panel dt {
-    font-size: 16px;
-  }
-
-  .hero-panel dd {
-    margin: 2px 0 0;
-    color: #fff;
+  .route-price {
+    font-size: var(--fs-h2);
     font-weight: 700;
-    font-size: 19px;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .route ul {
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-grow: 1;
+  }
+
+  .route .btn-primary,
+  .route .btn-secondary {
+    align-self: flex-start;
+  }
+
+  .law-list {
+    display: grid;
+    gap: 12px 32px;
+    margin: 0 0 40px;
+  }
+
+  @media (min-width: 768px) {
+    .law-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .law-list div {
+    border-left: 0;
+    background: var(--color-ground);
+    border-radius: var(--radius-small);
+    padding: 14px 18px;
+  }
+
+  .law-list dt {
+    color: var(--color-muted);
+    font-size: var(--fs-small);
+  }
+
+  .law-list dd {
+    margin: 0;
+    font-weight: 600;
   }
 
   .split {
     display: grid;
     gap: 32px;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
   }
 
   @media (min-width: 1024px) {
@@ -359,64 +493,83 @@ const serviceSchema = {
 
   .big-stat {
     margin: 0;
-    background: var(--color-surface);
-    border-radius: var(--radius-card);
-    padding: 28px;
+    border-left: 0;
+    padding: 0;
   }
 
-  .number,
-  .stat dt {
-    font-family: var(--font-display);
-    font-size: var(--fs-stat);
-    line-height: 1.1;
-    color: var(--color-accent);
-    margin: 0 0 8px;
+  .number {
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-primary);
+    margin: 0 0 4px;
   }
 
-  :global(.estate-icon) {
-    color: var(--color-accent);
-    margin-bottom: 12px;
-  }
-
-  .estate p {
-    color: var(--color-ink-soft);
-  }
-
-  .risks {
+  .plain-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 48px;
+    margin: 0;
+    display: grid;
+    gap: 8px 48px;
   }
 
-  .risk p {
-    color: var(--color-ink-soft);
+  @media (min-width: 768px) {
+    .plain-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .plain-list li {
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0 8px;
+  }
+
+  .plain-list h3 {
+    font-size: var(--fs-body);
+    margin-bottom: 4px;
+  }
+
+  .plain-list p {
+    margin: 0;
   }
 
   .risk-number {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 32px;
-    color: var(--color-accent);
-    margin-bottom: 8px;
+    color: var(--color-muted);
+    font-weight: 600;
+    margin-right: 10px;
+  }
+
+  .risks {
+    margin-bottom: 40px;
   }
 
   .stats {
-    margin: 0 0 16px;
+    margin: 0 0 12px;
   }
 
   .stat {
-    background: var(--color-ground);
-    border-radius: var(--radius-card);
-    padding: 24px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+  }
+
+  .stat dt {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--color-primary);
   }
 
   .stat dd {
     margin: 0;
-    color: var(--color-ink-soft);
+    font-size: var(--fs-small);
+    color: var(--color-muted);
   }
 
   .more {
-    margin-top: 32px;
+    margin-top: 28px;
+  }
+
+  .documents {
+    margin-top: 40px;
   }
 
   .closing {
@@ -424,6 +577,6 @@ const serviceSchema = {
   }
 
   .closing .lead {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 </style>

@@ -1,0 +1,423 @@
+---
+// Animated four-step overview (converted from the stappen-animatie.html artifact).
+// Copy: docs/07 "Hoe het werkt" via data/offer.ts. Tokens: docs/04 (calm version: accent colour
+// is reserved for the primary button, so the animation uses primary tones).
+// Accessible: every step is plain text in an <ol>, a pause button stops the animation (WCAG 2.2.2),
+// and prefers-reduced-motion shows the static end state.
+import { steps, optionalStep } from '../../data/offer';
+
+interface Props {
+  heading?: string; // omit when the surrounding section already has a heading
+  headingLevel?: 'h2' | 'h3';
+  showOptional?: boolean; // show the optional fifth step below the animation
+  id?: string;
+}
+
+const { heading, headingLevel = 'h2', showOptional = false, id = 'stappen-animatie' } = Astro.props;
+const Heading = headingLevel;
+const StepHeading = headingLevel === 'h2' ? 'h3' : 'h4';
+const [check, talk, docs, notary] = steps;
+---
+
+<section class="steps-anim" id={id} aria-labelledby={heading ? `${id}-title` : undefined} aria-label={heading ? undefined : 'Stappen'} data-steps-anim>
+  <div class="head">
+    {heading && <Heading id={`${id}-title`}>{heading}</Heading>}
+    <button class="btn-secondary pause" type="button" aria-pressed="false" data-steps-pause>Pauzeer animatie</button>
+  </div>
+
+  <div class="track" aria-hidden="true"><span class="track-dot"></span></div>
+
+  <ol class="grid-steps">
+    <!-- 1 Check -->
+    <li class="step">
+      <span class="num" aria-hidden="true">1</span>
+      <svg viewBox="0 0 240 170" role="img" aria-label="Een checklist waarop vier vragen worden afgevinkt">
+        <rect class="s-fill s-line" x="62" y="14" width="116" height="142" rx="12" stroke-width="2" />
+        <g stroke-width="2">
+          <rect class="s-fill s-line" x="78" y="38" width="16" height="16" rx="4" />
+          <rect class="s-fill s-line" x="78" y="68" width="16" height="16" rx="4" />
+          <rect class="s-fill s-line" x="78" y="98" width="16" height="16" rx="4" />
+          <rect class="s-fill s-line" x="78" y="128" width="16" height="16" rx="4" />
+        </g>
+        <g class="s-bar">
+          <rect x="102" y="43" width="60" height="6" rx="3" />
+          <rect x="102" y="73" width="48" height="6" rx="3" />
+          <rect x="102" y="103" width="56" height="6" rx="3" />
+          <rect x="102" y="133" width="40" height="6" rx="3" />
+        </g>
+        <path class="tick anim t1" d="M81 46l4 4 7-8" />
+        <path class="tick anim t2" d="M81 76l4 4 7-8" />
+        <path class="tick anim t3" d="M81 106l4 4 7-8" />
+        <path class="tick anim t4" d="M81 136l4 4 7-8" />
+        <g class="anim badge">
+          <circle class="s-ink" cx="178" cy="22" r="18" />
+          <path class="s-white-stroke" d="M170 22l6 6 10-11" stroke-width="3.2" />
+        </g>
+      </svg>
+      <StepHeading>{check.title}</StepHeading>
+      <p>{check.text}</p>
+    </li>
+
+    <!-- 2 Advice conversation -->
+    <li class="step">
+      <span class="num" aria-hidden="true">2</span>
+      <svg viewBox="0 0 240 170" role="img" aria-label="Twee mensen in gesprek aan tafel">
+        <line class="s-table" x1="36" y1="146" x2="204" y2="146" stroke-width="3" stroke-linecap="round" />
+        <circle class="s-ink" cx="78" cy="96" r="14" />
+        <path class="s-ink" d="M54 146c0-20 11-32 24-32s24 12 24 32z" />
+        <circle class="s-ink-2" cx="162" cy="96" r="14" />
+        <path class="s-ink-2" d="M138 146c0-20 11-32 24-32s24 12 24 32z" />
+        <g class="anim b1">
+          <path class="s-fill s-line" stroke-width="2" d="M40 22h72a12 12 0 0 1 12 12v14a12 12 0 0 1-12 12H72l-10 10v-10H40a12 12 0 0 1-12-12V34a12 12 0 0 1 12-12z" />
+          <g class="s-ink"><circle cx="60" cy="41" r="3.5" /><circle cx="76" cy="41" r="3.5" /><circle cx="92" cy="41" r="3.5" /></g>
+        </g>
+        <g class="anim b2">
+          <path class="s-fill s-line" stroke-width="2" d="M128 22h72a12 12 0 0 1 12 12v14a12 12 0 0 1-12 12h-22v10l-10-10h-40a12 12 0 0 1-12-12V34a12 12 0 0 1 12-12z" />
+          <g class="s-ink"><circle cx="148" cy="41" r="3.5" /><circle cx="164" cy="41" r="3.5" /><circle cx="180" cy="41" r="3.5" /></g>
+        </g>
+      </svg>
+      <StepHeading>{talk.title}</StepHeading>
+      <p>{talk.text}</p>
+    </li>
+
+    <!-- 3 Two documents -->
+    <li class="step">
+      <span class="num" aria-hidden="true">3</span>
+      <svg viewBox="0 0 240 170" role="img" aria-label="Het advies wordt twee documenten: een instructie voor de notaris en een uitleg voor je nabestaanden">
+        <g class="anim doc-a">
+          <path class="s-fill s-line" stroke-width="2" d="M44 20h52l16 16v88a8 8 0 0 1-8 8H44a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8z" />
+          <g class="s-bar"><rect x="48" y="46" width="48" height="5" rx="2.5" /><rect x="48" y="58" width="52" height="5" rx="2.5" /><rect x="48" y="70" width="40" height="5" rx="2.5" /><rect x="48" y="82" width="46" height="5" rx="2.5" /></g>
+          <circle class="s-ring" cx="92" cy="110" r="10" stroke-width="2.5" />
+          <circle class="s-ink" cx="92" cy="110" r="4" />
+        </g>
+        <g class="anim doc-b">
+          <path class="s-fill s-line" stroke-width="2" d="M136 20h52l16 16v88a8 8 0 0 1-8 8h-60a8 8 0 0 1-8-8V28a8 8 0 0 1 8-8z" />
+          <g class="s-bar"><rect x="140" y="46" width="48" height="5" rx="2.5" /><rect x="140" y="58" width="52" height="5" rx="2.5" /><rect x="140" y="70" width="36" height="5" rx="2.5" /></g>
+          <path class="s-ink-2" d="M170 118c-9-6-14-11-14-17a7 7 0 0 1 14-3 7 7 0 0 1 14 3c0 6-5 11-14 17z" />
+        </g>
+        <text class="lbl anim" x="74" y="156">Notaris</text>
+        <text class="lbl anim" x="166" y="156">Nabestaanden</text>
+      </svg>
+      <StepHeading>{docs.title}</StepHeading>
+      <p>{docs.text}</p>
+    </li>
+
+    <!-- 4 Notary -->
+    <li class="step">
+      <span class="num" aria-hidden="true">4</span>
+      <svg viewBox="0 0 240 170" role="img" aria-label="De notaris zet een stempel op het testament">
+        <rect class="s-table-fill" x="30" y="140" width="180" height="8" rx="4" />
+        <g class="anim doc-in">
+          <path class="s-fill s-line" stroke-width="2" d="M88 58h52l14 14v60a6 6 0 0 1-6 6H88a6 6 0 0 1-6-6V64a6 6 0 0 1 6-6z" />
+          <g class="s-bar"><rect x="92" y="80" width="44" height="5" rx="2.5" /><rect x="92" y="92" width="50" height="5" rx="2.5" /><rect x="92" y="104" width="36" height="5" rx="2.5" /></g>
+        </g>
+        <g class="anim seal">
+          <circle class="s-ring" cx="132" cy="122" r="11" stroke-width="3" />
+          <path class="s-ink-stroke" d="M127 122l4 4 7-8" stroke-width="2.6" />
+        </g>
+        <g class="anim stamp">
+          <rect class="s-ink" x="124" y="14" width="16" height="30" rx="7" />
+          <rect class="s-ink" x="114" y="42" width="36" height="12" rx="4" />
+          <rect class="s-ink-2" x="116" y="54" width="32" height="4" rx="2" />
+        </g>
+      </svg>
+      <StepHeading>{notary.title}</StepHeading>
+      <p>{notary.text}</p>
+    </li>
+  </ol>
+
+  {showOptional && (
+    <p class="optional">
+      <strong>{optionalStep.title}</strong> <span class="muted">(optioneel)</span> {optionalStep.text}
+    </p>
+  )}
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-steps-anim]').forEach((root) => {
+    const button = root.querySelector<HTMLButtonElement>('[data-steps-pause]');
+    button?.addEventListener('click', () => {
+      const paused = root.classList.toggle('paused');
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? 'Speel animatie af' : 'Pauzeer animatie';
+    });
+  });
+</script>
+
+<style>
+  .steps-anim {
+    --cycle: 12s;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .head h2,
+  .head h3 {
+    margin: 0;
+    max-width: 22ch;
+  }
+
+  .pause {
+    min-height: 40px;
+    padding: 8px 18px;
+    font-size: var(--fs-small);
+    margin-left: auto;
+  }
+
+  /* Connector track with travelling dot (desktop) */
+  .track {
+    position: relative;
+    height: 28px;
+    margin: 0 0 8px;
+  }
+
+  .track::before {
+    content: '';
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+    top: 13px;
+    border-top: 2px dashed var(--color-input-border);
+  }
+
+  .track-dot {
+    position: absolute;
+    top: 6px;
+    left: 12.5%;
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    animation: sa-travel var(--cycle) infinite ease-in-out;
+  }
+
+  @keyframes sa-travel {
+    0%, 20% { left: 12.5%; }
+    25%, 45% { left: 37.5%; }
+    50%, 70% { left: 62.5%; }
+    75%, 94% { left: 87.5%; opacity: 1; }
+    97% { left: 87.5%; opacity: 0; }
+    98% { left: 12.5%; opacity: 0; }
+    100% { left: 12.5%; opacity: 1; }
+  }
+
+  .grid-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .step {
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 20px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: sa-active var(--cycle) infinite both;
+  }
+
+  .step:nth-child(2) { animation-delay: 3s; }
+  .step:nth-child(3) { animation-delay: 6s; }
+  .step:nth-child(4) { animation-delay: 9s; }
+
+  @keyframes sa-active {
+    0% { border-color: var(--color-border); box-shadow: none; opacity: 0.62; }
+    2%, 23% { border-color: var(--color-primary); box-shadow: var(--shadow-card); opacity: 1; }
+    27%, 100% { border-color: var(--color-border); box-shadow: none; opacity: 0.62; }
+  }
+
+  .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: var(--fs-body);
+    background: var(--color-tint);
+    color: var(--color-primary);
+    animation: sa-num var(--cycle) infinite both;
+    animation-delay: inherit;
+  }
+
+  @keyframes sa-num {
+    0% { background: var(--color-tint); color: var(--color-primary); }
+    2%, 23% { background: var(--color-primary); color: #fff; }
+    27%, 100% { background: var(--color-tint); color: var(--color-primary); }
+  }
+
+  .step svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .step h3,
+  .step h4 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .step p {
+    margin: 0;
+    font-size: var(--fs-body);
+    color: var(--color-ink-soft);
+  }
+
+  .optional {
+    margin: 24px 0 0;
+  }
+
+  .muted {
+    color: var(--color-muted);
+  }
+
+  /* Shared SVG styles */
+  .s-fill { fill: var(--color-surface); }
+  .s-line { stroke: var(--color-input-border); }
+  .s-bar { fill: var(--color-border); }
+  .s-ink { fill: var(--color-primary); }
+  .s-ink-2 { fill: var(--color-primary-line); }
+  .s-ring { fill: none; stroke: var(--color-primary); }
+  .s-table { stroke: var(--color-input-border); }
+  .s-table-fill { fill: var(--color-input-border); }
+  .s-white-stroke { stroke: #fff; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .s-ink-stroke { stroke: var(--color-primary); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .anim {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  .step:nth-child(2) .anim { animation-delay: 3s; }
+  .step:nth-child(3) .anim { animation-delay: 6s; }
+  .step:nth-child(4) .anim { animation-delay: 9s; }
+
+  /* 1: check */
+  .tick {
+    stroke: var(--color-primary);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .t1 { animation-name: sa-t1; }
+  .t2 { animation-name: sa-t2; }
+  .t3 { animation-name: sa-t3; }
+  .t4 { animation-name: sa-t4; }
+  @keyframes sa-t1 { 0%, 3% { opacity: 0; } 5%, 98% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes sa-t2 { 0%, 7% { opacity: 0; } 9%, 98% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes sa-t3 { 0%, 11% { opacity: 0; } 13%, 98% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes sa-t4 { 0%, 15% { opacity: 0; } 17%, 98% { opacity: 1; } 100% { opacity: 0; } }
+  .badge { animation-name: sa-pop; }
+  @keyframes sa-pop {
+    0%, 18% { opacity: 0; transform: scale(0.4); }
+    21% { opacity: 1; transform: scale(1.12); }
+    23%, 98% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; }
+  }
+
+  /* 2: conversation */
+  .b1 { animation-name: sa-b1; }
+  .b2 { animation-name: sa-b2; }
+  @keyframes sa-b1 {
+    0%, 2% { opacity: 0; transform: translateY(6px); }
+    4%, 10% { opacity: 1; transform: none; }
+    12%, 16% { opacity: 0.35; }
+    18%, 98% { opacity: 1; transform: none; }
+    100% { opacity: 0; }
+  }
+  @keyframes sa-b2 {
+    0%, 9% { opacity: 0; transform: translateY(6px); }
+    11%, 17% { opacity: 1; transform: none; }
+    19%, 98% { opacity: 0.35; }
+    100% { opacity: 0; }
+  }
+
+  /* 3: documents */
+  .doc-a { animation-name: sa-split-l; }
+  .doc-b { animation-name: sa-split-r; }
+  @keyframes sa-split-l { 0%, 5% { transform: translateX(36px); } 13%, 98% { transform: translateX(0); } 100% { transform: translateX(36px); } }
+  @keyframes sa-split-r { 0%, 5% { transform: translateX(-36px); } 13%, 98% { transform: translateX(0); } 100% { transform: translateX(-36px); } }
+  .lbl {
+    font-family: var(--font-body);
+    font-size: 13px; /* SVG units: scales with the illustration */
+    font-weight: 700;
+    fill: var(--color-primary);
+    text-anchor: middle;
+    animation-name: sa-fade-lbl;
+  }
+  @keyframes sa-fade-lbl { 0%, 12% { opacity: 0; } 16%, 98% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* 4: notary */
+  .doc-in { animation-name: sa-slide-in; }
+  @keyframes sa-slide-in { 0%, 2% { opacity: 0; transform: translateX(-50px); } 9%, 98% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  .stamp { animation-name: sa-stamp; }
+  @keyframes sa-stamp {
+    0%, 9% { transform: translateY(0); }
+    13% { transform: translateY(60px); }
+    15% { transform: translateY(56px); }
+    20%, 100% { transform: translateY(0); }
+  }
+  .seal { animation-name: sa-seal; }
+  @keyframes sa-seal { 0%, 13% { opacity: 0; transform: scale(0.6); } 15%, 98% { opacity: 1; transform: scale(1); } 100% { opacity: 0; } }
+
+  /* Pause */
+  .paused .track-dot,
+  .paused .step,
+  .paused .num,
+  .paused .anim {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 900px) {
+    .grid-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .track {
+      display: none;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .grid-steps {
+      grid-template-columns: 1fr;
+    }
+    .step svg {
+      max-width: 280px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track-dot,
+    .step,
+    .num,
+    .anim {
+      animation: none !important;
+    }
+    .step {
+      opacity: 1;
+    }
+    .pause {
+      display: none;
+    }
+  }
+</style>

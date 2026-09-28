@@ -1,0 +1,86 @@
+{
+  "flow": "agent-intake",
+  "description": "Self-service testament assistant (docs/13-agent.md): simulated users talk to the real agent functions; graded on outcome, dossier capture, guardrails and a rubric judge.",
+  "metrics": [
+    {
+      "id": "outcome",
+      "label": "Juiste uitkomst",
+      "kind": "binary"
+    },
+    {
+      "id": "capture",
+      "label": "Dossier",
+      "kind": "float",
+      "scale": 1
+    },
+    {
+      "id": "guardrails",
+      "label": "Grenzen",
+      "kind": "binary"
+    },
+    {
+      "id": "facts",
+      "label": "Feiten",
+      "kind": "binary"
+    },
+    {
+      "id": "no_advice",
+      "label": "Geen advies",
+      "kind": "binary"
+    },
+    {
+      "id": "style",
+      "label": "Taal",
+      "kind": "binary"
+    },
+    {
+      "id": "docs_faithful",
+      "label": "Doc. trouw",
+      "kind": "binary"
+    },
+    {
+      "id": "docs_complete",
+      "label": "Doc. volledig",
+      "kind": "binary"
+    },
+    {
+      "id": "adviser_fp",
+      "label": "Onnodig adv.",
+      "kind": "binary",
+      "better": "lower"
+    }
+  ],
+  "perf_fields": [
+    {
+      "id": "cost_usd",
+      "label": "Kosten",
+      "unit": "$"
+    },
+    {
+      "id": "turns",
+      "label": "Beurten"
+    },
+    {
+      "id": "tool_calls",
+      "label": "Tools"
+    },
+    {
+      "id": "latency_s",
+      "label": "Tijd",
+      "unit": "s"
+    }
+  ],
+  "prices": {
+    "claude-sonnet-5": {
+      "in": 2,
+      "out": 10
+    },
+    "claude-opus-4-8": {
+      "in": 5,
+      "out": 25
+    }
+  },
+  "harness_paths": [
+    "evals/agent/cases.json"
+  ]
+}

@@ -3,6 +3,7 @@
 // TODO(owner): confirm VAT, living will and cohabitation agreement prices with the partner.
 export const pricing = {
   advice: { min: 500, max: 1000 },
+  selfService: 200, // option 1: prepare yourself with the assistant, receive the two documents (owner 2026-09-27)
   adviceComplex: { min: 750, max: 1000 }, // e.g. blended families. TODO(owner): confirm with partner
   willSingle: 500,
   willCouple: 800, // for 2 testaments
@@ -17,12 +18,15 @@ export const PRICE_PLACEHOLDER = '[PRIJS]';
 
 const nl = (amount: number) => amount.toLocaleString('nl-NL');
 
-/** "€ 1.300", or [PRIJS] for an unconfirmed price. */
+// Non-breaking space so an amount never wraps between "€" and the number
+const NBSP = ' ';
+
+/** "€ 1.300", or [PRIJS] for an unconfirmed price. */
 export function euro(amount: number | null): string {
-  return amount === null ? PRICE_PLACEHOLDER : `€ ${nl(amount)}`;
+  return amount === null ? PRICE_PLACEHOLDER : `€${NBSP}${nl(amount)}`;
 }
 
-/** "€ 500 – 1.000" */
+/** "€ 500 – 1.000" */
 export function euroRange(range: { min: number; max: number }): string {
-  return `€ ${nl(range.min)} – ${nl(range.max)}`;
+  return `€${NBSP}${nl(range.min)}${NBSP}– ${nl(range.max)}`;
 }
