@@ -18,11 +18,16 @@ function fromForm(form: URLSearchParams) {
   const get = (key: string) => form.get(key) ?? undefined;
   return {
     answers: Object.fromEntries(
-      ['situation', 'children', 'minors', 'home', 'documents', 'notary'].map((key) => [key, get(key)])
+      ['situation', 'children', 'minors', 'home', 'documents', 'notary'].flatMap((key) => (get(key) ? [[key, get(key)]] : []))
     ),
     contact: { name: get('name'), email: get('email'), phone: get('phone') },
     consent: { given: get('consent') === 'yes', text: get('consentText'), at: new Date().toISOString() },
     source: { landingPage: get('landingPage'), segmentPage: get('segmentPage') },
+    // appointment preferences arrive as checkboxes "pref" = "YYYY-MM-DD|block"
+    preferences: form.getAll('pref').map((value) => {
+      const [date, block] = value.split('|');
+      return { date, block };
+    }),
     company_website: get('company_website'),
   };
 }
@@ -41,7 +46,7 @@ export default async (req: Request): Promise<Response> => {
 
   const result = validateSubmission(input);
   if (!result.ok) {
-    return isForm ? Response.redirect(new URL('/check?fout=1', req.url), 303) : json({ errors: result.errors }, 422);
+    return isForm ? Response.redirect(new URL('/afspraak?fout=1', req.url), 303) : json({ errors: result.errors }, 422);
   }
 
   const now = new Date();

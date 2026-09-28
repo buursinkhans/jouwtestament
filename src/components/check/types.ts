@@ -39,16 +39,26 @@ export interface LeadSource {
   domain?: 'heldernalaten.nl' | 'jouwtestament.nl';
 }
 
+export type TimeBlock = 'ochtend' | 'middag' | 'avond';
+
+/** Preferred moment for the first conversation with an adviser (docs/09, /afspraak). */
+export interface Preference {
+  date: string; // YYYY-MM-DD
+  block: TimeBlock;
+}
+
 export interface Lead {
   id: string;
   createdAt: string;
-  answers: Answers;
+  kind: 'appointment';
+  answers: Answers | null; // null when the visitor did not do the check first
+  preferences: Preference[];
   flags: FlagId[];
   segment: Segment;
   referralChild: boolean;
   score: number;
   priority: Priority;
-  contact: { name: string; email: string; phone?: string };
+  contact: { name: string; email?: string; phone?: string };
   consent: { given: true; text: string; at: string };
   source: LeadSource;
   status: LeadStatus;

@@ -13,7 +13,8 @@ type EventName =
   | 'agent_adviser_recommended'
   | 'agent_option_adviser'
   | 'agent_ready'
-  | 'agent_documents_created';
+  | 'agent_documents_created'
+  | 'appointment_requested';
 
 declare global {
   interface Window {
