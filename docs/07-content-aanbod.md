@@ -11,7 +11,7 @@
 
 **Stappen**
 1. **Doe de check** — Vier vragen, twee minuten. Direct je belangrijkste aandachtspunten.
-2. **Adviesgesprek** — Een adviseur bespreekt je situatie en adviseert over de financiële keuzes. Online of [op locatie]. Je hoort vooraf de prijs.
+2. **Je wensen op een rij** — Met onze digitale assistent (€ 200) of in een gesprek met een adviseur (vanaf € 500). Je hoort vooraf de prijs. *(Gewijzigd 2026-09-28: twee routes. Was: Adviesgesprek — Een adviseur bespreekt je situatie ... Online of [op locatie].)*
 3. **Twee documenten** — Je ontvangt de instructie voor de notaris en de uitleg voor je nabestaanden.
 4. **Naar de notaris** — Bij een notaris uit ons landelijke netwerk, of bij je eigen notaris. Jij kiest.
 5. *(Optioneel)* **Blijft het kloppen?** — We herinneren je aan een check bij grote veranderingen of na een paar jaar.
