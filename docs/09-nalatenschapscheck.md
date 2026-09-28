@@ -1,5 +1,10 @@
 # 09 — Nalatenschapscheck en leadmodel
 
+> **Wijziging eigenaar (2026-09-28): afspraak via een kalender.** Na de check kiest de bezoeker (1) zelf regelen met de assistent of (2) een gesprek met een adviseur. Optie 2 gaat naar `/afspraak`: de bezoeker kiest voorkeursmomenten in de komende twee weken (ma–za; ochtend 9:00–12:00, middag 12:00–17:00, avond 17:00–21:00) en laat naam en e-mail **of** telefoon achter. We nemen **binnen 24 uur** contact op voor een definitieve afspraak.
+> - Het contactformulier zit niet meer in de check; alle leads komen via `/afspraak`. Check-antwoorden gaan mee als de bezoeker de check deed (sessionStorage), anders is `answers` leeg (`null`) en zijn flags/segment leeg/`other`.
+> - Lead: `kind: 'appointment'`, `preferences: [{date, block}]`. Google Sheet: twee extra kolommen aan het eind, `type` en `voorkeuren` (kopjes toevoegen in rij 1).
+> - `TODO(owner)`: openingsdagen en tijden van de dagdelen bevestigen.
+
 De check geeft de bezoeker direct inzicht en levert de partner een voorgekwalificeerde intake. Verdienmodel: **€ 200 per gesloten lead**. Elke lead moet daarom vanaf het begin herleidbaar zijn tot een afgerond adviestraject.
 
 Herbruikbaar component `<Check />`: op `/check`, op home (`#check`) en onderaan elke doelgroeppagina.

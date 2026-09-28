@@ -21,3 +21,5 @@
 | 2026-09-28 | Moderner ontwerp: Inter, witte pagina met neutrale grijze banden, koppen bijna-zwart, geen groene vlakken (ook footer licht) | Verzoek eigenaar. Vastgelegd bovenaan docs/04. |
 | 2026-09-28 | Duidelijkere propositie op home: hero 'Wij helpen je je testament goed te regelen' + sectie 'Wat regelen we voor je?' met animatie en twee routes | Verzoek eigenaar; docs/05 en docs/07 bijgewerkt. |
 | 2026-09-28 | Home: twee keuzes (assistent / adviseur) prominent in de hero, blok 'Waarom nu, en waarom met hulp?', pay-off onder het merk in de header | Verzoek eigenaar; docs/05 bijgewerkt. |
+| 2026-09-28 | Alle knoppen rood (btn-secondary = btn-primary); btn-quiet voor kleine bediening | Verzoek eigenaar. |
+| 2026-09-28 | Afspraakpagina /afspraak met kalender (2 weken, ochtend/middag/avond), naam + e-mail of telefoon, reactie binnen 24 uur; contactformulier uit de check gehaald | Verzoek eigenaar; docs/09 bijgewerkt. Sheet krijgt kolommen type en voorkeuren. |
