@@ -5,11 +5,9 @@ import { devOnly } from '../config/site';
 export const steps = [
   { title: 'Doe de check', text: 'Vier vragen, twee minuten. Direct je belangrijkste aandachtspunten.' },
   {
-    title: 'Adviesgesprek',
-    // "[op locatie]" is not confirmed yet: that sentence is left out on the live site
-    text: devOnly
-      ? 'Een adviseur bespreekt je situatie en adviseert over de financiële keuzes. Online of [op locatie]. Je hoort vooraf de prijs.'
-      : 'Een adviseur bespreekt je situatie en adviseert over de financiële keuzes. Je hoort vooraf de prijs.',
+    // Two routes since 2026-09-28 (owner): the assistant (option 1) or an adviser (option 2)
+    title: 'Je wensen op een rij',
+    text: `Met onze digitale assistent (${euro(pricing.selfService)}) of in een gesprek met een adviseur (vanaf ${euro(pricing.advice.min)}). Je hoort vooraf de prijs.`,
   },
   {
     title: 'Twee documenten',
@@ -52,8 +50,9 @@ export const documents = [
   },
 ];
 
-// Three compact price cards (home, /testament)
+// Compact price cards (home, /testament)
 export const priceCards = [
+  { title: 'Zelf regelen met de assistent', price: euro(pricing.selfService), note: 'twee documenten' },
   { title: 'Advies', price: euroRange(pricing.advice) },
   { title: 'Testament', price: euro(pricing.willSingle) },
   { title: 'Voor partners', price: euro(pricing.willCouple), note: 'voor 2 testamenten', highlight: true },
@@ -105,8 +104,8 @@ export const priceExamples = [
   },
   {
     label: 'Samengesteld gezin',
-    sum: `advies ca. € ${adviceComplex.min.toLocaleString('nl-NL')}–${adviceComplex.max.toLocaleString('nl-NL')} + twee testamenten ${euro(willCouple)}`,
-    total: `€ ${(adviceComplex.min + willCouple).toLocaleString('nl-NL')}–${(adviceComplex.max + willCouple).toLocaleString('nl-NL')}`,
+    sum: `advies ca. € ${adviceComplex.min.toLocaleString('nl-NL')}–${adviceComplex.max.toLocaleString('nl-NL')} + twee testamenten ${euro(willCouple)}`,
+    total: `€ ${(adviceComplex.min + willCouple).toLocaleString('nl-NL')}–${(adviceComplex.max + willCouple).toLocaleString('nl-NL')}`,
   },
 ];
 
