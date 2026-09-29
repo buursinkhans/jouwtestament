@@ -1,0 +1,187 @@
+---
+// Auto-rotating carousel (owner 2026-09-29): slides cross-fade every 5 seconds, always forward
+// (after the last slide comes the first again), endlessly. The visitor can pause/play and jump
+// with the dots. All slides share one grid cell, so every slide has the same height and the
+// content below never jumps. Pause button (WCAG 2.2.2); also pauses while a keyboard user
+// focuses a link inside a slide. Keeps rotating on mouse hover (owner: keep turning).
+// All slide content is in the HTML (readable for search engines and AI crawlers).
+// Usage: <Carousel label="..."><div data-slide>...</div>...</Carousel>
+import { Pause, Play } from '@lucide/astro';
+
+interface Props {
+  label: string; // accessible name of the carousel
+  id?: string;
+  interval?: number; // milliseconds between slides
+}
+const { label, id = 'carousel', interval = 5000 } = Astro.props;
+---
+
+<section class="carousel" id={id} aria-roledescription="carrousel" aria-label={label} data-carousel data-interval={interval}>
+  <div class="stage" data-stage aria-live="off">
+    <slot />
+  </div>
+  <div class="controls">
+    <div class="dots" data-dots></div>
+    <button type="button" class="toggle" data-toggle aria-label="Pauzeer carrousel">
+      <span class="icon-pause"><Pause size={16} stroke-width={2} aria-hidden="true" /></span>
+      <span class="icon-play"><Play size={16} stroke-width={2} aria-hidden="true" /></span>
+    </button>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+    const slides = Array.from(stage.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dots = root.querySelector<HTMLElement>('[data-dots]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const interval = Number(root.dataset.interval) || 5000;
+    let current = 0;
+    let pausedByVisitor = false;
+    let focused = false;
+    let timer = 0;
+
+    slides.forEach((slide, i) => {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'dia');
+      slide.setAttribute('aria-label', `${i + 1} van ${slides.length}`);
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'dot';
+      dot.setAttribute('aria-label', `Toon ${i + 1} van ${slides.length}`);
+      dot.addEventListener('click', () => {
+        show(i);
+        restart();
+      });
+      dots.append(dot);
+    });
+
+    function show(index: number) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === current;
+        slide.classList.toggle('is-active', active);
+        // Slides out of view are inert: not focusable and hidden from screen readers
+        slide.toggleAttribute('inert', !active);
+      });
+      dots.querySelectorAll('button').forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
+    }
+
+    const running = () => !pausedByVisitor && !focused && !document.hidden;
+
+    function restart() {
+      window.clearInterval(timer);
+      if (running()) timer = window.setInterval(() => show(current + 1), interval);
+      // Announce slide changes only when the visitor controls the carousel
+      stage.setAttribute('aria-live', pausedByVisitor ? 'polite' : 'off');
+    }
+
+    toggle.addEventListener('click', () => {
+      pausedByVisitor = !pausedByVisitor;
+      root.classList.toggle('is-paused', pausedByVisitor);
+      toggle.setAttribute('aria-label', pausedByVisitor ? 'Speel carrousel af' : 'Pauzeer carrousel');
+      restart();
+    });
+    root.addEventListener('focusin', (event) => {
+      // Only a focused link inside a slide holds the rotation (not the dots or the pause button)
+      focused = stage.contains(event.target as Node);
+      restart();
+    });
+    root.addEventListener('focusout', (event) => {
+      focused = stage.contains(event.relatedTarget as Node);
+      restart();
+    });
+    document.addEventListener('visibilitychange', restart);
+
+    show(0);
+    restart();
+  });
+</script>
+
+<style>
+  /* All slides share one grid cell: equal height, cross-fade, no layout jump */
+  .stage {
+    display: grid;
+  }
+
+  .stage > :global([data-slide]) {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.6s ease,
+      visibility 0s linear 0.6s;
+  }
+
+  .stage > :global([data-slide].is-active) {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s ease;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .dots :global(.dot) {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border-radius: 999px;
+    border: 0;
+    background: var(--color-input-border);
+    cursor: pointer;
+    transition: width 0.2s ease;
+  }
+
+  .dots :global(.dot[aria-current='true']) {
+    background: var(--color-primary);
+    width: 24px;
+  }
+
+  .toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--color-input-border);
+    background: var(--color-surface);
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+
+  .toggle:hover {
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .icon-play,
+  .is-paused .icon-pause {
+    display: none;
+  }
+
+  .is-paused .icon-play {
+    display: inline-flex;
+  }
+
+  .icon-pause {
+    display: inline-flex;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stage > :global([data-slide]),
+    .stage > :global([data-slide].is-active) {
+      transition: none;
+    }
+  }
+</style>
