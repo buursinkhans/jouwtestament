@@ -41,6 +41,10 @@ Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de
 | `AGENT_MODEL` | optioneel, standaard `claude-opus-5` |
 | `AGENT_EFFORT` / `AGENT_DOC_EFFORT` | optioneel, standaard `medium` / `high` |
 
+## Problemen oplossen
+
+Open `https://<site>/api/agent/status` in je browser (ingelogd als je de site privé hebt gezet). Die pagina laat zien of `AGENT_ENABLED` en `ANTHROPIC_API_KEY` in de functie aankomen, in welke deploy context, en of Anthropic de sleutel accepteert (via de gratis Models API, zonder tokens). De sleutel zelf wordt nooit getoond. Onder `advies` staat wat je moet aanpassen.
+
 ## Nog te doen
 
 - `TODO(owner)`: **betalen** (€ 200) koppelen, bijv. Mollie, en in `agent-documents.ts` controleren vóór het maken van de documenten. Nu staat er "Testfase: je betaalt nu niets".
