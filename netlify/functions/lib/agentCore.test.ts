@@ -71,3 +71,12 @@ test('transcript keeps only user and assistant text', () => {
   ]);
   assert.equal(text, 'Gebruiker: Hallo\n\nAssistent: Welkom');
 });
+
+test('transcript drops quick-reply option lines', () => {
+  const text = transcript([
+    user('start'),
+    assistant({ type: 'text', text: 'Wat is je situatie?\n[OPTIES] Getrouwd | Samenwonend | Alleenstaand' }),
+    user('Samenwonend'),
+  ]);
+  assert.equal(text, 'Gebruiker: start\n\nAssistent: Wat is je situatie?\n\nGebruiker: Samenwonend');
+});

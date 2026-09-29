@@ -2,7 +2,7 @@
 // Animated four-step overview (converted from the stappen-animatie.html artifact).
 // Copy: docs/07 "Hoe het werkt" via data/offer.ts. Tokens: docs/04 (calm version: accent colour
 // is reserved for the primary button, so the animation uses primary tones).
-// Accessible: every step is plain text in an <ol>, a pause button stops the animation (WCAG 2.2.2),
+// Accessible: every step is plain text in an <ol>, the animation holds while pointed at or focused,
 // and prefers-reduced-motion shows the static end state.
 import { steps, optionalStep } from '../../data/offer';
 
@@ -20,10 +20,11 @@ const [check, talk, docs, notary] = steps;
 ---
 
 <section class="steps-anim" id={id} aria-labelledby={heading ? `${id}-title` : undefined} aria-label={heading ? undefined : 'Stappen'} data-steps-anim>
-  <div class="head">
-    {heading && <Heading id={`${id}-title`}>{heading}</Heading>}
-    <button class="btn-quiet pause" type="button" aria-pressed="false" data-steps-pause>Pauzeer animatie</button>
-  </div>
+  {heading && (
+    <div class="head">
+      <Heading id={`${id}-title`}>{heading}</Heading>
+    </div>
+  )}
 
   <div class="track" aria-hidden="true"><span class="track-dot"></span></div>
 
@@ -134,12 +135,15 @@ const [check, talk, docs, notary] = steps;
 </section>
 
 <script>
+  // No pause button (owner 2026-09-29). The animation holds still while the visitor points at or
+  // focuses a step, so the texts can be read calmly; prefers-reduced-motion shows a static version.
   document.querySelectorAll<HTMLElement>('[data-steps-anim]').forEach((root) => {
-    const button = root.querySelector<HTMLButtonElement>('[data-steps-pause]');
-    button?.addEventListener('click', () => {
-      const paused = root.classList.toggle('paused');
-      button.setAttribute('aria-pressed', String(paused));
-      button.textContent = paused ? 'Speel animatie af' : 'Pauzeer animatie';
+    const hold = (on: boolean) => root.classList.toggle('paused', on);
+    root.addEventListener('mouseenter', () => hold(true));
+    root.addEventListener('mouseleave', () => hold(false));
+    root.addEventListener('focusin', () => hold(true));
+    root.addEventListener('focusout', (event) => {
+      if (!root.contains(event.relatedTarget as Node)) hold(false);
     });
   });
 </script>
@@ -162,10 +166,6 @@ const [check, talk, docs, notary] = steps;
   .head h3 {
     margin: 0;
     max-width: 22ch;
-  }
-
-  .pause {
-    margin-left: auto;
   }
 
   /* Connector track with travelling dot (desktop) */
@@ -412,9 +412,6 @@ const [check, talk, docs, notary] = steps;
     }
     .step {
       opacity: 1;
-    }
-    .pause {
-      display: none;
     }
   }
 </style>

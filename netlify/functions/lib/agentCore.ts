@@ -106,7 +106,13 @@ export function transcript(history: History): string {
       typeof message.content === 'string'
         ? [message.content]
         : message.content.flatMap((block) => (block.type === 'text' ? [block.text] : []));
-    const text = texts.join('\n').trim();
+    // Quick-reply option lines ([OPTIES] / [MEERKEUZE]) are UI hints, not content
+    const text = texts
+      .join('\n')
+      .split('\n')
+      .filter((line) => !/^\s*\[(OPTIES|MEERKEUZE)\]/i.test(line))
+      .join('\n')
+      .trim();
     if (!text || text.startsWith('[Tool')) continue;
     lines.push(`${message.role === 'user' ? 'Gebruiker' : 'Assistent'}: ${text}`);
   }

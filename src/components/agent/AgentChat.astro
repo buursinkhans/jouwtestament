@@ -30,7 +30,8 @@ const price = euro(pricing.selfService);
       <input type="checkbox" data-consent />
       <span>
         Ik begrijp dat mijn antwoorden naar een AI-dienst (Claude van Anthropic) worden gestuurd om het gesprek te
-        voeren. Helder Nalaten bewaart het gesprek niet; het blijft alleen in dit browsertabblad staan.{' '}
+        voeren. Anthropic gebruikt ze niet om modellen te trainen en verwijdert ze binnen 30 dagen. Helder Nalaten
+        bewaart het gesprek niet; het blijft alleen in dit browsertabblad staan tot je het tabblad sluit.{' '}
         <a href="/privacy">Privacyverklaring</a>
       </span>
     </label>
@@ -168,8 +169,31 @@ const price = euro(pricing.selfService);
   const LIST_ITEM = /^\s*([-*•]|\d+[.)])\s+/;
   const inline = (line: string) => escape(line).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
+  // Quick replies: the agent ends a closed question with "[OPTIES] a | b | c" (or [MEERKEUZE]).
+  const OPTION_LINE = /^\s*\[(OPTIES|MEERKEUZE)\]\s*(.*)$/i;
+  /** Also true for a marker that is still arriving while streaming ("[OPT"). */
+  const isOptionLine = (line: string) => {
+    const t = line.trim().toUpperCase();
+    if (!t.startsWith('[')) return false;
+    return ['[OPTIES]', '[MEERKEUZE]'].some((m) => t.startsWith(m) || m.startsWith(t));
+  };
+  function parseOptions(text: string): { multiple: boolean; options: string[] } | null {
+    const lines = text.trim().split('\n');
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const match = OPTION_LINE.exec(lines[i]);
+      if (!match) continue;
+      const options = match[2].split('|').map((o) => o.trim()).filter(Boolean).slice(0, 8);
+      return options.length >= 2 ? { multiple: match[1].toUpperCase() === 'MEERKEUZE', options } : null;
+    }
+    return null;
+  }
+
   /** Paragraphs, headings (#) and lists, also when a list directly follows a sentence. */
   function format(text: string): string {
+    text = text
+      .split('\n')
+      .filter((line) => !isOptionLine(line))
+      .join('\n');
     let html = '';
     for (const block of text.trim().split(/\n{2,}/)) {
       let paragraph: string[] = [];
@@ -228,12 +252,71 @@ const price = euro(pricing.selfService);
 
   function renderHistory() {
     messagesEl.replaceChildren();
+    let lastAssistantText = '';
     saved.history.forEach((message, index) => {
       const text = visibleText(message.content).trim();
       if (!text || (index === 0 && text.startsWith('[Start'))) return;
       if (message.role === 'user' && Array.isArray(message.content)) return; // tool results
       bubble(message.role, text);
+      lastAssistantText = message.role === 'assistant' ? text : '';
     });
+    if (lastAssistantText) renderOptions(lastAssistantText);
+  }
+
+  function clearOptions() {
+    messagesEl.querySelectorAll('.quick-replies').forEach((el) => el.remove());
+  }
+
+  /** Clickable answers under the latest assistant message. Typing stays possible. */
+  function renderOptions(text: string) {
+    clearOptions();
+    const parsed = parseOptions(text);
+    if (!parsed) return;
+    const box = document.createElement('div');
+    box.className = 'quick-replies';
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', parsed.multiple ? 'Kies een of meer antwoorden' : 'Kies een antwoord');
+    const chosen = new Set<string>();
+    const submit = document.createElement('button');
+    submit.type = 'button';
+    submit.className = 'btn-primary qr-submit';
+    submit.textContent = 'Verstuur keuze';
+    submit.disabled = true;
+    submit.addEventListener('click', () => send([...chosen].join(', ')));
+
+    for (const option of parsed.options) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'qr-chip';
+      chip.textContent = option;
+      const isOther = /^anders/i.test(option);
+      if (parsed.multiple && !isOther) chip.setAttribute('aria-pressed', 'false');
+      chip.addEventListener('click', () => {
+        if (isOther) {
+          // "Anders, namelijk…": let the visitor type
+          input.value = option.replace(/[.…]+$/, '').replace(/namelijk$/i, 'namelijk ').trimEnd() + ' ';
+          input.focus();
+          return;
+        }
+        if (!parsed.multiple) return send(option);
+        const on = !chosen.has(option);
+        if (on) chosen.add(option);
+        else chosen.delete(option);
+        chip.setAttribute('aria-pressed', String(on));
+        submit.disabled = chosen.size === 0;
+      });
+      box.append(chip);
+    }
+    if (parsed.multiple) box.append(submit);
+    messagesEl.append(box);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function send(message: string) {
+    if (!message || sendButton.disabled) return;
+    clearOptions();
+    input.value = '';
+    turn(message);
   }
 
   function renderState(state?: AgentState) {
@@ -342,7 +425,10 @@ const price = euro(pricing.selfService);
     if (failed && message) input.value = message; // let the user try again
     if (!text.trim() && !failed) reply.remove();
     setBusy(false);
-    if (!failed) input.focus();
+    if (!failed) {
+      renderOptions(text);
+      input.focus();
+    }
   }
 
   // ---------- documents ----------
@@ -439,10 +525,7 @@ h2{margin-top:48px}.doc-label,.doc-footer{color:#5b6763;font-size:14px}.document
 
   $('[data-composer]').addEventListener('submit', (event) => {
     event.preventDefault();
-    const message = input.value.trim();
-    if (!message || sendButton.disabled) return;
-    input.value = '';
-    turn(message);
+    send(input.value.trim());
   });
 
   input.addEventListener('keydown', (event) => {
@@ -664,6 +747,52 @@ h2{margin-top:48px}.doc-label,.doc-footer{color:#5b6763;font-size:14px}.document
     color: var(--color-primary);
     border-radius: var(--radius-pill);
     padding: 2px 10px;
+  }
+
+  .messages :global(.quick-replies) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 2px 0 4px;
+  }
+
+  .messages :global(.qr-chip) {
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--color-input-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .messages :global(.qr-chip:hover) {
+    border-color: var(--color-primary);
+  }
+
+  .messages :global(.qr-chip[aria-pressed='true']) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .messages :global(.qr-submit) {
+    min-height: 40px;
+    padding: 8px 18px;
+    font-size: var(--fs-small);
+  }
+
+  .messages :global(.qr-submit:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  :global(.busy) .messages :global(.quick-replies) {
+    display: none;
   }
 
   .composer {

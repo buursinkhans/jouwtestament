@@ -23,7 +23,7 @@
 
   --content-max: 1200px;
   --gutter: 20px;
-  --section-pad: 64px;
+  --section-pad: 32px; /* halved 2026-09-29 (owner) */
   --radius-card: 16px;
   --radius-panel: 20px;
   --radius-small: 12px;
@@ -47,7 +47,7 @@
 @media (min-width: 768px) {
   :root {
     --gutter: 40px;
-    --section-pad: 96px;
+    --section-pad: 48px;
     --fs-h1: 44px;
     --fs-h2: 30px;
     --fs-body: 17px;
@@ -183,7 +183,7 @@ a:not([class]):hover {
 
 .section-head {
   max-width: 760px;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 .eyebrow {

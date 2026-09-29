@@ -10,7 +10,7 @@
 | **Doorverwijzing** | jouwtestament.nl → `https://heldernalaten.nl/testament` (301, met UTM `?utm_source=jouwtestament&utm_medium=domain`) |
 | **Schrijfwijze** | Helder Nalaten (twee woorden). Logo: woordmerk, pay-off eronder of ernaast. |
 
-`TODO(owner)`: beschikbaarheid heldernalaten.nl en merkcheck BOIP bevestigen. Overweeg ook joutestament.nl als typfout-doorverwijzing.
+heldernalaten.nl is gekocht (eigenaar, 2026-09-29, bij Strato); e-mail: info@heldernalaten.nl. De doorverwijzing van jouwtestament.nl staat in `netlify.toml`. `TODO(owner)`: DNS en mail instellen bij Strato, merkcheck BOIP. Overweeg ook joutestament.nl als typfout-doorverwijzing.
 
 ## Positionering in één zin
 

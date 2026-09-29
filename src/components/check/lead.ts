@@ -82,7 +82,7 @@ export function validateSubmission(input: unknown): ValidationResult {
   if (errors.length > 0) return { ok: false, errors };
 
   const rawSource = isObject(input.source) ? input.source : {};
-  const domain = rawSource.domain === 'heldernalaten.nl' ? 'heldernalaten.nl' : 'jouwtestament.nl';
+  const domain = rawSource.domain === 'jouwtestament.nl' ? 'jouwtestament.nl' : 'heldernalaten.nl';
 
   return {
     ok: true,
