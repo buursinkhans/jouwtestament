@@ -11,7 +11,7 @@ import PriceCard from '../components/content/PriceCard.astro';
 import Faq from '../components/content/Faq.astro';
 import Check from '../components/check/Check.astro';
 import { Check as CheckIcon, House, PiggyBank, Landmark, ShieldCheck } from '@lucide/astro';
-import { site, canShow } from '../config/site';
+import { site } from '../config/site';
 import { pricing, euro, euroRange } from '../config/pricing';
 import { situationTiles } from '../data/segments';
 import { documents, priceCards, offerSchema, steps } from '../data/offer';
@@ -420,11 +420,7 @@ const serviceSchema = {
     <div class="container narrow closing">
       <h2>Regel het nu, voor de mensen van wie je houdt.</h2>
       <p class="lead">
-        {canShow(site.contact.phone) ? (
-          <>Doe de gratis check van twee minuten, of bel <span class="placeholder">{site.contact.phone}</span>.</>
-        ) : (
-          <>Doe de gratis check van twee minuten.</>
-        )}
+        Doe de gratis check van twee minuten.
       </p>
       <a class="btn-primary" href="/check">Doe de gratis check</a>
     </div>

@@ -17,7 +17,6 @@ const shortDescription =
       <p>{site.tagline}</p>
       <p>{shortDescription}</p>
       <p>
-        {canShow(site.contact.phone) && <><span class="placeholder">{site.contact.phone}</span><br /></>}
         {canShow(site.contact.email) && <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>}
       </p>
     </div>

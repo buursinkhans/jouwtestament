@@ -52,7 +52,6 @@ const breadcrumbs = [
       <h2>Bedrijfsgegevens</h2>
       <ul>
         {canShow(site.kvk) && <li>KvK: <span class="placeholder">{site.kvk}</span></li>}
-        {canShow(site.contact.phone) && <li>Telefoon: <span class="placeholder">{site.contact.phone}</span></li>}
         <li>E-mail: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
       </ul>
     </section>

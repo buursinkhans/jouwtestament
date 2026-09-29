@@ -201,5 +201,5 @@ Niet altijd. Soms past de wettelijke regeling prima. Juist daarom kijken we eers
 ## 11. Afsluiting
 
 - **H2:** Regel het nu, voor de mensen van wie je houdt.
-- **Tekst:** Doe de gratis check van twee minuten, of bel [TELEFOON].
+- **Tekst:** Doe de gratis check van twee minuten. *(Was: "…, of bel [TELEFOON]". Geen telefoon, eigenaar 2026-09-29.)*
 - **Knop (`.btn-light`):** Doe de gratis check → `/check`

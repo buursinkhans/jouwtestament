@@ -65,7 +65,7 @@ Labels in de ik/wij-vorm: de bezoeker klikt op een zin die hij zelf zou zeggen.
 ## Footer
 
 Vier kolommen:
-1. **Helder Nalaten** — pay-off, entiteitsbeschrijving (kort), contact [TELEFOON] [E-MAIL]
+1. **Helder Nalaten** — pay-off, entiteitsbeschrijving (kort), contact: info@heldernalaten.nl *(geen telefoonnummer: bezoekers kunnen niet bellen, eigenaar 2026-09-29)*
 2. **Voor wie** — de vijf situaties
 3. **Meer** — Hoe het werkt, Tarieven, Testament, Tips, Veelgestelde vragen, Over ons
 4. **Juridisch** — Privacy, Voorwaarden, KvK [NUMMER], "Inhoud gecontroleerd door [NAAM ADVISEUR]"
