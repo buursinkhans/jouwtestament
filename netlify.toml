@@ -5,6 +5,22 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# jouwtestament.nl is a campaign domain (docs/01): every path goes to /testament on
+# heldernalaten.nl, tagged so visits and leads from that domain stay measurable.
+# These must come first: Netlify uses the first matching rule.
+# Requires jouwtestament.nl (and www) to be added as domain aliases of this Netlify project.
+[[redirects]]
+  from = "https://jouwtestament.nl/*"
+  to = "https://heldernalaten.nl/testament?utm_source=jouwtestament&utm_medium=domain"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.jouwtestament.nl/*"
+  to = "https://heldernalaten.nl/testament?utm_source=jouwtestament&utm_medium=domain"
+  status = 301
+  force = true
+
 # Old jouwtestament pages → their Helder Nalaten equivalents (removed 2026-09-27)
 [[redirects]]
   from = "/levenstestament"

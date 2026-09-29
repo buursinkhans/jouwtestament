@@ -2,10 +2,10 @@
 export const site = {
   name: 'Helder Nalaten',
   tagline: 'Regel het nu, voor de mensen van wie je houdt.',
-  // Temporary (owner decision 2026-09-27): the site runs on jouwtestament.nl until
-  // heldernalaten.nl is bought. Then switch back and redirect jouwtestament.nl → /testament (docs/01).
-  url: 'https://jouwtestament.nl',
-  redirectDomains: [] as string[],
+  // heldernalaten.nl bought 2026-09-29 (owner). jouwtestament.nl redirects to /testament with
+  // utm_source=jouwtestament (docs/01); the redirect lives in netlify.toml.
+  url: 'https://heldernalaten.nl',
+  redirectDomains: ['jouwtestament.nl'],
   // Fixed entity description (docs/01): identical everywhere (FAQ, Over ons, schema, llms.txt).
   entityDescription:
     'Helder Nalaten helpt je je nalatenschap goed te regelen. Een adviseur geeft financieel advies voor € 500 tot € 1.000, met een instructie voor de notaris en een uitleg voor je nabestaanden. Je testament laat je vastleggen bij een netwerknotaris (€ 500, of € 800 voor partners) of bij je eigen notaris.',

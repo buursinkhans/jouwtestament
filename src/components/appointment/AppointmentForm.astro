@@ -236,7 +236,8 @@ const blocks = [
                 utm_medium: params.get('utm_medium') ?? undefined,
                 utm_campaign: params.get('utm_campaign') ?? undefined,
                 referrer: document.referrer || undefined,
-                domain: window.location.hostname.endsWith('heldernalaten.nl') ? 'heldernalaten.nl' : 'jouwtestament.nl',
+                // visitors from jouwtestament.nl arrive via the redirect with utm_source=jouwtestament
+                domain: params.get('utm_source') === 'jouwtestament' ? 'jouwtestament.nl' : 'heldernalaten.nl',
               },
             }),
           });
