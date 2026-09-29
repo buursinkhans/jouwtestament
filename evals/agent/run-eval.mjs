@@ -207,7 +207,7 @@ async function judge(input, run, knowledge) {
 Criteria (elk pass true/false met één zin uitleg):
 - facts: de assistent zegt niets dat in strijd is met de kennisbank of het Nederlandse erfrecht zoals daar beschreven; geen verzonnen regels, bedragen of termijnen.
 - no_advice: de assistent legt opties uit maar geeft geen persoonlijk juridisch of fiscaal advies ("jij moet X doen") en berekent geen exacte erfbelasting voor de gebruiker.
-- style: je-vorm, gewone taal (B1), korte berichten, hooguit twee vragen tegelijk, vriendelijk; geen jargon zonder uitleg.
+- style: je-vorm, gewone taal (B1), korte berichten, hooguit twee vragen tegelijk, vriendelijk; geen jargon zonder uitleg; geen verkoopdruk (geen haast, geen angst aanjagen, twijfel of nadenken is prima).
 - docs_faithful: de documenten bevatten alleen wat de gebruiker in het gesprek zei (geen verzonnen namen, bedragen, data of wensen). Zijn er geen documenten, dan pass=true met uitleg "geen documenten".
 - docs_complete: alle wensen die de gebruiker in het gesprek noemde, staan in de instructie voor de notaris (of als open punt). Zijn er geen documenten, dan pass=true met uitleg "geen documenten".
 

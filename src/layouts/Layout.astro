@@ -41,6 +41,15 @@ const {
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+// Google cuts titles off at about 60 characters. The brand suffix goes first when a title is
+// long; Google shows the site name separately anyway (WebSite schema, og:site_name).
+const MAX_TITLE = 60;
+const suffixed = fullTitle ?? `${title} | ${site.name}`;
+const pageTitle =
+  suffixed.length > MAX_TITLE && suffixed.endsWith(` | ${site.name}`)
+    ? suffixed.slice(0, -` | ${site.name}`.length)
+    : suffixed;
+const ogImage = new URL('/og-image.png', Astro.site);
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -49,7 +58,14 @@ const organizationSchema = {
   url: site.url,
   slogan: site.tagline,
   description: site.entityDescription,
-  // TODO(owner): add logo, contactPoint and sameAs once confirmed
+  // Logo option A (owner 2026-09-30). TODO(owner): add sameAs (LinkedIn, Google profile)
+  logo: new URL('/logo.png', Astro.site).toString(),
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: site.contact.email,
+    availableLanguage: 'nl',
+  },
 };
 
 const websiteSchema = {
@@ -110,8 +126,11 @@ const jsonLd = [organizationSchema, websiteSchema, breadcrumbSchema, faqSchema, 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{fullTitle ?? `${title} | ${site.name}`}</title>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1f3d36" />
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex" />}
@@ -120,6 +139,12 @@ const jsonLd = [organizationSchema, websiteSchema, breadcrumbSchema, faqSchema, 
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name}: ${site.tagline}`} />
+    <meta name="twitter:card" content="summary_large_image" />
     {jsonLd.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
     <Analytics />
   </head>

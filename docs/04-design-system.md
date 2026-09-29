@@ -1,5 +1,7 @@
 # 04 — Design system
 
+> **Logo (eigenaar, 2026-09-30): optie A "Heldere lijn".** Een witte H op een donkergroen afgerond vierkant (`--color-primary`); de middenstreep loopt door als rood-oranje lijn (`--color-accent`): iets doorgeven. In de header staat het beeldmerk (40 px) links van "Helder Nalaten" met de pay-off eronder. Component: `src/components/layout/LogoMark.astro`. Favicon, apple-touch-icon, `logo.png` (schema) en `og-image.png` komen uit `design/logo/generate-assets.mjs`. De andere opties staan in `design/logo-opties/`. `TODO(owner)`: merkcheck BOIP.
+
 > **Wijziging eigenaar (2026-09-28, avond): alle knoppen rood.** `.btn-primary` en `.btn-secondary` hebben dezelfde gevulde stijl in `--color-accent` (rood-oranje), met `--color-accent-hover` bij hover. Kleine bedieningsknoppen die geen actie zijn (animatie pauzeren) gebruiken `.btn-quiet` (neutraal, klein).
 
 > **Wijziging eigenaar (2026-09-28): moderner en strakker.** Dit gaat vóór alles hieronder.

@@ -3,6 +3,7 @@
 // Server-rendered form with real radio inputs; the script adds prefill, validation and results.
 // TODO(review-partner): all texts.
 import { pricing, euro } from '../../config/pricing';
+import ShareCheck from '../content/ShareCheck.astro';
 
 interface Props {
   prefill?: string; // e.g. "?situatie=samenwonend" (docs/03)
@@ -160,6 +161,7 @@ const adviceFrom = euro(pricing.advice.min);
         </div>
       </div>
       <button type="button" class="link-button" data-check-reset>Antwoorden aanpassen</button>
+      <ShareCheck />
     </div>
 
   </form>

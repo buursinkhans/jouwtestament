@@ -5,7 +5,8 @@ import { pricing, euro, euroRange } from '../config/pricing';
 import { segments } from '../data/segments';
 
 export const GET: APIRoute = () => {
-  const url = (path: string) => new URL(path, site.url).toString();
+  // Trailing slash, matching the canonical URLs of the pages
+  const url = (path: string) => new URL(path.endsWith('/') ? path : `${path}/`, site.url).toString();
   const lines = [
     `# ${site.name}`,
     '',
@@ -27,9 +28,12 @@ export const GET: APIRoute = () => {
       .sort((a, b) => a.priority - b.priority)
       .map((segment) => `- [${segment.navLabel}](${url(`/voor-wie/${segment.slug}`)}): ${segment.description}`),
     `- [Hoe het werkt](${url('/hoe-het-werkt')})`,
+    `- [Regel het zelf](${url('/regel-het-zelf')}): zet met onze digitale assistent je wensen op een rij, voor ${euro(pricing.selfService)}`,
+    `- [Gesprek met een adviseur](${url('/afspraak')}): plan een gesprek, advies vanaf ${euro(pricing.advice.min)}`,
     `- [Tarieven](${url('/tarieven')})`,
     `- [Testament](${url('/testament')})`,
     `- [Tips](${url('/tips')}): 12 dingen over je nalatenschap waar bijna niemand aan denkt`,
+    `- [Veelgestelde vragen](${url('/veelgestelde-vragen')})`,
     `- [Over ons](${url('/over-ons')})`,
     `- [Gratis nalatenschapscheck](${url('/check')})`,
     '',

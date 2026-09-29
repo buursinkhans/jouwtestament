@@ -12,6 +12,8 @@ Status: **testfase**. Inhoud is een concept en moet nog door een notaris/adviseu
 
 Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de adviseur. De assistent raadt zelf een adviseur aan bij o.a. een onderneming, buitenland, groot vermogen/fiscale wensen, kind met beperking, conflicten of twijfel over wilsbekwaamheid. De klant mag daarna toch verder.
 
+**Als een goede buur (eigenaar, 2026-09-30):** de assistent is aanwezig, dichtbij en vertrouwd. Hij helpt eerst en verkoopt niet: geen haast of angst aanjagen, prijs alleen noemen als het ertoe doet, nadenken of stoppen is prima (hij zegt eerlijk dat het gesprek alleen bewaard blijft zolang het tabblad open is), en hij raadt een adviseur alleen aan als de situatie daarom vraagt. Staat in `agentPrompt.ts`; getest met eval-case `twijfel-goede-buur` en het stijlcriterium van de beoordelaar.
+
 ## Techniek
 
 | Onderdeel | Bestand |
