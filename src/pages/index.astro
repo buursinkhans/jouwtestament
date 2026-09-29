@@ -10,7 +10,7 @@ import Carousel from '../components/content/Carousel.astro';
 import PriceCard from '../components/content/PriceCard.astro';
 import Faq from '../components/content/Faq.astro';
 import Check from '../components/check/Check.astro';
-import { Check as CheckIcon } from '@lucide/astro';
+import { Check as CheckIcon, House, PiggyBank, Landmark, ShieldCheck } from '@lucide/astro';
 import { site, canShow } from '../config/site';
 import { pricing, euro, euroRange } from '../config/pricing';
 import { situationTiles } from '../data/segments';
@@ -26,6 +26,14 @@ const stepShort = [
   'Uit ons netwerk of je eigen notaris.',
 ];
 const howItWorks = steps.map((step, index) => ({ ...step, short: stepShort[index] }));
+
+// Carousel slide 2: what your estate consists of (docs/05 section 3 tiles)
+const estateParts = [
+  { icon: House, title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
+  { icon: PiggyBank, title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
+  { icon: Landmark, title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
+  { icon: ShieldCheck, title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
+];
 
 const description = `Wij helpen je je testament goed te regelen: je wensen helder op een rij, een instructie voor de notaris en een uitleg voor je nabestaanden. Zelf met onze assistent voor ${euro(pricing.selfService)}, of met een adviseur vanaf ${euro(pricing.advice.min)}.`;
 
@@ -170,22 +178,25 @@ const serviceSchema = {
         </div>
 
         <!-- Slide 2: your estate is bigger than you think (docs/05 section 3) -->
-        <div class="slide slide-split" data-slide>
-          <div>
-            <span class="eyebrow">Goed regelen is voor iedereen</span>
-            <h2>Jouw nalatenschap is waarschijnlijk groter dan je denkt</h2>
-            <p class="lead">
-              Je hoeft geen vermogend te zijn om iets na te laten. Een koophuis, spaargeld, pensioen en een
-              levensverzekering tellen samen al snel op. Hoe groter het bedrag, hoe belangrijker dat duidelijk is wie
-              wat krijgt, en wie het regelt.
-            </p>
-          </div>
-          <figure class="big-stat">
-            <p class="number">€&nbsp;368.000</p>
-            <p>erven kinderen van ouders met een koopwoning gemiddeld. Bij ouders met een huurwoning is dat €&nbsp;18.000.</p>
-            {/* TODO(owner): link the original source */}
-            <figcaption class="source">Bron: berichtgeving op basis van CBS/ESB (2026)</figcaption>
-          </figure>
+        <div class="slide" data-slide>
+          <span class="eyebrow">Goed regelen is voor iedereen</span>
+          <h2>Jouw nalatenschap is waarschijnlijk groter dan je denkt</h2>
+          <ul class="boxes boxes-4 boxes-2-mobile">
+            {estateParts.map(({ icon: Icon, title, text }) => (
+              <li class="box">
+                <p class="box-head">
+                  <span class="box-number" aria-hidden="true"><Icon size={14} stroke-width={2} /></span>
+                  <span class="box-name">{title}</span>
+                </p>
+                <p class="box-text">{text}</p>
+              </li>
+            ))}
+          </ul>
+          {/* TODO(owner): link the original source */}
+          <p class="price-example">
+            Kinderen van ouders met een koopwoning erven gemiddeld <strong>€&nbsp;368.000</strong>; bij een huurwoning
+            is dat €&nbsp;18.000. <span class="source">Bron: berichtgeving op basis van CBS/ESB (2026)</span>
+          </p>
         </div>
 
         <!-- Slide 3: the facts (docs/05 section 4, stats row) -->
@@ -549,6 +560,21 @@ const serviceSchema = {
     padding: 10px 12px;
   }
 
+  /* Short texts (slide 2): two boxes side by side on mobile */
+  @media (max-width: 767px) {
+    .boxes-2-mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .boxes-2-mobile .box-head {
+      align-items: flex-start;
+    }
+
+    .boxes-2-mobile .box-number {
+      display: none;
+    }
+  }
+
   @media (min-width: 768px) {
     .box {
       border-radius: var(--radius-card);
@@ -604,31 +630,10 @@ const serviceSchema = {
     font-size: inherit;
   }
 
-  .slide-split {
-    gap: 16px 40px;
-  }
 
-  @media (min-width: 1024px) {
-    .slide-split {
-      grid-template-columns: 3fr 2fr;
-      align-items: center;
-    }
-  }
 
-  .slide .big-stat {
-    background: var(--color-surface);
-    border-radius: var(--radius-card);
-    padding: 16px 20px;
-  }
 
-  .slide .big-stat .number {
-    font-size: var(--fs-h2);
-    margin-bottom: 2px;
-  }
 
-  .slide .big-stat p {
-    margin-bottom: 6px;
-  }
 
   .slide .stats {
     display: grid;
@@ -823,20 +828,6 @@ const serviceSchema = {
 
   .split .section-head {
     margin-bottom: 0;
-  }
-
-  .big-stat {
-    margin: 0;
-    border-left: 0;
-    padding: 0;
-  }
-
-  .number {
-    font-size: var(--fs-h2);
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--color-primary);
-    margin: 0 0 4px;
   }
 
   .plain-list {
