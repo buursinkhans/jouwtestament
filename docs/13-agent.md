@@ -41,6 +41,24 @@ Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de
 | `AGENT_MODEL` | optioneel, standaard `claude-opus-5` |
 | `AGENT_EFFORT` / `AGENT_DOC_EFFORT` | optioneel, standaard `medium` / `high` |
 
+## Privacy: waar gaan de gegevens heen?
+
+| Plek | Wat | Hoe lang |
+|---|---|---|
+| Browser van de bezoeker | Het volledige gesprek en de documenten (`sessionStorage`) | Tot het tabblad wordt gesloten of "Gesprek wissen" |
+| Netlify-functie | Stuurt het gesprek door; logt alleen foutcodes, nooit inhoud | Niet opgeslagen |
+| Anthropic (Claude API) | Verwerkt het gesprek | Niet gebruikt voor training; verwijderd binnen 30 dagen (uitzondering: handhaving Usage Policy). Bron: [API and data retention](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention) |
+| Google Sheet | Alleen afspraakverzoeken (`/afspraak`), niet de gesprekken | Bewaartermijn `TODO(owner)` |
+| Simple Analytics | Alleen tellingen van stappen, nooit inhoud of antwoorden | — |
+
+Technische maatregelen:
+- **Content-Security-Policy** (`netlify.toml`): de pagina mag alleen gegevens sturen naar onze eigen functies en Simple Analytics; scripts alleen van de eigen site en Simple Analytics. Zo kan geen ander script gegevens naar een andere website sturen.
+- `/api/*`: `X-Robots-Tag: noindex, nofollow` en `Cache-Control: no-store` (nooit in zoekmachines of caches).
+- Geen persoonsgegevens in URL's; de assistent vraagt nooit om BSN, rekeningnummers of wachtwoorden en neemt ze niet op in het dossier.
+- De assistent heeft geen internettoegang (geen zoek- of fetch-tools): gegevens gaan nergens anders heen.
+- De GitHub-repository is openbaar maar bevat geen persoonsgegevens (testpersona's zijn verzonnen); sleutels staan alleen in Netlify.
+- Optie: zero data retention bij Anthropic aanvragen (vereist goedkeuring van Anthropic).
+
 ## Problemen oplossen
 
 Open `https://<site>/api/agent/status` in je browser (ingelogd als je de site privé hebt gezet). Die pagina laat zien of `AGENT_ENABLED` en `ANTHROPIC_API_KEY` in de functie aankomen, in welke deploy context, en of Anthropic de sleutel accepteert (via de gratis Models API, zonder tokens). De sleutel zelf wordt nooit getoond. Onder `advies` staat wat je moet aanpassen.
