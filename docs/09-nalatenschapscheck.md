@@ -59,6 +59,8 @@ Toon alle regels die waar zijn, in deze volgorde; altijd minstens één. Elk aan
 
 Onder de aandachtspunten: "Bedankt! Een adviseur neemt binnen twee werkdagen contact met je op om dit samen door te lopen." + indicatie van de kosten ("Advies vanaf € 500, testament € 500 / € 800 voor partners") + knop "Opnieuw invullen".
 
+**Check doorgeven (eigenaar, 2026-09-30, principe "goede buur"):** onder de keuzes en op `/bedankt` staat het blok "Ken je iemand die dit ook zou moeten regelen?" met de tekst "Je ouders, je broer of zus, of je buren? Stuur ze de gratis check. Twee minuten, en ze weten waar ze staan." en de knoppen "Stuur via WhatsApp", "Stuur per e-mail" en "Kopieer de link". Het bericht: "Ik heb de gratis nalatenschapscheck van Helder Nalaten gedaan. Twee minuten, en je weet of je het goed geregeld hebt: [link]". De link is `/check?utm_source=doorgestuurd&utm_medium=share`; er gaan geen antwoorden of persoonsgegevens mee, en er is geen beloning. Component: `src/components/content/ShareCheck.astro`. `TODO(owner)`: tekst akkoord (voorstel Claude).
+
 Alle teksten: `TODO(review-partner)`. Logica in één pure functie `getFlags(answers): Flag[]` met unit test per regel.
 
 ## 5. Segment en prioriteit
@@ -119,4 +121,4 @@ type LeadStatus = 'nieuw' | 'contact' | 'gesprek' | 'gesloten' | 'geen_match' | 
 
 ## 8. Analytics-events (geen persoonsgegevens)
 
-`check_started` · `check_question_answered` (question) · `check_submitted` (segment, priority, landingPage) · `contact_requested` · `segment_tile_clicked` (segment) · `nav_voor_wie_opened`.
+`check_started` · `check_question_answered` (question) · `check_submitted` (segment, priority, landingPage) · `contact_requested` · `segment_tile_clicked` (segment) · `nav_voor_wie_opened`. · `check_shared` (channel: whatsapp, email of copy).

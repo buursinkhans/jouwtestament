@@ -1,6 +1,7 @@
 ---
 // /bedankt: after sending the check (also the no-JS fallback, docs/03, docs/10).
 import Layout from '../layouts/Layout.astro';
+import ShareCheck from '../components/content/ShareCheck.astro';
 ---
 
 <Layout
@@ -16,5 +17,6 @@ import Layout from '../layouts/Layout.astro';
       <a class="btn-primary" href="/tips">Lees alvast de tips</a>
       <a class="btn-secondary" href="/hoe-het-werkt">Zo werkt het</a>
     </div>
+    <ShareCheck headingLevel="h2" />
   </div>
 </Layout>

@@ -4,7 +4,7 @@ Test of de assistent (docs/13-agent.md) goed blijft werken na elke wijziging aan
 
 ## Hoe het werkt
 
-- **16 testsituaties** in `cases.json`: samenwonen, jonge kinderen, samengesteld gezin, 55-plus, alleenstaand, complexe situaties (verwacht: adviseur) en gedrag (BSN delen, aandringen op advies, wijziging na samenvatting).
+- **17 testsituaties** in `cases.json`: samenwonen, jonge kinderen, samengesteld gezin, 55-plus, alleenstaand, complexe situaties (verwacht: adviseur) en gedrag (BSN delen, aandringen op advies, wijziging na samenvatting, twijfel zonder verkoopdruk).
 - Een **gesimuleerde gebruiker** (standaard `claude-sonnet-5`) speelt elke persona en praat met de **echte** chatfunctie (`netlify/functions/agent-chat.ts`). Bij "klaar" maakt de echte documentfunctie beide documenten.
 - **Beoordeling per situatie:**
 

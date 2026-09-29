@@ -1,0 +1,86 @@
+---
+// "Pass the check on" (good-neighbour principle, owner 2026-09-30): people who arranged it
+// themselves often think of parents, siblings or neighbours. Sharing sends only a link to the
+// check; no personal data or answers, no reward. utm tags keep shared visits measurable.
+import { MessageCircle, Mail, Link } from '@lucide/astro';
+import { site } from '../../config/site';
+
+interface Props {
+  headingLevel?: 'h2' | 'h3'; // h3 inside the check result, h2 on its own page
+}
+const { headingLevel: Heading = 'h3' } = Astro.props;
+
+const checkUrl = new URL('/check?utm_source=doorgestuurd&utm_medium=share', site.url).toString();
+// TODO(owner): approve copy (proposal, not yet in docs 05-09)
+const message = `Ik heb de gratis nalatenschapscheck van ${site.name} gedaan. Twee minuten, en je weet of je het goed geregeld hebt: ${checkUrl}`;
+const whatsappHref = `https://wa.me/?text=${encodeURIComponent(message)}`;
+const mailHref = `mailto:?subject=${encodeURIComponent('Heb jij het goed geregeld?')}&body=${encodeURIComponent(message)}`;
+---
+
+<div class="share-check" data-share-check data-url={checkUrl}>
+  <Heading class="share-title">Ken je iemand die dit ook zou moeten regelen?</Heading>
+  <p>Je ouders, je broer of zus, of je buren? Stuur ze de gratis check. Twee minuten, en ze weten waar ze staan.</p>
+  <div class="share-buttons">
+    <a class="btn-light" href={whatsappHref} target="_blank" rel="noopener" data-share="whatsapp">
+      <MessageCircle size={18} aria-hidden="true" /> Stuur via WhatsApp
+    </a>
+    <a class="btn-light" href={mailHref} data-share="email">
+      <Mail size={18} aria-hidden="true" /> Stuur per e-mail
+    </a>
+    <button type="button" class="btn-light" data-share="copy" hidden>
+      <Link size={18} aria-hidden="true" /> <span data-copy-label>Kopieer de link</span>
+    </button>
+  </div>
+  <p class="sr-only" role="status" data-share-status></p>
+</div>
+
+<script>
+  import { track } from '../../lib/analytics';
+
+  document.querySelectorAll<HTMLElement>('[data-share-check]').forEach((root) => {
+    const url = root.dataset.url!;
+    root.querySelectorAll<HTMLElement>('[data-share]').forEach((el) => {
+      el.addEventListener('click', () => track('check_shared', { channel: el.dataset.share! }));
+    });
+
+    // Copy button only where the clipboard API exists (it needs JavaScript anyway)
+    const copy = root.querySelector<HTMLButtonElement>('[data-share="copy"]')!;
+    if (!navigator.clipboard) return;
+    copy.hidden = false;
+    const label = copy.querySelector<HTMLElement>('[data-copy-label]')!;
+    const status = root.querySelector<HTMLElement>('[data-share-status]')!;
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        label.textContent = 'Link gekopieerd';
+        status.textContent = 'De link naar de check is gekopieerd.';
+        setTimeout(() => (label.textContent = 'Kopieer de link'), 3000);
+      } catch {
+        status.textContent = 'Kopiëren lukte niet. Gebruik WhatsApp of e-mail.';
+      }
+    });
+  });
+</script>
+
+<style>
+  .share-check {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .share-title {
+    font-size: var(--fs-h3);
+    margin: 0 0 8px;
+  }
+
+  .share-check p {
+    margin: 0 0 16px;
+  }
+
+  .share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>

@@ -14,7 +14,8 @@ type EventName =
   | 'agent_option_adviser'
   | 'agent_ready'
   | 'agent_documents_created'
-  | 'appointment_requested';
+  | 'appointment_requested'
+  | 'check_shared';
 
 declare global {
   interface Window {
