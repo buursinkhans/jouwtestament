@@ -14,8 +14,18 @@ import { Check as CheckIcon } from '@lucide/astro';
 import { site, canShow } from '../config/site';
 import { pricing, euro, euroRange } from '../config/pricing';
 import { situationTiles } from '../data/segments';
-import { documents, priceCards, offerSchema } from '../data/offer';
+import { documents, priceCards, offerSchema, steps } from '../data/offer';
 import { homeFaq } from '../data/faq';
+
+// Carousel slide 1: how it works in four boxes, same texts as the steps animation (docs/07).
+// Short one-line versions for mobile keep the carousel compact.
+const stepShort = [
+  'Gratis, in twee minuten.',
+  'Met onze assistent of een adviseur.',
+  'Voor de notaris en je nabestaanden.',
+  'Uit ons netwerk of je eigen notaris.',
+];
+const howItWorks = steps.map((step, index) => ({ ...step, short: stepShort[index] }));
 
 const description = `Wij helpen je je testament goed te regelen: je wensen helder op een rij, een instructie voor de notaris en een uitleg voor je nabestaanden. Zelf met onze assistent voor ${euro(pricing.selfService)}, of met een adviseur vanaf ${euro(pricing.advice.min)}.`;
 
@@ -137,14 +147,26 @@ const serviceSchema = {
     <div class="container">
       <Carousel label="Over Helder Nalaten" id="intro-carrousel">
         <!-- Slide 1: who we are, what we do (headline owner 2026-09-29) -->
-        <div class="slide slide-intro" data-slide>
+        <div class="slide" data-slide>
+          <span class="eyebrow">Zo werkt het</span>
           <h1>Je nalatenschap helder geregeld</h1>
-          <p class="lead">
-            Wij zetten samen met jou op een rij wat er met jouw spullen, geld en huis moet gebeuren, en wie het
-            regelt. Jij krijgt een heldere instructie voor de notaris en een uitleg voor de mensen die achterblijven.
-            Zelf met onze assistent, of met een adviseur.
+          <ol class="boxes boxes-4">
+            {howItWorks.map((step, index) => (
+              <li class="box">
+                <p class="box-head">
+                  <span class="box-number" aria-hidden="true">{index + 1}</span>
+                  <span class="box-name">{step.title}</span>
+                </p>
+                <p class="box-text">
+                  <span class="text-full">{step.text}</span>
+                  <span class="text-short">{step.short}</span>
+                </p>
+              </li>
+            ))}
+          </ol>
+          <p class="price-example">
+            Jij kiest hoeveel hulp je wilt. <a href="/check">Doe eerst de gratis check (2 minuten)</a>
           </p>
-          <p class="slide-link"><a href="/check">Doe eerst de gratis check (2 minuten)</a></p>
         </div>
 
         <!-- Slide 2: your estate is bigger than you think (docs/05 section 3) -->
@@ -504,6 +526,65 @@ const serviceSchema = {
     font-size: var(--fs-small);
   }
 
+  /* Slide 1: how it works in four boxes, same look as the price boxes */
+  .boxes {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    margin: 12px 0 8px;
+  }
+
+  @media (min-width: 768px) {
+    .boxes-4 {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin: 16px 0 10px;
+    }
+  }
+
+  .box {
+    background: var(--color-surface);
+    border-radius: var(--radius-small);
+    padding: 10px 12px;
+  }
+
+  @media (min-width: 768px) {
+    .box {
+      border-radius: var(--radius-card);
+      padding: 14px 16px;
+    }
+  }
+
+  .box-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 4px;
+  }
+
+  .box-number {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--color-tint);
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .box-name {
+    font-weight: 700;
+  }
+
+  .box-text {
+    margin: 0;
+    font-size: var(--fs-small);
+    color: var(--color-muted);
+  }
+
   /* Mobile: one-line explanation per price, so the block stays compact */
   .text-full {
     display: none;
@@ -521,11 +602,6 @@ const serviceSchema = {
   .slide .lead {
     margin: 10px 0 0;
     font-size: inherit;
-  }
-
-  .slide-link {
-    margin: 12px 0 0;
-    font-weight: 600;
   }
 
   .slide-split {

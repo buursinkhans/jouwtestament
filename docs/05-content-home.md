@@ -15,10 +15,11 @@ Neem teksten letterlijk over. Prijzen uit `pricing.ts`.
 
 Bovenaan een carrousel die elke 5 seconden doordraait (altijd vooruit, eindeloos, met een zachte overgang), met bolletjes en een pauzeer/afspeel-knop. Alle blokken zijn even hoog en compact (koppen op H2-formaat), zodat de twee keuzes direct eronder in beeld blijven. *(Gewijzigd 2026-09-29 op verzoek eigenaar; eerst handmatig zonder autoplay.)*
 
-1. **Wie we zijn en wat we doen**
-   - **H1:** Je nalatenschap helder geregeld
-   - **Lead:** Wij zetten samen met jou op een rij wat er met jouw spullen, geld en huis moet gebeuren, en wie het regelt. Jij krijgt een heldere instructie voor de notaris en een uitleg voor de mensen die achterblijven. Zelf met onze assistent, of met een adviseur.
-   - **Link:** Doe eerst de gratis check (2 minuten) → `/check`
+1. **Zo werkt het** (zelfde opzet als blok 4; gewijzigd 2026-09-29)
+   - **Eyebrow:** Zo werkt het · **H1:** Je nalatenschap helder geregeld
+   - Vier genummerde vakjes met de vier stappen uit `07` (dezelfde teksten als de stappenanimatie): Doe de check · Je wensen op een rij · Twee documenten · Naar de notaris. Op mobiel een korte regel per stap: "Gratis, in twee minuten." · "Met onze assistent of een adviseur." · "Voor de notaris en je nabestaanden." · "Uit ons netwerk of je eigen notaris."
+   - Regel eronder: Jij kiest hoeveel hulp je wilt. *Doe eerst de gratis check (2 minuten)* → `/check`
+   - De eerdere lead-tekst ("Wij zetten samen met jou op een rij…") vervalt.
 2. **Jouw nalatenschap is waarschijnlijk groter dan je denkt** – tekst en het grote cijfer (€ 368.000) uit de vroegere sectie 3. De vier tegels (woning, spaargeld, pensioen, verzekeringen) vervallen.
 3. **De feiten** – kop "Een erfenis regelt zich niet vanzelf" met de cijferrij uit sectie 4 (€ 33,5 mld nagelaten in 2023 · 1 op 4 kreeg ruzie · 355.000 testamenten in 2025 bij de notaris vastgelegd · ± 6 maanden vertraging) en de bronregel "CBS (2023); RTL Nieuwspanel (2025); KNB, factsheet akten (2025); KNB via NOS (2024)". Het cijfer "8× zo vaak geprocedeerd in 2015 als in 2003" is vervangen (ouder dan 10 jaar; eigenaar 2026-09-29). De cijferrij staat niet meer in sectie 4.
 4. **Prijs** (nieuw, 2026-09-29) – eyebrow "Helder geprijsd", kop "Vooraf weet je waar je aan toe bent", drie regels met toelichting:
