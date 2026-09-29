@@ -58,7 +58,7 @@ const organizationSchema = {
   url: site.url,
   slogan: site.tagline,
   description: site.entityDescription,
-  // TODO(owner): replace the temporary wordmark with the real logo; add sameAs (LinkedIn, Google profile)
+  // Logo option A (owner 2026-09-30). TODO(owner): add sameAs (LinkedIn, Google profile)
   logo: new URL('/logo.png', Astro.site).toString(),
   contactPoint: {
     '@type': 'ContactPoint',
@@ -126,7 +126,10 @@ const jsonLd = [organizationSchema, websiteSchema, breadcrumbSchema, faqSchema, 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1f3d36" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />

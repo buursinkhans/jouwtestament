@@ -2,6 +2,7 @@
 // Header with "Voor wie" dropdown (desktop) and full-screen menu (mobile). docs/03, docs/04.
 import { ChevronDown } from '@lucide/astro';
 import { site } from '../../config/site';
+import LogoMark from './LogoMark.astro';
 import { mainNav, voorWieItems, cta } from '../../config/navigation';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -11,8 +12,11 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
 <header class="site-header" data-header>
   <div class="container header-inner">
     <a class="logo" href="/">
-      <span class="logo-name">{site.name}</span>
-      <span class="logo-tagline">{site.tagline}</span>
+      <LogoMark size={40} />
+      <span class="logo-text">
+        <span class="logo-name">{site.name}</span>
+        <span class="logo-tagline">{site.tagline}</span>
+      </span>
     </a>
 
     <nav class="desktop-nav" aria-label="Hoofdmenu">
@@ -186,9 +190,15 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
 
   .logo {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
     color: var(--color-primary);
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
   }
 
   .logo-name {
