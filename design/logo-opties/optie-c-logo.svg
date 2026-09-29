@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 160" width="760" height="160">
+  <rect width="760" height="160" fill="#fff"/>
+  <g transform="translate(20 20)"><rect width="120" height="120" rx="28" fill="#eaf0ee"/>
+      <path d="M34 76a26 26 0 0 1 52 0z" fill="#a8552b"/>
+      <path d="M60 30v10M31 43l7 7M89 43l-7 7" stroke="#a8552b" stroke-width="7" stroke-linecap="round"/>
+      <path d="M22 82h76" stroke="#1f3d36" stroke-width="8" stroke-linecap="round"/></g>
+  <text x="170" y="88" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="60" font-weight="700" letter-spacing="-1" fill="#141c1a">Helder <tspan fill="#141c1a">Nalaten</tspan></text><text x="170" y="125.2" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="18" fill="#5d6865">Regel het nu, voor de mensen van wie je houdt.</text>
+</svg>
