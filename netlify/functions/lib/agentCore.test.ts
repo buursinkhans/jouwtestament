@@ -1,7 +1,8 @@
 // Unit tests for the agent's server logic (docs/13-agent.md). Run with: npm run test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { deriveState, toolResult, transcript, validateHistory, type History } from './agentCore.ts';
+import { deriveState, intakeHistory, toolResult, transcript, validateHistory, type History } from './agentCore.ts';
+import { INTAKE_MESSAGES, validateIntake } from '../../../src/components/agent/intake.ts';
 import { requiredKeys } from '../../../src/components/agent/dossier.ts';
 
 const toolUse = (name: string, input: unknown, id = 't1') => ({ type: 'tool_use' as const, id, name, input });
@@ -79,4 +80,21 @@ test('transcript drops quick-reply option lines', () => {
     user('Samenwonend'),
   ]);
   assert.equal(text, 'Gebruiker: start\n\nAssistent: Wat is je situatie?\n\nGebruiker: Samenwonend');
+});
+
+test('intakeHistory puts the form in the dossier and ends with a plain user turn', () => {
+  const intake = validateIntake({
+    name: 'Anna', birthYear: '1980', otherNationality: 'no', abroad: 'no', relationship: 'single',
+    earlierRelationship: 'no', hasChildren: 'no', home: 'rent', business: 'no', documents: ['none'], notary: 'own',
+  })!;
+  const history = intakeHistory(intake);
+  assert.equal(history.length, INTAKE_MESSAGES);
+  assert.ok(validateHistory(history));
+  const last = history[history.length - 1];
+  assert.equal(last.role, 'user');
+  assert.equal(typeof last.content, 'string');
+  const state = deriveState(history);
+  assert.equal(state.dossier.naam, 'Anna');
+  assert.equal(state.dossier.woning, 'Huurwoning');
+  assert.equal(state.status, 'intake');
 });
