@@ -121,7 +121,7 @@ async function runCase(input, ctx) {
 
   for (; turns < MAX_TURNS; turns++) {
     const before = history.length;
-    const events = await callHandler(chat, { history, message: userMessage, checkAnswers: input.checkAnswers });
+    const events = await callHandler(chat, { history, message: userMessage, checkAnswers: input.checkAnswers, ...(history.length === 0 && input.intake ? { intake: input.intake } : {}) });
     const meta = events.find((e) => e.type === 'meta');
     if (!meta) throw new Error('no meta event from agent-chat');
     served = meta.model; stopReason = meta.stop_reason; addUsage(usage, meta.usage);

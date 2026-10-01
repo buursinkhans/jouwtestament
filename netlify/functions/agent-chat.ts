@@ -15,9 +15,11 @@ import {
   ndjsonStream,
   toolResult,
   validateHistory,
+  intakeHistory,
   type History,
 } from './lib/agentCore.ts';
 import { describeCheckAnswers } from '../../src/components/agent/dossier.ts';
+import { validateIntake } from '../../src/components/agent/intake.ts';
 
 export const config = {
   path: '/api/agent/chat',
@@ -39,7 +41,7 @@ function startMessage(checkAnswers: unknown): string {
 export default async (req: Request): Promise<Response> => {
   if (!agentConfig.enabled) return json({ error: 'agent_disabled' }, 503);
 
-  let body: { history?: unknown; message?: unknown; checkAnswers?: unknown };
+  let body: { history?: unknown; message?: unknown; checkAnswers?: unknown; intake?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -48,10 +50,18 @@ export default async (req: Request): Promise<Response> => {
 
   const previous = Array.isArray(body.history) ? body.history : [];
   const text = typeof body.message === 'string' ? body.message.trim().slice(0, LIMITS.maxUserMessageChars) : '';
-  const userContent = previous.length === 0 ? startMessage(body.checkAnswers) : text;
-  if (!userContent) return json({ error: 'empty_message' }, 400);
 
-  const history = validateHistory([...previous, { role: 'user', content: userContent }]);
+  // First turn: start from the intake form when it is filled in, otherwise from the check answers
+  let opening: History = [];
+  if (previous.length === 0) {
+    const intake = body.intake === undefined ? null : validateIntake(body.intake);
+    if (body.intake !== undefined && !intake) return json({ error: 'invalid_intake' }, 400);
+    opening = intake ? intakeHistory(intake) : [{ role: 'user', content: startMessage(body.checkAnswers) }];
+  } else if (!text) {
+    return json({ error: 'empty_message' }, 400);
+  }
+
+  const history = validateHistory(previous.length === 0 ? opening : [...previous, { role: 'user', content: text }]);
   if (!history) return json({ error: 'invalid_history' }, 400);
 
   const anthropic = client();

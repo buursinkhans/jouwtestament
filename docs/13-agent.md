@@ -14,12 +14,15 @@ Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de
 
 **Als een goede buur (eigenaar, 2026-09-30):** de assistent is aanwezig, dichtbij en vertrouwd. Hij helpt eerst en verkoopt niet: geen haast of angst aanjagen, prijs alleen noemen als het ertoe doet, nadenken of stoppen is prima (hij zegt eerlijk dat het gesprek alleen bewaard blijft zolang het tabblad open is), en hij raadt een adviseur alleen aan als de situatie daarom vraagt. Staat in `agentPrompt.ts`; getest met eval-case `twijfel-goede-buur` en het stijlcriterium van de beoordelaar.
 
+**Basisformulier vóór het gesprek (eigenaar, 2026-10-01):** om tokens te besparen staan de vaste basisvragen in een formulier: naam, geboortejaar, woonplaats, nationaliteit en buitenland, relatie (met huwelijksgoederenregime of samenlevingscontract, partner, stiefkinderen, testament partner), eerdere relaties, kinderen (naam, geboortejaar, van wie), woning, onderneming, bestaande documenten en notariskeuze. Vervolgvragen verschijnen alleen als ze van toepassing zijn. De antwoorden uit de check worden vooraf ingevuld. Het formulier vult het dossier direct (als `update_dossier`-aanroep in de geschiedenis, `intakeHistory` in `agentCore.ts`); de assistent vraagt die gegevens niet opnieuw en begint bij de wensen. Antwoorden als "weet ik niet" en signalen voor een adviseur (onderneming, buitenland, andere nationaliteit) bespreekt de assistent kort. Logica en validatie: `src/components/agent/intake.ts` (met tests).
+
 ## Techniek
 
 | Onderdeel | Bestand |
 |---|---|
 | Pagina en chat-UI | `src/pages/regel-het-zelf.astro`, `src/components/agent/AgentChat.astro` |
 | Dossiervelden (gedeeld) | `src/components/agent/dossier.ts` |
+| Basisformulier (gedeeld) | `src/components/agent/intake.ts`, `IntakeChoice.astro` |
 | Chat (1 beurt, streaming) | `netlify/functions/agent-chat.ts` → `POST /api/agent/chat` |
 | Documenten (1 per aanroep) | `netlify/functions/agent-documents.ts` → `POST /api/agent/documents` |
 | Systeemprompt, tools, documentprompts | `netlify/functions/lib/agentPrompt.ts` |
@@ -32,7 +35,7 @@ Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de
 - **Documenten:** gestructureerde JSON (titel, intro, secties, open punten), veilig weergegeven, af te drukken als pdf of te downloaden als HTML.
 - **Limieten:** Netlify streaming-functies max. 60 s; rate limit 30 chatberichten/min en 6 documenten/min per IP; max. 160 berichten per gesprek, max. 4.000 tekens per bericht.
 - **Prompt caching** op de systeemprompt (vast deel eerst).
-- **Metingen (Simple Analytics, zonder inhoud):** `check_option_selfservice`, `check_option_adviser`, `agent_started`, `agent_adviser_recommended`, `agent_option_adviser`, `agent_ready`, `agent_documents_created`.
+- **Metingen (Simple Analytics, zonder inhoud):** `check_option_selfservice`, `check_option_adviser`, `agent_started`, `agent_intake_completed`, `agent_adviser_recommended`, `agent_option_adviser`, `agent_ready`, `agent_documents_created`.
 
 ## Instellingen (Netlify → Environment variables)
 

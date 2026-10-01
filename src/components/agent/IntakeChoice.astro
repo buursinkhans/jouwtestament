@@ -1,0 +1,94 @@
+---
+// One multiple-choice question of the intake form: a fieldset with radios (or checkboxes).
+interface Props {
+  name: string;
+  legend: string;
+  options: [value: string, label: string][];
+  multiple?: boolean;
+  hint?: string;
+  required?: boolean;
+}
+const { name, legend, options, multiple = false, hint, required = true } = Astro.props;
+const id = `intake-${name}`;
+---
+
+<fieldset class="q" data-q={name} data-required={required ? 'true' : undefined} aria-describedby={`${id}-error`}>
+  <legend>{legend}</legend>
+  {hint && <p class="q-hint">{hint}</p>}
+  <div class="choices">
+    {options.map(([value, label]) => (
+      <label class="choice">
+        <input type={multiple ? 'checkbox' : 'radio'} name={name} value={value} />
+        <span>{label}</span>
+      </label>
+    ))}
+  </div>
+  <p class="q-error" id={`${id}-error`} hidden>{multiple ? 'Kies minstens één antwoord.' : 'Kies een antwoord.'}</p>
+</fieldset>
+
+<style>
+  .q {
+    border: 0;
+    margin: 0 0 20px;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .q legend {
+    font-weight: 600;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+
+  .q-hint {
+    margin: -4px 0 8px;
+    font-size: var(--fs-small);
+    color: var(--color-muted);
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .choice {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--color-input-border);
+    border-radius: var(--radius-input);
+    background: var(--color-surface);
+    cursor: pointer;
+  }
+
+  .choice:has(input:checked) {
+    border-color: var(--color-primary);
+    background: var(--color-tint);
+  }
+
+  .choice:has(input:focus-visible) {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .choice input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--color-primary);
+  }
+
+  .q-error {
+    margin: 6px 0 0;
+    color: var(--color-accent-hover);
+    font-weight: 600;
+    font-size: var(--fs-small);
+  }
+
+  .q.invalid .choice {
+    border-color: var(--color-accent-hover);
+  }
+</style>

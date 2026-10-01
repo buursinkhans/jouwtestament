@@ -1,11 +1,18 @@
 ---
-// Self-service agent UI (option 1, docs/13-agent.md): intro + consent → conversation with a live
-// dossier panel → (payment, test mode) → the two documents to print or download.
+// Self-service agent UI (option 1, docs/13-agent.md): intro + consent → intake form with the basic
+// questions (owner 2026-10-01, saves tokens) → conversation with a live dossier panel →
+// (payment, test mode) → the two documents to print or download.
 // The conversation is kept in sessionStorage of this tab only; nothing is stored by Helder Nalaten.
 import { dossierGroups } from './dossier';
+import IntakeChoice from './IntakeChoice.astro';
 import { pricing, euro } from '../../config/pricing';
 
 const price = euro(pricing.selfService);
+const thisYear = new Date().getFullYear();
+const yesNo: [string, string][] = [
+  ['no', 'Nee'],
+  ['yes', 'Ja'],
+];
 ---
 
 <div class="agent" data-agent>
@@ -13,8 +20,8 @@ const price = euro(pricing.selfService);
   <section class="panel intro" data-stage="intro" aria-labelledby="agent-intro-title">
     <h2 id="agent-intro-title">Zo werkt het</h2>
     <ol class="how">
-      <li>Je beantwoordt de vragen van onze digitale assistent, in je eigen tempo (meestal 20 tot 40 minuten).</li>
-      <li>De assistent legt de keuzes uit en zet jouw wensen op een rij. Je ziet rechts wat er al is vastgelegd.</li>
+      <li>Je vult eerst een kort formulier in met je basisgegevens, zoals je relatie, kinderen en woning.</li>
+      <li>Daarna stelt onze digitale assistent de vragen over je wensen, in je eigen tempo. Hij legt de keuzes uit en zet alles op een rij. Je ziet rechts wat er al is vastgelegd.</li>
       <li>Je controleert de samenvatting. Daarna maken we twee documenten voor {price}: een instructie voor de notaris en een uitleg voor je nabestaanden.</li>
       <li>Met de instructie ga je naar een notaris uit ons netwerk of naar je eigen notaris. De notaris controleert alles. Pas na ondertekening is je testament geldig.</li>
     </ol>
@@ -37,7 +44,7 @@ const price = euro(pricing.selfService);
     </label>
     <p class="error" hidden data-consent-error>Vink dit aan om te beginnen.</p>
     <div class="btn-row">
-      <button type="button" class="btn-primary" data-start>Start het gesprek</button>
+      <button type="button" class="btn-primary" data-start>Begin met het formulier</button>
       <a class="btn-secondary" href="/afspraak" data-choose-adviser>Liever een adviseur</a>
     </div>
     <p class="small unavailable" hidden data-unavailable>
@@ -45,7 +52,206 @@ const price = euro(pricing.selfService);
     </p>
   </section>
 
-  <!-- 2. Conversation -->
+  <!-- 2. Intake form: the basic questions, so the assistant does not have to ask them -->
+  <section class="panel intake" data-stage="form" hidden aria-labelledby="intake-title">
+    <h2 id="intake-title">Eerst je basisgegevens</h2>
+    <p>Deze vragen stelt de assistent anders ook. Met dit formulier ben je sneller klaar. Daarna gaat het gesprek over je wensen.</p>
+    <form data-intake-form novalidate>
+      <fieldset class="block">
+        <legend>Over jou</legend>
+        <div class="text-row">
+          <div class="text-field" data-text-field>
+            <label for="intake-name">Je volledige naam</label>
+            <input id="intake-name" name="name" type="text" autocomplete="name" maxlength="100" required aria-describedby="intake-name-error" />
+            <p class="q-error" id="intake-name-error" hidden>Vul je naam in.</p>
+          </div>
+          <div class="text-field short" data-text-field>
+            <label for="intake-birthYear">Geboortejaar</label>
+            <input id="intake-birthYear" name="birthYear" type="number" inputmode="numeric" min="1900" max={thisYear} required aria-describedby="intake-birthYear-error" />
+            <p class="q-error" id="intake-birthYear-error" hidden>Vul een geldig jaar in, bijvoorbeeld 1975.</p>
+          </div>
+          <div class="text-field" data-text-field>
+            <label for="intake-city">Woonplaats <span class="optional">(niet verplicht)</span></label>
+            <input id="intake-city" name="city" type="text" autocomplete="address-level2" maxlength="80" />
+          </div>
+        </div>
+        <IntakeChoice name="otherNationality" legend="Heb je (ook) een andere nationaliteit dan de Nederlandse?" options={yesNo} />
+        <IntakeChoice name="abroad" legend="Woon je in het buitenland, of heb je bezit in het buitenland?" options={yesNo} />
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Relatie</legend>
+        <IntakeChoice
+          name="relationship"
+          legend="Wat is je situatie?"
+          options={[
+            ['married', 'Getrouwd'],
+            ['registered', 'Geregistreerd partnerschap'],
+            ['cohabiting', 'Samenwonend, niet getrouwd'],
+            ['single', 'Alleenstaand'],
+            ['divorced', 'Gescheiden'],
+            ['widowed', 'Weduwe of weduwnaar'],
+          ]}
+        />
+        <fieldset class="sub" data-show-if="married" hidden disabled>
+          <legend class="sr-only">Over je huwelijk</legend>
+          <IntakeChoice
+            name="regime"
+            legend="Hoe zijn jullie getrouwd?"
+            hint="Getrouwd vanaf 1 januari 2018 zonder huwelijksvoorwaarden? Dan is het meestal een beperkte gemeenschap."
+            options={[
+              ['community', 'Gemeenschap van goederen'],
+              ['limited', 'Beperkte gemeenschap van goederen'],
+              ['prenup', 'Huwelijksvoorwaarden'],
+              ['unknown', 'Weet ik niet'],
+            ]}
+          />
+          <div class="text-field short" data-text-field>
+            <label for="intake-since">Sinds welk jaar? <span class="optional">(niet verplicht)</span></label>
+            <input id="intake-since" name="since" type="number" inputmode="numeric" min="1900" max={thisYear} aria-describedby="intake-since-error" />
+            <p class="q-error" id="intake-since-error" hidden>Vul een geldig jaar in.</p>
+          </div>
+        </fieldset>
+        <fieldset class="sub" data-show-if="cohabiting" hidden disabled>
+          <legend class="sr-only">Over samenwonen</legend>
+          <IntakeChoice
+            name="contract"
+            legend="Hebben jullie een samenlevingscontract?"
+            options={[
+              ['notarial', 'Ja, bij de notaris'],
+              ['private', 'Ja, zelf opgesteld'],
+              ['none', 'Nee'],
+              ['unknown', 'Weet ik niet'],
+            ]}
+          />
+        </fieldset>
+        <fieldset class="sub" data-show-if="partner" hidden disabled>
+          <legend class="sr-only">Over je partner</legend>
+          <div class="text-field" data-text-field>
+            <label for="intake-partnerName">Naam van je partner <span class="optional">(niet verplicht)</span></label>
+            <input id="intake-partnerName" name="partnerName" type="text" maxlength="100" />
+          </div>
+          <IntakeChoice name="stepchildren" legend="Heeft je partner kinderen uit een eerdere relatie?" options={yesNo} />
+          <IntakeChoice
+            name="togetherWithPartner"
+            legend="Maakt je partner ook een testament?"
+            options={[
+              ['yes', 'Ja'],
+              ['no', 'Nee'],
+              ['unknown', 'Weet ik nog niet'],
+            ]}
+          />
+        </fieldset>
+        <IntakeChoice name="earlierRelationship" legend="Ben je eerder getrouwd geweest, of had je een eerdere relatie met kinderen?" options={yesNo} />
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Kinderen</legend>
+        <IntakeChoice name="hasChildren" legend="Heb je kinderen?" options={yesNo} />
+        <fieldset class="sub" data-show-if="children" hidden disabled>
+          <legend class="sr-only">Je kinderen</legend>
+          <div class="children" data-children></div>
+          <button type="button" class="btn-quiet" data-add-child>Nog een kind toevoegen</button>
+        </fieldset>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Woning en bezit</legend>
+        <IntakeChoice
+          name="home"
+          legend="Hoe woon je?"
+          options={[
+            ['owner', 'Koopwoning'],
+            ['rent', 'Huurwoning'],
+            ['none', 'Geen eigen woning'],
+          ]}
+        />
+        <fieldset class="sub" data-show-if="owner-partner" hidden disabled>
+          <legend class="sr-only">Over je woning</legend>
+          <IntakeChoice
+            name="homeOwner"
+            legend="Op wiens naam staat de woning?"
+            options={[
+              ['me', 'Op mijn naam'],
+              ['together', 'Op naam van ons samen'],
+              ['partner', 'Op naam van mijn partner'],
+            ]}
+          />
+        </fieldset>
+        <IntakeChoice name="business" legend="Heb je een eigen bedrijf of aandelen in een bv?" options={yesNo} />
+        <IntakeChoice
+          name="documents"
+          legend="Wat heb je al geregeld?"
+          multiple
+          options={[
+            ['will', 'Testament'],
+            ['lpa', 'Levenstestament'],
+            ['codicil', 'Codicil'],
+            ['none', 'Nog niets'],
+            ['unknown', 'Weet ik niet'],
+          ]}
+        />
+        <fieldset class="sub" data-show-if="will" hidden disabled>
+          <legend class="sr-only">Over je testament</legend>
+          <div class="text-field short" data-text-field>
+            <label for="intake-willYear">Uit welk jaar is je testament? <span class="optional">(niet verplicht)</span></label>
+            <input id="intake-willYear" name="willYear" type="number" inputmode="numeric" min="1900" max={thisYear} aria-describedby="intake-willYear-error" />
+            <p class="q-error" id="intake-willYear-error" hidden>Vul een geldig jaar in.</p>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Notaris</legend>
+        <IntakeChoice
+          name="notary"
+          legend="Bij welke notaris wil je je testament laten vastleggen?"
+          options={[
+            ['network', 'Notaris uit ons netwerk'],
+            ['own', 'Mijn eigen notaris'],
+            ['unknown', 'Weet ik nog niet'],
+          ]}
+        />
+      </fieldset>
+
+      <p class="form-error" hidden data-intake-error role="alert">Niet alle vragen zijn ingevuld. Kijk de gemarkeerde vragen na.</p>
+      <div class="btn-row">
+        <button type="submit" class="btn-primary">Verder naar het gesprek</button>
+        <button type="button" class="link-button" data-intake-back>Terug</button>
+      </div>
+    </form>
+
+    <template data-child-template>
+      <fieldset class="child" data-child>
+        <legend>Kind <span data-child-number></span></legend>
+        <div class="text-row">
+          <div class="text-field" data-text-field>
+            <label>Naam</label>
+            <input name="childName" type="text" maxlength="80" required />
+            <p class="q-error" hidden>Vul een naam in.</p>
+          </div>
+          <div class="text-field short" data-text-field>
+            <label>Geboortejaar</label>
+            <input name="childYear" type="number" inputmode="numeric" min="1900" max={thisYear} required />
+            <p class="q-error" hidden>Vul een geldig jaar in.</p>
+          </div>
+          <div class="text-field" data-text-field>
+            <label>Van wie?</label>
+            <select name="childRelation" required>
+              <option value="">Kies…</option>
+              <option value="joint">Samen met mijn partner</option>
+              <option value="earlier">Uit een eerdere relatie</option>
+              <option value="own">Mijn kind (geen partner)</option>
+            </select>
+            <p class="q-error" hidden>Maak een keuze.</p>
+          </div>
+        </div>
+        <button type="button" class="link-button" data-remove-child>Verwijder dit kind</button>
+      </fieldset>
+    </template>
+  </section>
+
+  <!-- 3. Conversation -->
   <div class="chat-layout" data-stage="chat" hidden>
     <section class="panel chat" aria-label="Gesprek met de assistent">
       <div class="messages" data-messages aria-live="polite"></div>
@@ -92,7 +298,7 @@ const price = euro(pricing.selfService);
     </aside>
   </div>
 
-  <!-- 3. Documents -->
+  <!-- 4. Documents -->
   <section class="documents-stage" data-stage="documents" hidden aria-labelledby="documents-title">
     <div class="panel doc-actions">
       <h2 id="documents-title">Je documenten</h2>
@@ -110,6 +316,18 @@ const price = euro(pricing.selfService);
 
 <script>
   import { dossierFields, missingRequired, type AgentState } from './dossier';
+  import {
+    INTAKE_MESSAGES,
+    INTAKE_TOOL_ID,
+    MAX_CHILDREN,
+    hasPartner,
+    intakeToDossier,
+    isMarried,
+    prefillFromCheck,
+    validateIntake,
+    type Intake,
+    type Relationship,
+  } from './intake';
   import { track } from '../../lib/analytics';
 
   const STORAGE_KEY = 'hn_agent_v1';
@@ -121,6 +339,8 @@ const price = euro(pricing.selfService);
     state?: AgentState;
     documents?: AgentDocument[];
     dismissedAdviser?: boolean;
+    intake?: Intake; // sent with the first chat turn
+    intakeDraft?: Record<string, unknown>; // form answers so far (this tab only)
   }
   interface AgentDocument {
     kind: 'notaris' | 'nabestaanden';
@@ -134,6 +354,7 @@ const price = euro(pricing.selfService);
   const $ = <T extends HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
   const stages = {
     intro: $('[data-stage="intro"]'),
+    form: $('[data-stage="form"]'),
     chat: $('[data-stage="chat"]'),
     documents: $('[data-stage="documents"]'),
   };
@@ -253,9 +474,12 @@ const price = euro(pricing.selfService);
   function renderHistory() {
     messagesEl.replaceChildren();
     let lastAssistantText = '';
+    // The intake form enters the history as synthetic messages; they are not shown
+    const second = saved.history[1]?.content;
+    const skip = Array.isArray(second) && second[0]?.id === INTAKE_TOOL_ID ? INTAKE_MESSAGES : 0;
     saved.history.forEach((message, index) => {
       const text = visibleText(message.content).trim();
-      if (!text || (index === 0 && text.startsWith('[Start'))) return;
+      if (index < skip || !text || (index === 0 && text.startsWith('[Start'))) return;
       if (message.role === 'user' && Array.isArray(message.content)) return; // tool results
       bubble(message.role, text);
       lastAssistantText = message.role === 'assistant' ? text : '';
@@ -393,7 +617,9 @@ const price = euro(pricing.selfService);
     let text = '';
     let failed = false;
 
-    await stream('/api/agent/chat', { history: saved.history, message, checkAnswers: checkAnswers() }, (event) => {
+    const first = saved.history.length === 0;
+    const body = { history: saved.history, message, checkAnswers: checkAnswers(), ...(first && saved.intake ? { intake: saved.intake } : {}) };
+    await stream('/api/agent/chat', body, (event) => {
       if (event.type === 'text') {
         text += event.text;
         reply.classList.remove('typing');
@@ -513,18 +739,228 @@ h2{margin-top:48px}.doc-label,.doc-footer{color:#5b6763;font-size:14px}.document
     URL.revokeObjectURL(url);
   }
 
+
+  // ---------- intake form ----------
+  const form = $<HTMLFormElement>('[data-intake-form]');
+  const childrenEl = $('[data-children]');
+  const childTemplate = $<HTMLTemplateElement>('[data-child-template]');
+  const addChildButton = $<HTMLButtonElement>('[data-add-child]');
+
+  const checked = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value;
+  const checkedAll = (name: string) =>
+    [...form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)].map((el) => el.value);
+  const field = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:not([type=radio]):not([type=checkbox])`);
+
+  function renumberChildren() {
+    const rows = [...childrenEl.querySelectorAll<HTMLElement>('[data-child]')];
+    rows.forEach((row, i) => {
+      row.querySelector('[data-child-number]')!.textContent = String(i + 1);
+      row.querySelectorAll<HTMLElement>('input, select').forEach((el) => {
+        const label = el.closest('[data-text-field]')!.querySelector('label')!;
+        el.id = `intake-child-${i}-${el.getAttribute('name')}`;
+        label.htmlFor = el.id;
+        const error = el.closest('[data-text-field]')!.querySelector<HTMLElement>('.q-error')!;
+        error.id = `${el.id}-error`;
+        el.setAttribute('aria-describedby', error.id);
+      });
+      row.querySelector<HTMLElement>('[data-remove-child]')!.hidden = rows.length === 1;
+    });
+    addChildButton.hidden = rows.length >= MAX_CHILDREN;
+  }
+
+  function addChild(values?: { name?: string; birthYear?: number | string; relation?: string }, focus = false) {
+    const row = (childTemplate.content.cloneNode(true) as DocumentFragment).firstElementChild as HTMLElement;
+    childrenEl.append(row);
+    if (values) {
+      row.querySelector<HTMLInputElement>('[name="childName"]')!.value = values.name ?? '';
+      row.querySelector<HTMLInputElement>('[name="childYear"]')!.value = values.birthYear ? String(values.birthYear) : '';
+      row.querySelector<HTMLSelectElement>('[name="childRelation"]')!.value = values.relation ?? '';
+    }
+    row.querySelector('[data-remove-child]')!.addEventListener('click', () => {
+      row.remove();
+      renumberChildren();
+      saveDraft();
+      childrenEl.querySelector<HTMLInputElement>('[name="childName"]')?.focus();
+    });
+    renumberChildren();
+    if (focus) row.querySelector<HTMLInputElement>('[name="childName"]')!.focus();
+  }
+
+  /** Shows the follow-up questions that apply; hidden ones are disabled so they do not count. */
+  function updateConditions() {
+    const relationship = checked('relationship') as Relationship | undefined;
+    const partner = relationship ? hasPartner(relationship) : false;
+    const conditions: Record<string, boolean> = {
+      married: relationship ? isMarried(relationship) : false,
+      cohabiting: relationship === 'cohabiting',
+      partner,
+      children: checked('hasChildren') === 'yes',
+      'owner-partner': checked('home') === 'owner' && partner,
+      will: checkedAll('documents').includes('will'),
+    };
+    form.querySelectorAll<HTMLFieldSetElement>('[data-show-if]').forEach((el) => {
+      const on = conditions[el.dataset.showIf!] ?? false;
+      el.hidden = !on;
+      el.disabled = !on;
+    });
+    if (conditions.children && !childrenEl.children.length) addChild();
+  }
+
+  function collect(): Record<string, unknown> {
+    const enabled = (name: string) => {
+      const el = form.querySelector<HTMLInputElement>(`[name="${name}"]`);
+      return el && !el.closest('fieldset:disabled') ? el : null;
+    };
+    const value = (name: string) => (enabled(name) ? checked(name) : undefined);
+    const text = (name: string) => (enabled(name) ? field(name)?.value : undefined);
+    return {
+      name: text('name'),
+      birthYear: text('birthYear'),
+      city: text('city'),
+      otherNationality: value('otherNationality'),
+      abroad: value('abroad'),
+      relationship: value('relationship'),
+      partnerName: text('partnerName'),
+      since: text('since'),
+      regime: value('regime'),
+      contract: value('contract'),
+      stepchildren: value('stepchildren'),
+      togetherWithPartner: value('togetherWithPartner'),
+      earlierRelationship: value('earlierRelationship'),
+      hasChildren: value('hasChildren'),
+      children:
+        checked('hasChildren') === 'yes'
+          ? [...childrenEl.querySelectorAll<HTMLElement>('[data-child]')].map((row) => ({
+              name: row.querySelector<HTMLInputElement>('[name="childName"]')!.value,
+              birthYear: row.querySelector<HTMLInputElement>('[name="childYear"]')!.value,
+              relation: row.querySelector<HTMLSelectElement>('[name="childRelation"]')!.value,
+            }))
+          : [],
+      home: value('home'),
+      homeOwner: value('homeOwner'),
+      business: value('business'),
+      documents: checkedAll('documents'),
+      willYear: text('willYear'),
+      notary: value('notary'),
+    };
+  }
+
+  function saveDraft() {
+    saved.intakeDraft = collect();
+    save(saved);
+  }
+
+  function fill(values: Record<string, unknown>) {
+    for (const [name, value] of Object.entries(values)) {
+      if (value === undefined || value === null || name === 'children') continue;
+      const values = Array.isArray(value) ? value.map(String) : [String(value)];
+      form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`).forEach((el) => {
+        if (el.type === 'radio' || el.type === 'checkbox') el.checked = values.includes(el.value);
+        else el.value = values[0];
+      });
+    }
+    updateConditions();
+    const children = values.children;
+    if (Array.isArray(children) && children.length) {
+      childrenEl.replaceChildren();
+      children.forEach((child) => addChild(child));
+    }
+  }
+
+  /** Marks unanswered visible questions; returns the first one to focus, or null when all is fine. */
+  function markErrors(): HTMLElement | null {
+    let first: HTMLElement | null = null;
+    const flag = (container: HTMLElement, invalid: boolean, focusTarget: HTMLElement) => {
+      container.classList.toggle('invalid', invalid);
+      const error = container.querySelector<HTMLElement>(':scope > .q-error, :scope .q-error');
+      if (error) error.hidden = !invalid;
+      focusTarget.setAttribute('aria-invalid', String(invalid));
+      if (invalid && !first) first = focusTarget;
+    };
+    form.querySelectorAll<HTMLFieldSetElement>('fieldset.q[data-required]').forEach((q) => {
+      if (q.closest('fieldset:disabled')) return;
+      const inputs = [...q.querySelectorAll<HTMLInputElement>('input')];
+      flag(q, !inputs.some((el) => el.checked), inputs[0]);
+    });
+    form.querySelectorAll<HTMLElement>('[data-text-field]').forEach((wrapper) => {
+      const el = wrapper.querySelector<HTMLInputElement | HTMLSelectElement>('input, select')!;
+      if (el.closest('fieldset:disabled')) return;
+      const value = el.value.trim();
+      flag(wrapper, (el.required && !value) || !el.checkValidity(), el);
+    });
+    return first;
+  }
+
+  form.addEventListener('change', (event) => {
+    const target = event.target as HTMLInputElement;
+    // "Nog niets" and "Weet ik niet" exclude the other document choices
+    if (target.name === 'documents' && target.checked) {
+      const exclusive = ['none', 'unknown'];
+      form.querySelectorAll<HTMLInputElement>('input[name="documents"]').forEach((el) => {
+        if (el !== target && (exclusive.includes(target.value) || exclusive.includes(el.value))) el.checked = false;
+      });
+    }
+    updateConditions();
+    saveDraft();
+    if (form.querySelector('.invalid')) markErrors();
+  });
+  form.addEventListener('input', () => saveDraft());
+
+  addChildButton.addEventListener('click', () => {
+    addChild(undefined, true);
+    saveDraft();
+  });
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const first = markErrors();
+    const intake = first ? null : validateIntake(collect());
+    $('[data-intake-error]').hidden = Boolean(intake);
+    if (!intake) {
+      (first ?? form.querySelector<HTMLElement>('input'))?.focus();
+      return;
+    }
+    saved.intake = intake;
+    save(saved);
+    track('agent_intake_completed');
+    show('chat');
+    renderState({ dossier: intakeToDossier(intake), status: 'intake' });
+    window.scrollTo({ top: 0 });
+    turn('');
+  });
+
+  $('[data-intake-back]').addEventListener('click', () => {
+    show('intro');
+    $<HTMLButtonElement>('[data-start]').focus();
+  });
+
+  function openForm() {
+    show('form');
+    if (!form.dataset.filled) {
+      form.dataset.filled = 'true';
+      fill({ ...prefillFromCheck(checkAnswers()), ...(saved.intakeDraft ?? {}) });
+    }
+    window.scrollTo({ top: 0 });
+    $<HTMLInputElement>('#intake-name').focus();
+  }
+
   // ---------- events ----------
   $('[data-start]').addEventListener('click', () => {
     const consent = $<HTMLInputElement>('[data-consent]');
     $('[data-consent-error]').hidden = consent.checked;
     if (!consent.checked) return;
-    show('chat');
     track('agent_started');
-    turn('');
+    openForm();
   });
 
   $('[data-composer]').addEventListener('submit', (event) => {
     event.preventDefault();
+    // The first turn failed (no history yet): start again instead of losing the message
+    if (saved.history.length === 0) {
+      messagesEl.replaceChildren();
+      turn('');
+      return;
+    }
     send(input.value.trim());
   });
 
@@ -554,6 +990,10 @@ h2{margin-top:48px}.doc-label,.doc-footer{color:#5b6763;font-size:14px}.document
   $('[data-reset]').addEventListener('click', () => {
     if (!confirm('Weet je zeker dat je het gesprek wilt wissen? Dit kan niet ongedaan worden gemaakt.')) return;
     saved = { history: [] };
+    form.reset();
+    childrenEl.replaceChildren();
+    delete form.dataset.filled;
+    updateConditions();
     try {
       sessionStorage.removeItem(STORAGE_KEY);
     } catch {
@@ -639,6 +1079,129 @@ h2{margin-top:48px}.doc-label,.doc-footer{color:#5b6763;font-size:14px}.document
 
   .unavailable {
     margin-top: 16px;
+  }
+
+  /* Intake form */
+  .intake {
+    max-width: 820px;
+  }
+
+  .block {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin: 0;
+    padding: 20px 0 4px;
+    min-width: 0;
+  }
+
+  .block > legend {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  .sub {
+    border: 0;
+    margin: 0 0 4px;
+    padding: 0 0 0 16px;
+    border-left: 3px solid var(--color-tint);
+    min-width: 0;
+  }
+
+  .sub[hidden] {
+    display: none;
+  }
+
+  .text-row {
+    display: grid;
+    gap: 0 16px;
+  }
+
+  @media (min-width: 768px) {
+    .text-row {
+      grid-template-columns: 2fr 1fr 2fr;
+    }
+  }
+
+  .text-field {
+    margin-bottom: 20px;
+  }
+
+  .text-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .text-field input,
+  .text-field select {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    font: inherit;
+    border: 1.5px solid var(--color-input-border);
+    border-radius: var(--radius-input);
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  .text-field.short input {
+    max-width: 160px;
+  }
+
+  .text-field input:focus-visible,
+  .text-field select:focus-visible {
+    border-color: var(--color-primary);
+  }
+
+  .text-field.invalid input,
+  .text-field.invalid select {
+    border-color: var(--color-accent-hover);
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--color-muted);
+    font-size: var(--fs-small);
+  }
+
+  .q-error {
+    margin: 6px 0 0;
+    color: var(--color-accent-hover);
+    font-weight: 600;
+    font-size: var(--fs-small);
+  }
+
+  .child {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    padding: 12px 16px 8px;
+    margin: 0 0 12px;
+    min-width: 0;
+  }
+
+  .child legend {
+    font-weight: 600;
+    padding: 0 4px;
+  }
+
+  .child .link-button {
+    margin-bottom: 8px;
+  }
+
+  [data-add-child] {
+    margin-bottom: 20px;
+  }
+
+  .form-error {
+    color: var(--color-accent-hover);
+    font-weight: 600;
+  }
+
+  .intake .btn-row {
+    align-items: center;
+    margin-top: 8px;
   }
 
   /* Chat */

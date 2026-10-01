@@ -432,5 +432,57 @@
         "executeur": "Youssef"
       }
     }
+  },
+  {
+    "id": "formulier-jong-gezin",
+    "tags": [
+      "formulier",
+      "verwacht: documenten"
+    ],
+    "prompt": "Gebruiker heeft het formulier met basisgegevens ingevuld; de assistent vraagt die gegevens niet opnieuw en begint bij de wensen (voogd, bewind, executeur).",
+    "intake": {
+      "name": "Lisa Bakker",
+      "birthYear": "1988",
+      "city": "Amersfoort",
+      "otherNationality": "no",
+      "abroad": "no",
+      "relationship": "married",
+      "regime": "limited",
+      "since": "2019",
+      "partnerName": "Daan Bakker",
+      "stepchildren": "no",
+      "togetherWithPartner": "yes",
+      "earlierRelationship": "no",
+      "hasChildren": "yes",
+      "children": [
+        {
+          "name": "Noor",
+          "birthYear": "2020",
+          "relation": "joint"
+        },
+        {
+          "name": "Sem",
+          "birthYear": "2023",
+          "relation": "joint"
+        }
+      ],
+      "home": "owner",
+      "homeOwner": "together",
+      "business": "no",
+      "documents": [
+        "none"
+      ],
+      "notary": "network"
+    },
+    "persona": "Je bent Lisa Bakker (zie formulier). Wensen: alles eerst naar Daan, daarna de kinderen. Voogd: je zus Eva, vervanger Daans broer Joris. Bewind tot 25 jaar, door Eva. Executeur: Daan, vervanger Eva. Reden: 'We willen dat de kinderen goed terechtkomen en niet op hun 18e alles krijgen.' Als de assistent naar je naam, geboortejaar, relatie of kinderen vraagt, zeg je: 'Dat heb ik toch al in het formulier ingevuld?'",
+    "behavior": "Je bent vriendelijk en beknopt.",
+    "onAdviser": "continue",
+    "expect": {
+      "outcome": "ready",
+      "capture": {
+        "voogd": "Eva",
+        "executeur": "Daan"
+      }
+    }
   }
 ]

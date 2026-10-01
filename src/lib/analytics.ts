@@ -10,6 +10,7 @@ type EventName =
   | 'check_option_selfservice'
   | 'check_option_adviser'
   | 'agent_started'
+  | 'agent_intake_completed'
   | 'agent_adviser_recommended'
   | 'agent_option_adviser'
   | 'agent_ready'

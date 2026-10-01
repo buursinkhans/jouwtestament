@@ -3,6 +3,7 @@
 // Never log personal data or conversation content.
 import Anthropic from '@anthropic-ai/sdk';
 import { applyUpdates, missingRequired, type AgentState, type Dossier } from '../../../src/components/agent/dossier.ts';
+import { INTAKE_TOOL_ID, intakeToDossier, type Intake } from '../../../src/components/agent/intake.ts';
 
 export const config = {
   enabled: process.env.AGENT_ENABLED === 'true' && Boolean(process.env.ANTHROPIC_API_KEY),
@@ -74,6 +75,34 @@ export function deriveState(history: History): AgentState {
     }
   }
   return { dossier, status, adviserReason, summary };
+}
+
+// The intake form (owner 2026-10-01) enters the history as an update_dossier call the agent
+// "made" itself, so deriveState and the documents work unchanged. The exchange ends with a
+// plain assistant text and a new user turn, so the real first turn is not a tool continuation.
+export function intakeHistory(intake: Intake): History {
+  const dossier = intakeToDossier(intake);
+  const updates = Object.entries(dossier).map(([field, value]) => ({ field, value }));
+  const missing = missingRequired(applyUpdates({}, updates));
+  return [
+    { role: 'user', content: '[Start van het gesprek] De gebruiker heeft het formulier met de basisgegevens ingevuld.' },
+    {
+      role: 'assistant',
+      content: [{ type: 'tool_use', id: INTAKE_TOOL_ID, name: 'update_dossier', input: { updates } }],
+    },
+    {
+      role: 'user',
+      content: [
+        {
+          type: 'tool_result',
+          tool_use_id: INTAKE_TOOL_ID,
+          content: `Opgeslagen (uit het formulier). Nog open verplichte velden: ${missing.length ? missing.join(', ') : 'geen'}.`,
+        },
+      ],
+    },
+    { role: 'assistant', content: 'De basisgegevens uit het formulier staan in het dossier.' },
+    { role: 'user', content: '[Ga verder] Begin het gesprek over de wensen.' },
+  ];
 }
 
 /** Result text returned to the model for each tool call. */
