@@ -26,7 +26,7 @@ De website heeft één hoofddoel: bezoekers laten **inzien waarom** ze het moete
 | `docs/10-techniek.md` | Stack, mappenstructuur, formulier, privacy, deployment |
 | `docs/11-geo-seo.md` | Vindbaarheid in Google en AI-antwoorden |
 | `docs/12-git-workflow.md` | Branches, commits, PR's, CI |
-| `docs/13-agent.md` | Digitale assistent (optie 1: zelf regelen, € 200) |
+| `docs/13-agent.md` | Digitale assistent (optie 1: zelf regelen, € 35) |
 
 **Bron van waarheid voor copy:** docs 05–08. Neem teksten letterlijk over. Verzin geen nieuwe claims, cijfers of juridische uitspraken.
 

@@ -6,7 +6,7 @@ Status: **testfase**. Inhoud is een concept en moet nog door een notaris/adviseu
 
 1. **Gratis check** (`/check`, docs/09): is het zinvol om iets te regelen, en wat zijn de aandachtspunten?
 2. Daarna twee keuzes:
-   - **Optie 1 – Zelf regelen met de assistent (€ 200):** de klant voert een gesprek met de digitale assistent en krijgt twee documenten: een heldere instructie voor de notaris en een heldere uitleg voor de nabestaanden. Pagina: `/regel-het-zelf`.
+   - **Optie 1 – Zelf regelen met de assistent (€ 35):** de klant voert een gesprek met de digitale assistent en krijgt twee documenten: een heldere instructie voor de notaris en een heldere uitleg voor de nabestaanden. Pagina: `/regel-het-zelf`.
    - **Optie 2 – Afspraak met een adviseur:** bij een ingewikkelde situatie of als de klant het niet zelf wil doen. Contactformulier in de check (lead, docs/09).
 3. Met de instructie gaat de klant naar een notaris uit het netwerk of de eigen notaris. Pas na ondertekening is het testament geldig.
 
@@ -70,7 +70,7 @@ Open `https://<site>/api/agent/status` in je browser (ingelogd als je de site pr
 
 ## Nog te doen
 
-- `TODO(owner)`: **betalen** (€ 200) koppelen, bijv. Mollie, en in `agent-documents.ts` controleren vóór het maken van de documenten. Nu staat er "Testfase: je betaalt nu niets".
+- `TODO(owner)`: **betalen** (€ 35) koppelen, bijv. Mollie, en in `agent-documents.ts` controleren vóór het maken van de documenten. Nu staat er "Testfase: je betaalt nu niets".
 - `TODO(review-partner)`: kennisbank, systeemprompt en documentopbouw laten controleren door notaris/adviseur.
 - `TODO(owner)`: privacyverklaring aanvullen (Anthropic als verwerker, geen opslag door Helder Nalaten, bewaartermijn bij Anthropic volgens hun voorwaarden).
 - Testen met echte gesprekken; een set testcasussen (samenwoners, samengesteld gezin, 55-plus, ondernemer) om de antwoorden te beoordelen.

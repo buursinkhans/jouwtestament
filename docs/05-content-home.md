@@ -23,17 +23,17 @@ Bovenaan een carrousel die elke 5 seconden doordraait (altijd vooruit, eindeloos
 2. **Jouw nalatenschap is waarschijnlijk groter dan je denkt** (zelfde opzet als blok 1 en 4; gewijzigd 2026-09-29) – eyebrow "Goed regelen is voor iedereen", vier vakjes uit de vroegere sectie 3 (Je woning · Spaargeld en beleggingen · Pensioen · Verzekeringen, met hun korte vraag; op mobiel twee aan twee), en de regel eronder: "Kinderen van ouders met een koopwoning erven gemiddeld € 368.000; bij een huurwoning is dat € 18.000. Bron: berichtgeving op basis van CBS/ESB (2026)". De lead-tekst ("Je hoeft geen vermogend te zijn…") vervalt.
 3. **De feiten** – kop "Een erfenis regelt zich niet vanzelf" met de cijferrij uit sectie 4 (€ 33,5 mld nagelaten in 2023 · 1 op 4 kreeg ruzie · 355.000 testamenten in 2025 bij de notaris vastgelegd · ± 6 maanden vertraging) en de bronregel "CBS (2023); RTL Nieuwspanel (2025); KNB, factsheet akten (2025); KNB via NOS (2024)". Het cijfer "8× zo vaak geprocedeerd in 2015 als in 2003" is vervangen (ouder dan 10 jaar; eigenaar 2026-09-29). De cijferrij staat niet meer in sectie 4.
 4. **Prijs** (nieuw, 2026-09-29) – eyebrow "Helder geprijsd", kop "Vooraf weet je waar je aan toe bent", drie regels met toelichting:
-   - *Zelf regelen met de assistent – € 200*: je zet je wensen op een rij met onze digitale assistent en krijgt twee documenten: een instructie voor de notaris en een uitleg voor je nabestaanden.
+   - *Zelf regelen met de assistent – € 35*: je zet je wensen op een rij met onze digitale assistent en krijgt twee documenten: een instructie voor de notaris en een uitleg voor je nabestaanden.
    - *Advies van een adviseur – € 500 – 1.000*: een persoonlijk gesprek met dezelfde twee documenten. De prijs hangt af van je situatie; je hoort hem altijd vóór het gesprek.
    - *Testament bij de notaris – € 500*: € 800 voor twee testamenten voor partners. Liever je eigen notaris? Dan betaal je diens tarief en neem je dezelfde instructie mee.
-   - Voorbeeld: zelf regelen met de assistent (€ 200) en je testament bij een notaris uit ons netwerk (€ 500) kost samen € 700. Link: Alle tarieven en rekenvoorbeelden → `/tarieven`.
+   - Voorbeeld: zelf regelen met de assistent (€ 35) en je testament bij een notaris uit ons netwerk (€ 500) kost samen € 535. Link: Alle tarieven en rekenvoorbeelden → `/tarieven`.
 
 Sectie 3 ("Groter dan je denkt") vervalt als losse sectie.
 
 ## 1. Hero (versie 2, 2026-09-28 avond, vervangen door versie 3)
 
 - De pay-off "Regel het nu, voor de mensen van wie je houdt" staat voortaan in de header, direct onder het merk (geen eyebrow meer in de hero).
-- **H1** en **lead** zoals hieronder; direct daaronder **de twee keuzes** als kaarten: *Met onze digitale assistent – € 200* (knop "Start met de assistent") en *Met een adviseur – vanaf € 500* (knop "Plan een gesprek").
+- **H1** en **lead** zoals hieronder; direct daaronder **de twee keuzes** als kaarten: *Met onze digitale assistent – € 35* (knop "Start met de assistent") en *Met een adviseur – vanaf € 500* (knop "Plan een gesprek").
 - Regel eronder: "Twijfel je wat bij je past? Doe eerst de gratis check (2 minuten) · Vaste prijzen · Vrije keuze van notaris".
 - Het paneel "Wat we voor je regelen" vervalt (de stappenanimatie in 1b laat dat zien).
 
@@ -51,15 +51,15 @@ Sectie 3 ("Groter dan je denkt") vervalt als losse sectie.
 - **H1:** Wij helpen je je testament goed te regelen
 - **Lead:** Je beantwoordt eenvoudige vragen, wij zetten je wensen helder op een rij. Je krijgt een instructie voor de notaris en een uitleg voor je nabestaanden. De notaris legt je testament vast.
 - **Knoppen:** Doe de gratis check (2 minuten) → `/check` · Zo werkt het → `#wat-we-regelen`
-- **Vertrouwensregel:** Vaste prijzen · Vanaf € 200 · Vrije keuze van notaris
-- **Paneel rechts — "Wat we voor je regelen"** (vinkjes): Inzicht (gratis check) · Je wensen op een rij (assistent € 200 of adviseur vanaf € 500) · Twee heldere documenten · Vastgelegd bij de notaris (netwerk € 500 / € 800 partners, of eigen notaris).
+- **Vertrouwensregel:** Vaste prijzen · Vanaf € 35 · Vrije keuze van notaris
+- **Paneel rechts — "Wat we voor je regelen"** (vinkjes): Inzicht (gratis check) · Je wensen op een rij (assistent € 35 of adviseur vanaf € 500) · Twee heldere documenten · Vastgelegd bij de notaris (netwerk € 500 / € 800 partners, of eigen notaris).
 
 ## 1b. Wat regelen we voor je? (`#wat-we-regelen`, nieuw)
 
 - **H2:** Wat regelen we voor je?
 - **Lead:** Van de eerste vraag tot je testament bij de notaris. Jij kiest hoeveel hulp je wilt.
 - Stappenanimatie (4 stappen uit `07`).
-- *(Routekaarten verplaatst naar de hero, versie 2.)* Twee routekaarten: **Met onze digitale assistent – € 200** (in je eigen tempo; de assistent legt keuzes uit en zet je wensen op een rij; je ontvangt direct beide documenten; knop "Start met de assistent" → `/regel-het-zelf`) en **Met een adviseur – vanaf € 500** (voor een ingewikkelde situatie of als je het niet zelf wilt; persoonlijk gesprek; advies over financiële keuzes, prijs vooraf; knop "Plan een gesprek" → `/check#adviseur`).
+- *(Routekaarten verplaatst naar de hero, versie 2.)* Twee routekaarten: **Met onze digitale assistent – € 35** (in je eigen tempo; de assistent legt keuzes uit en zet je wensen op een rij; je ontvangt direct beide documenten; knop "Start met de assistent" → `/regel-het-zelf`) en **Met een adviseur – vanaf € 500** (voor een ingewikkelde situatie of als je het niet zelf wilt; persoonlijk gesprek; advies over financiële keuzes, prijs vooraf; knop "Plan een gesprek" → `/check#adviseur`).
 - Regel: Daarna leg je het testament vast bij een notaris uit ons netwerk voor € 500 (€ 800 voor twee testamenten), of bij je eigen notaris met dezelfde instructie.
 
 ## 1-oud. Hero (tot 2026-09-27, vervangen)

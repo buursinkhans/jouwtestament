@@ -1,7 +1,7 @@
 // POST /api/agent/documents - writes one of the two documents from the conversation (docs/13-agent.md).
 // Body: { history, kind: 'notaris' | 'nabestaanden' }. One document per request keeps each call
 // well under the 60 s streaming limit. Streams pings while writing, then the document as JSON.
-// TODO(owner): payment (€ 200) must be verified here before generating; now in test mode (no payment).
+// TODO(owner): payment (€ 35, src/config/pricing.ts) must be verified here before generating; now in test mode (no payment).
 import { documentSchema, documentSystem, type DocumentKind } from './lib/agentPrompt.ts';
 import { addUsage, client, config as agentConfig, deriveState, emptyUsage, fallback, json, ndjsonStream, transcript, validateHistory } from './lib/agentCore.ts';
 import { dossierFields } from '../../src/components/agent/dossier.ts';
