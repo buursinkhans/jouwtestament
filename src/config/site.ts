@@ -10,7 +10,7 @@ export const site = {
   entityDescription:
     'Helder Nalaten helpt je je nalatenschap goed te regelen. Een adviseur geeft financieel advies voor € 500 tot € 1.000, met een instructie voor de notaris en een uitleg voor je nabestaanden. Je testament laat je vastleggen bij een netwerknotaris (€ 500, of € 800 voor partners) of bij je eigen notaris.',
   // No phone number: visitors cannot call us (owner 2026-09-29). Contact by e-mail only.
-  contact: { email: 'info@heldernalaten.nl' },
+  contact: { email: 'heldernalaten@gmail.com' }, // owner 2026-10-05 (was info@heldernalaten.nl)
   kvk: '[KVK]',
   reviewer: { name: '[NAAM ADVISEUR]', anchor: '[naam]' },
 };

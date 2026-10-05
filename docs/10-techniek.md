@@ -70,7 +70,7 @@ export const site = {
   url: 'https://heldernalaten.nl',
   redirectDomains: ['jouwtestament.nl'],   // → /testament
   entityDescription: '…',                  // letterlijk uit docs/01
-  contact: { email: 'info@heldernalaten.nl' },   // geen telefoon (eigenaar 2026-09-29)
+  contact: { email: 'heldernalaten@gmail.com' },   // geen telefoon (eigenaar 2026-09-29); gmail-adres (eigenaar 2026-10-05)
   kvk: '[KVK]',
 };
 
