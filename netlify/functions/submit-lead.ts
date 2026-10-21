@@ -3,12 +3,16 @@
 // Storage: Google Sheet (owner decision 2026-09-27). Row 1 holds the headers (LEAD_COLUMNS),
 // so the lead sequence number = sheet row number - 1.
 // TODO(owner): partner and confirmation mail (owner: "werk nog even zonder mail").
-// TODO: rate limit 5/hour per IP (needs shared state, e.g. Netlify Blobs).
+// Rate limit: 3 requests per minute per IP (Netlify's window is at most a few minutes), against
+// spam rows in the sheet. A real visitor sends one request per appointment.
 // Never log personal data.
 import { validateSubmission, buildLead, formatLeadId, leadToRow } from '../../src/components/check/lead.ts';
 import { sheetConfigFromEnv, appendRowWithId } from './lib/googleSheets.ts';
 
-export const config = { path: '/api/submit-lead' };
+export const config = {
+  path: '/api/submit-lead',
+  rateLimit: { windowLimit: 3, windowSize: 60, aggregateBy: ['ip', 'domain'] },
+};
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
