@@ -11,6 +11,7 @@ export const voorWieItems = [...segments]
   }));
 
 export const mainNav = [
+  { label: 'Testament', href: '/testament/' },
   { label: 'Zelf regelen', href: '/regel-het-zelf' },
   { label: 'Hoe het werkt', href: '/hoe-het-werkt' },
   { label: 'Tarieven', href: '/tarieven' },

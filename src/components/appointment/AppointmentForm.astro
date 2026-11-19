@@ -7,7 +7,7 @@ import { devOnly } from '../../config/site';
 
 const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT ?? '';
 const consentText =
-  'Ik ga akkoord dat mijn gegevens en voorkeuren worden gedeeld met een adviseur van Helder Nalaten om contact met mij op te nemen.';
+  'Ik geef toestemming om mijn aanvraag via Netlify in Google Sheets op te slaan en mijn contactgegevens, voorkeuren en eventuele checkantwoorden te gebruiken om contact met mij op te nemen over een adviesgesprek.';
 const blocks = [
   { key: 'ochtend', label: 'Ochtend', time: '9:00 – 12:00' },
   { key: 'middag', label: 'Middag', time: '12:00 – 17:00' },
@@ -246,7 +246,7 @@ const blocks = [
           sent = false;
         }
       }
-      if (sent) track('appointment_requested', { preferences: String(preferences.length) });
+      if (sent) track('appointment_requested');
 
       const done = root.querySelector<HTMLElement>('[data-done]')!;
       const list = root.querySelector<HTMLElement>('[data-done-list]')!;

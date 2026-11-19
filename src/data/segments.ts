@@ -50,7 +50,7 @@ export const segments: Segment[] = [
     description: `Woon je samen zonder huwelijk of geregistreerd partnerschap? Dan erft je partner zonder testament niets. Zo regel je het goed, vanaf ${euro(pricing.advice.min)}.`,
     h1: 'We wonen samen. Wat gebeurt er als een van ons overlijdt?',
     shortAnswer:
-      'Als je samenwoont zonder huwelijk of geregistreerd partnerschap, erft je partner zonder testament niets. Zonder notarieel samenlevingscontract betaalt je partner bovendien vaak het hoogste tarief erfbelasting. Met een testament en samenlevingscontract regel je dat.',
+      'Woon je ongehuwd samen zonder geregistreerd partnerschap? Dan erft je partner zonder testament niets. Voor partnerschap voor de erfbelasting gelden afzonderlijke voorwaarden.',
     ifNothing: {
       heading: 'Als je niets regelt',
       items: [
@@ -63,7 +63,7 @@ export const segments: Segment[] = [
       heading: 'Wat je wél kunt regelen',
       items: [
         'Een testament waarin je elkaar als erfgenaam benoemt',
-        'Een notarieel samenlevingscontract (ook belangrijk voor de erfbelasting)',
+        'Samen met de notaris nagaan welke voorwaarden voor de erfbelasting op jullie van toepassing zijn',
         'Aanmelding van je partner bij je pensioenfonds',
         'Een kruislings afgesloten overlijdensrisicoverzekering',
         'Een levenstestament, zodat je partner voor je mag handelen als jij het niet kunt',
@@ -107,11 +107,11 @@ export const segments: Segment[] = [
       'Wie zorgt er voor je kinderen als jullie er niet meer zijn, en wie beheert hun geld? Zonder testament krijgen ze alles op hun 18e. Zo regel je het.',
     h1: 'We hebben jonge kinderen. Wat moeten we regelen?',
     shortAnswer:
-      'Leg vast wie voogd wordt als jullie allebei overlijden, en wie het geld van je kinderen beheert. Zonder testament beslist de rechter over de voogd en mogen je kinderen vanaf hun 18e vrij over hun erfenis beschikken. In een testament kun je dat uitstellen, bijvoorbeeld tot 25.',
+      'Leg vast wie voogd wordt als jullie allebei overlijden, en wie het geld van je kinderen beheert. Je kunt een voogd aanwijzen in je testament of via het gezagsregister. In je testament kun je ook regelen wie de erfenis van je kinderen beheert en tot welke leeftijd.',
     ifNothing: {
       heading: 'Als je niets regelt',
       items: [
-        'De rechter wijst een voogd aan.',
+        'Als er geen ouder met gezag overblijft en er geen voogd is aangewezen, beslist de rechter over de voogdij.',
         'Je kinderen krijgen hun erfenis op hun 18e, in één keer.',
         'Ben je gescheiden, dan beheert de andere ouder het geld van jullie minderjarige kinderen.',
       ],
@@ -271,28 +271,24 @@ export const segments: Segment[] = [
     segmentPage: 'je-ouders',
     tileSub: 'Help ze het te regelen, voordat het te laat is.',
     breadcrumb: 'Je ouders',
-    title: 'Je ouders helpen hun nalatenschap te regelen | Helder Nalaten',
-    description:
-      'Maak je je zorgen of je ouders het goed geregeld hebben? Zo begin je het gesprek, en zo help je ze op weg.',
-    h1: 'Ik wil mijn ouders helpen het goed te regelen. Hoe begin ik?',
+    title: 'Erfenis bespreken met je ouders | Helder Nalaten',
+    description: 'Hoe begin je over de erfenis met je ouders? Gebruik een openingszin en maak gratis een agenda voor jullie gesprek.',
+    h1: 'Erfenis bespreken met je ouders',
     shortAnswer:
-      'Begin met een open vraag, niet met een oordeel: "Hebben jullie eigenlijk iets geregeld voor later?" Een gratis check of een tip die je deelt, maakt het gesprek makkelijker. Uiteindelijk beslissen je ouders zelf.',
+      'Kies een rustig moment. Je kunt beginnen met: “Ik wil later niet hoeven raden wat jullie wilden. Zullen we eens praten over wat jullie belangrijk vinden?”',
     ifNothing: {
-      heading: 'Waarom het ook voor jou belangrijk is',
+      heading: 'Drie onderwerpen om thuis te bespreken',
       items: [
-        'Zonder levenstestament kun je je ouders niet zomaar helpen met hun bankzaken als dat nodig is.',
-        'Zonder executeur moeten jij en je broers en zussen alles samen regelen.',
-        'Onduidelijkheid leidt vaker tot discussie tussen broers en zussen.',
+        'Wat zouden jullie willen dat er later met het huis en dierbare spullen gebeurt?',
+        'Wie mogen we bellen als er iets gebeurt?',
+        'Waar bewaren jullie belangrijke documenten, en wie mag die vinden?',
       ],
     },
     canArrange: {
-      heading: 'Zo begin je het gesprek',
-      ordered: true,
+      heading: 'Laat je ouders bepalen wat ze delen',
       items: [
-        'Kies een rustig moment, niet direct na slecht nieuws.',
-        'Vertel waarom het jou bezighoudt: "Ik wil later niet hoeven raden wat jullie wilden."',
-        'Vraag, luister, en duw niet.',
-        'Deel de check of de tips, zodat ze zelf kunnen kijken.',
+        'Vraag welke onderwerpen ze zelf willen bespreken.',
+        'Spreek af welke vragen zij eventueel aan de notaris willen stellen.',
       ],
     },
     tips: ['transparant', 'executeur', 'actueel'],

@@ -90,15 +90,20 @@ const adviceFrom = euro(pricing.advice.min);
 >
   <div class="check-intro">
     <span class="eyebrow">Gratis nalatenschapscheck</span>
-    <Heading id={id('title')}>Hoe staat jouw regeling ervoor?</Heading>
+    <Heading id={id('title')}>Maak je gespreksagenda</Heading>
     <p class="lead">
-      Beantwoord een paar vragen en zie direct waar je op moet letten. Daarna kies je: zelf regelen met onze
-      assistent, of een gesprek met een adviseur.
+      Maak een gespreksagenda met vragen voor thuis en voor de notaris.
     </p>
     <p class="small">De check geeft een eerste indicatie en is geen juridisch of financieel advies.</p>
   </div>
 
   <form class="check-form" novalidate data-check-form>
+    <fieldset class="question" data-check-route>
+      <legend>Voor wie bereid je het gesprek voor?</legend>
+      <label><input type="radio" name="route" value="self" checked /> Ik wil mijn eigen nalatenschap voorbereiden.</label>
+      <label><input type="radio" name="route" value="parents" /> Ik wil het gesprek met mijn ouders beginnen.</label>
+    </fieldset>
+    <p data-parents-intro hidden>Maak een agenda vanuit jouw rol. Je ouders kiezen zelf wat ze willen bespreken en vastleggen.</p>
     {questions.map((question, index) => (
       <fieldset
         class="question"
@@ -131,14 +136,27 @@ const adviceFrom = euro(pricing.advice.min);
       <p class="form-error error" hidden data-form-error role="alert">
         Niet alle vragen zijn ingevuld. Kijk de gemarkeerde vragen na.
       </p>
-      <button type="button" class="btn-primary submit" data-show-result>Bekijk mijn aandachtspunten</button>
+      <button type="button" class="btn-primary submit" data-show-result>Bekijk mijn gespreksagenda</button>
     </div>
 
     <div class="result" hidden tabindex="-1" data-check-result>
-      <h3>Jouw aandachtspunten</h3>
+      <h3 data-flag-title>Jouw aandachtspunten</h3>
       <ul class="flags" data-flag-list></ul>
 
+      <section class="agenda" data-agenda aria-label="Gespreksagenda">
+        <h3>Dit kun je thuis bespreken</h3>
+        <ul data-agenda-home></ul>
+        <h3>Dit kun je aan de notaris vragen</h3>
+        <ul data-agenda-notary></ul>
+      </section>
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" data-agenda-copy>Kopieer de agenda</button>
+        <button type="button" class="btn-secondary" data-agenda-print>Print de agenda</button>
+      </div>
+      <p role="status" data-agenda-status></p>
+
       <h3>Wat wil je nu doen?</h3>
+      <p data-parents-next hidden>Willen je ouders hun wensen verder uitwerken? Zij kunnen zelf de assistent gebruiken of een adviseur spreken.</p>
       <div class="options">
         <div class="option">
           <h4>Regel het zelf met onze assistent</h4>
@@ -146,7 +164,7 @@ const adviceFrom = euro(pricing.advice.min);
             Onze digitale assistent stelt je de vragen en zet je wensen op een rij. Je krijgt een instructie voor de
             notaris en een uitleg voor je nabestaanden.
           </p>
-          <p class="option-price">{selfPrice}</p>
+          <p class="option-price">{selfPrice} voor digitale voorbereiding en twee documenten. Notariskosten apart.</p>
           <button type="button" class="btn-primary" data-option-self>Start met de assistent</button>
         </div>
         <div class="option" data-option-adviser-card>
@@ -171,8 +189,7 @@ const adviceFrom = euro(pricing.advice.min);
 <script>
   import { getFlags, flagContent } from './getFlags.ts';
   import { prefill } from './prefill.ts';
-  import { getSegment } from './getSegment.ts';
-  import { getScore, getPriority } from './score.ts';
+  import { getAgenda } from './agenda.ts';
   import { track } from '../../lib/analytics';
   import type { Answers } from './types.ts';
 
@@ -204,20 +221,31 @@ const adviceFrom = euro(pricing.advice.min);
       const input = form.querySelector<HTMLInputElement>(`input[name="${key}"][value="${val}"]`);
       if (input) input.checked = true;
     }
-    updateMinors();
-    // Analytics: progress only, never the chosen answers (docs/09 §8)
+    const route = root.querySelector<HTMLElement>('[data-check-route]')!;
+    const questionSets = Array.from(root.querySelectorAll<HTMLElement>('fieldset[data-question]'));
+    const parents = () => value('route') === 'parents';
+    const updateRoute = () => {
+      questionSets.forEach((set) => (set.hidden = parents()));
+      root.querySelector<HTMLElement>('[data-parents-intro]')!.hidden = !parents();
+      if (!parents()) updateMinors();
+    };
+    if (pageParams.get('ref') === 'kind' || root.dataset.segmentPage === 'je-ouders') {
+      form.querySelector<HTMLInputElement>('[name="route"][value="parents"]')!.checked = true;
+    }
+    updateRoute();
     let started = false;
-    const answered = new Set<string>();
-    const questionKeys = ['situation', 'children', 'minors', 'home', 'documents', 'notary'];
-    form.addEventListener('change', (event) => {
-      const changed = (event.target as HTMLInputElement).name;
+    const start = () => {
       if (!started) {
         started = true;
         track('check_started');
       }
-      if (questionKeys.includes(changed) && !answered.has(changed)) {
-        answered.add(changed);
-        track('check_question_answered', { question: changed });
+    };
+    form.addEventListener('change', (event) => {
+      const changed = (event.target as HTMLInputElement).name;
+      start();
+      if (changed === 'route') {
+        updateRoute();
+        formError.hidden = true;
       }
       if (changed === 'children') updateMinors();
       const name = (event.target as HTMLInputElement).name;
@@ -233,7 +261,34 @@ const adviceFrom = euro(pricing.advice.min);
     };
 
     const stepActions = root.querySelector<HTMLElement>('[data-step-actions]')!;
-    const questionSets = Array.from(root.querySelectorAll<HTMLElement>('fieldset.question'));
+    const agenda = root.querySelector<HTMLElement>('[data-agenda]')!;
+    const agendaStatus = root.querySelector<HTMLElement>('[data-agenda-status]')!;
+
+    root.querySelector('[data-agenda-copy]')!.addEventListener('click', async () => {
+      const text = Array.from(agenda.children, (element) =>
+        element.tagName === 'UL'
+          ? Array.from(element.children, (item) => `- ${item.textContent}`).join('\n')
+          : element.textContent
+      ).join('\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        agendaStatus.textContent = 'Gespreksagenda gekopieerd.';
+        track('check_agenda_copied');
+      } catch {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(agenda);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+        agendaStatus.textContent = 'De agenda is geselecteerd. Kopieer de tekst via je browser.';
+      }
+    });
+    root.querySelector('[data-agenda-print]')!.addEventListener('click', () => {
+      track('check_agenda_printed');
+      agenda.classList.add('printing');
+      window.print();
+      agenda.classList.remove('printing');
+    });
 
     const validateQuestions = () => {
       const invalid: string[] = [];
@@ -255,21 +310,27 @@ const adviceFrom = euro(pricing.advice.min);
 
     // Step 1: show the attention points and the two options
     root.querySelector('[data-show-result]')!.addEventListener('click', () => {
-      const invalid = validateQuestions();
+      start();
+      const invalid = parents() ? [] : validateQuestions();
       formError.hidden = invalid.length === 0;
       if (invalid.length > 0) {
         form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
         return;
       }
-      const answers = currentAnswers();
-      track('check_submitted', {
-        segment: getSegment(answers, root.dataset.segmentPage || undefined),
-        priority: getPriority(getScore(answers, false)),
-        landingPage: window.location.pathname,
-      });
+      const answers = parents() ? undefined : currentAnswers();
+      track('check_submitted');
+      for (const [list, questions] of Object.entries(getAgenda(answers))) {
+        agenda.querySelector(`[data-agenda-${list}]`)!.replaceChildren(...questions.map((question) =>
+          Object.assign(document.createElement('li'), { textContent: question })
+        ));
+      }
+      agendaStatus.textContent = '';
+      flagList.hidden = !answers;
+      root.querySelector<HTMLElement>('[data-flag-title]')!.hidden = !answers;
+      root.querySelector<HTMLElement>('[data-parents-next]')!.hidden = Boolean(answers);
 
       flagList.replaceChildren(
-        ...getFlags(answers).map((flag) => {
+        ...(answers ? getFlags(answers) : []).map((flag) => {
           const content = flagContent[flag];
           const item = document.createElement('li');
           item.className = 'flag';
@@ -282,36 +343,45 @@ const adviceFrom = euro(pricing.advice.min);
           link.className = 'link-arrow';
           link.textContent = 'Lees meer →';
           item.append(title, text, link);
+          if (flag === 'partner_unprotected') {
+            const taxLink = document.createElement('a');
+            taxLink.href = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/partners-voor-de-erfbelasting';
+            taxLink.textContent = 'Actuele voorwaarden van de Belastingdienst';
+            const source = document.createElement('p');
+            source.append(taxLink);
+            item.append(source);
+          }
           return item;
         })
       );
       // A blended family is usually more complex: recommend the adviser
-      root.querySelector<HTMLElement>('[data-recommended]')!.hidden = answers.children !== 'blended';
+      root.querySelector<HTMLElement>('[data-recommended]')!.hidden = answers?.children !== 'blended';
 
+      route.hidden = true;
+      root.querySelector<HTMLElement>('[data-parents-intro]')!.hidden = true;
       questionSets.forEach((set) => (set.hidden = true));
       stepActions.hidden = true;
       result.hidden = false;
       result.focus();
     });
 
-    // Option 1: self-service with the assistant (answers go along in this tab only)
-    root.querySelector('[data-option-self]')!.addEventListener('click', () => {
+    const handOff = () => {
       try {
-        sessionStorage.setItem('hn_check_answers', JSON.stringify(currentAnswers()));
+        if (parents()) sessionStorage.removeItem('hn_check_answers');
+        else sessionStorage.setItem('hn_check_answers', JSON.stringify(currentAnswers()));
       } catch {
-        // storage unavailable: the assistant simply starts without the check answers
+        // The destination works without prefilled answers.
       }
+    };
+    root.querySelector('[data-option-self]')!.addEventListener('click', () => {
+      handOff();
       track('check_option_selfservice');
       window.location.href = '/regel-het-zelf';
     });
 
     // Option 2: adviser - plan a conversation on /afspraak (answers go along in this tab only)
     root.querySelector('[data-option-adviser]')!.addEventListener('click', () => {
-      try {
-        sessionStorage.setItem('hn_check_answers', JSON.stringify(currentAnswers()));
-      } catch {
-        // storage unavailable: the appointment page works without the check answers
-      }
+      handOff();
       track('check_option_adviser');
       window.location.href = '/afspraak';
     });
@@ -320,8 +390,8 @@ const adviceFrom = euro(pricing.advice.min);
     form.addEventListener('submit', (event) => event.preventDefault());
 
     root.querySelector('[data-check-reset]')?.addEventListener('click', () => {
-      questionSets.forEach((set) => (set.hidden = false));
-      updateMinors();
+      route.hidden = false;
+      updateRoute();
       stepActions.hidden = false;
       result.hidden = true;
       form.querySelector<HTMLInputElement>('input')?.focus();
@@ -330,6 +400,24 @@ const adviceFrom = euro(pricing.advice.min);
 </script>
 
 <style>
+  [data-check-route] label {
+    display: block;
+    margin-block: 8px;
+  }
+
+  .agenda {
+    margin-block: 32px 20px;
+  }
+
+  .agenda ul {
+    padding-inline-start: 24px;
+  }
+
+  @media print {
+    :global(body:has([data-agenda].printing) :not(:has([data-agenda].printing, .printing *), .printing, .printing *)) {
+      display: none !important;
+    }
+  }
   .check {
     background: var(--color-surface);
     border: 1px solid var(--color-border);

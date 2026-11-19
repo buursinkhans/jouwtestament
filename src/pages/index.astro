@@ -4,38 +4,19 @@
 import Layout from '../layouts/Layout.astro';
 import SituationTile from '../components/content/SituationTile.astro';
 import TipCard from '../components/content/TipCard.astro';
-import DocumentCard from '../components/content/DocumentCard.astro';
+import DocumentExamples from '../components/content/DocumentExamples.astro';
 import StepsAnimation from '../components/content/StepsAnimation.astro';
-import Carousel from '../components/content/Carousel.astro';
 import PriceCard from '../components/content/PriceCard.astro';
 import Faq from '../components/content/Faq.astro';
 import Check from '../components/check/Check.astro';
-import { Check as CheckIcon, House, PiggyBank, Landmark, ShieldCheck } from '@lucide/astro';
+import { Check as CheckIcon } from '@lucide/astro';
 import { site } from '../config/site';
-import { pricing, euro, euroRange } from '../config/pricing';
+import { pricing, euro } from '../config/pricing';
 import { situationTiles } from '../data/segments';
-import { documents, priceCards, offerSchema, steps } from '../data/offer';
+import { priceCards, offerSchema } from '../data/offer';
 import { homeFaq } from '../data/faq';
 
-// Carousel slide 1: how it works in four boxes, same texts as the steps animation (docs/07).
-// Short one-line versions for mobile keep the carousel compact.
-const stepShort = [
-  'Gratis, in twee minuten.',
-  'Met onze assistent of een adviseur.',
-  'Voor de notaris en je nabestaanden.',
-  'Uit ons netwerk of je eigen notaris.',
-];
-const howItWorks = steps.map((step, index) => ({ ...step, short: stepShort[index] }));
-
-// Carousel slide 2: what your estate consists of (docs/05 section 3 tiles)
-const estateParts = [
-  { icon: House, title: 'Je woning', text: 'Vaak het grootste deel. Wie mag erin blijven wonen?' },
-  { icon: PiggyBank, title: 'Spaargeld en beleggingen', text: 'Wie krijgt wat, en wanneer?' },
-  { icon: Landmark, title: 'Pensioen', text: 'Krijgt je partner een nabestaandenpensioen?' },
-  { icon: ShieldCheck, title: 'Verzekeringen', text: 'Wie is begunstigde, en weet je familie ervan?' },
-];
-
-const description = `Wij helpen je je testament goed te regelen, met een instructie voor de notaris en een uitleg voor je nabestaanden. Zelf voor ${euro(pricing.selfService)}, met een adviseur vanaf ${euro(pricing.advice.min)}.`;
+const description = 'Bereid je nalatenschap voor met de gratis check. Maak een gespreksagenda met vragen voor je familie en voor de notaris.';
 
 // Why now, and why with help (owner 2026-09-28). TODO(review-partner)
 const motivations = [
@@ -62,7 +43,7 @@ const routes = [
     bullets: [
       'In je eigen tempo, wanneer het jou uitkomt',
       'De assistent legt de keuzes uit en zet je wensen op een rij',
-      'Direct een instructie voor de notaris en een uitleg voor je nabestaanden',
+      'Digitale voorbereiding en twee documenten. Notariskosten apart.',
     ],
     cta: { label: 'Start met de assistent', href: '/regel-het-zelf', primary: true },
   },
@@ -89,43 +70,12 @@ const heroPanel = [
 
 const risks = [
   ['De woning', 'Zonder goede regeling kan je partner gedwongen worden het huis te verkopen, of kinderen uit te kopen.'],
-  ['Erfbelasting', 'Samenwonenden zonder notarieel samenlevingscontract betalen vaak het hoogste tarief. Goede keuzes voorkomen onnodige belasting.'],
+  ['Erfbelasting', 'Voor samenwoners gelden aparte voorwaarden om partner voor de erfbelasting te zijn.'],
   ['Nabestaandenpensioen', 'Voor samenwoners geldt dit vaak alleen als je partner is aangemeld bij je pensioenfonds.'],
   ['Geblokkeerde rekeningen', 'Word je wilsonbekwaam, dan kan niemand zomaar bij je geld. Bewindvoering via de rechter kost tijd en geld.'],
   ['Trage afwikkeling', 'Zonder executeur moeten alle erfgenamen samen beslissen en tekenen. Dat vertraagt en kost vaak extra.'],
   ['Ruzie in de familie', 'Waar onduidelijkheid is, ontstaat discussie. Die kost niet alleen geld, maar ook relaties.'],
 ];
-
-const stats = [
-  ['€ 33,5 mld', 'nagelaten in 2023'],
-  ['1 op 4', 'kreeg ruzie of onenigheid bij een erfenis'],
-  // Replaced the 2015 figure (owner: > 10 years old) by KNB 2025 (docs/02). TODO(owner): link source page
-  ['355.000', 'testamenten in 2025 bij de notaris vastgelegd'],
-  ['± 6 maanden', 'vertraging als zonder levenstestament eerst bewind nodig is'],
-];
-
-// Carousel slide 4: prices explained (docs/07 tarieven + option 1). All amounts from config.
-const priceRows = [
-  {
-    name: 'Zelf regelen met de assistent',
-    price: euro(pricing.selfService),
-    text: 'Je zet je wensen op een rij met onze digitale assistent en krijgt twee documenten: een instructie voor de notaris en een uitleg voor je nabestaanden.',
-    short: 'Twee documenten: voor de notaris en voor je nabestaanden.',
-  },
-  {
-    name: 'Advies van een adviseur',
-    price: euroRange(pricing.advice),
-    text: 'Een persoonlijk gesprek met dezelfde twee documenten. De prijs hangt af van je situatie; je hoort hem altijd vóór het gesprek.',
-    short: 'Persoonlijk gesprek, prijs altijd vooraf.',
-  },
-  {
-    name: 'Testament bij de notaris',
-    price: euro(pricing.willSingle),
-    text: `${euro(pricing.willCouple)} voor twee testamenten voor partners. Liever je eigen notaris? Dan betaal je diens tarief en neem je dezelfde instructie mee.`,
-    short: `${euro(pricing.willCouple)} voor partners, of je eigen notaris.`,
-  },
-];
-const priceExample = `Voorbeeld: zelf regelen met de assistent (${euro(pricing.selfService)}) en je testament bij een notaris uit ons netwerk (${euro(pricing.willSingle)}) kost samen ${euro(pricing.selfService + pricing.willSingle)}.`;
 
 const homeTips = ['jonge-kinderen', 'ex-partner', 'executeur', 'transparant', 'uitsluitingsclausule', 'digitaal'];
 
@@ -144,119 +94,28 @@ const serviceSchema = {
 ---
 
 <Layout
-  title="Regel je nalatenschap goed, voor iedereen"
-  fullTitle="Helder Nalaten – Regel je nalatenschap goed, voor iedereen"
+  title="Je nalatenschap voorbereiden en bespreken"
   description={description}
   faqItems={faq}
   schema={[serviceSchema]}
 >
-  <!-- 1. Hero: proposition + the two choices -->
   <section class="hero">
-    <div class="container">
-      <Carousel label="Over Helder Nalaten" id="intro-carrousel">
-        <!-- Slide 1: who we are, what we do (headline owner 2026-09-29) -->
-        <div class="slide" data-slide>
-          <span class="eyebrow">Zo werkt het</span>
-          <h1>Je nalatenschap helder geregeld</h1>
-          <ol class="boxes boxes-4">
-            {howItWorks.map((step, index) => (
-              <li class="box">
-                <p class="box-head">
-                  <span class="box-number" aria-hidden="true">{index + 1}</span>
-                  <span class="box-name">{step.title}</span>
-                </p>
-                <p class="box-text">
-                  <span class="text-full">{step.text}</span>
-                  <span class="text-short">{step.short}</span>
-                </p>
-              </li>
-            ))}
-          </ol>
-          <p class="price-example">
-            Jij kiest hoeveel hulp je wilt. <a href="/check">Doe eerst de gratis check (2 minuten)</a>
-          </p>
-        </div>
-
-        <!-- Slide 2: your estate is bigger than you think (docs/05 section 3) -->
-        <div class="slide" data-slide>
-          <span class="eyebrow">Goed regelen is voor iedereen</span>
-          <h2>Jouw nalatenschap is waarschijnlijk groter dan je denkt</h2>
-          <ul class="boxes boxes-4 boxes-2-mobile">
-            {estateParts.map(({ icon: Icon, title, text }) => (
-              <li class="box">
-                <p class="box-head">
-                  <span class="box-number" aria-hidden="true"><Icon size={14} stroke-width={2} /></span>
-                  <span class="box-name">{title}</span>
-                </p>
-                <p class="box-text">{text}</p>
-              </li>
-            ))}
-          </ul>
-          {/* TODO(owner): link the original source */}
-          <p class="price-example">
-            Kinderen van ouders met een koopwoning erven gemiddeld <strong>€&nbsp;368.000</strong>; bij een huurwoning
-            is dat €&nbsp;18.000. <span class="source">Bron: berichtgeving op basis van CBS/ESB (2026)</span>
-          </p>
-        </div>
-
-        <!-- Slide 3: the facts (docs/05 section 4, stats row) -->
-        <div class="slide" data-slide>
-          <span class="eyebrow">De feiten</span>
-          <h2>Een erfenis regelt zich niet vanzelf</h2>
-          <dl class="stats">
-            {stats.map(([number, label]) => (
-              <div class="stat">
-                <dt>{number}</dt>
-                <dd>{label}</dd>
-              </div>
-            ))}
-          </dl>
-          {/* TODO(owner): link the original sources */}
-          <p class="source">Bronnen: CBS (2023); RTL Nieuwspanel (2025); KNB, factsheet akten (2025); KNB via NOS (2024).</p>
-        </div>
-
-        <!-- Slide 4: prices (owner 2026-09-29), amounts from config/pricing.ts -->
-        <div class="slide" data-slide>
-          <span class="eyebrow">Helder geprijsd</span>
-          <h2>Vooraf weet je waar je aan toe bent</h2>
-          <dl class="prices">
-            {priceRows.map((row) => (
-              <div class="price-row">
-                <dt>
-                  <span class="price-name">{row.name}</span>
-                  <span class="price-amount">{row.price}</span>
-                </dt>
-                <dd>
-                  <span class="text-full">{row.text}</span>
-                  <span class="text-short">{row.short}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-          <p class="price-example">
-            {priceExample} <a href="/tarieven">Alle tarieven en rekenvoorbeelden</a>
-          </p>
-        </div>
-      </Carousel>
-      <div class="grid grid-2 routes">
-        {routes.map((route) => (
-          <article class="card route">
-            <span class="eyebrow">{route.label}</span>
-            <h2>{route.title}</h2>
-            <p class="route-price">{route.price}</p>
-            <ul>
-              {route.bullets.map((bullet) => (
-                <li><CheckIcon size={18} stroke-width={2} aria-hidden="true" />{bullet}</li>
-              ))}
-            </ul>
-            <a class={route.cta.primary ? 'btn-primary' : 'btn-secondary'} href={route.cta.href}>{route.cta.label}</a>
-          </article>
-        ))}
+    <div class="container narrow">
+      <h1>Praat nu over wat je later wilt nalaten</h1>
+      <p class="lead">Wat wil je dat er met je huis gebeurt? Wie regelt straks de erfenis? Ontdek welke vragen bij jouw situatie passen en neem ze mee naar het gesprek met je familie.</p>
+      <div class="btn-row">
+        <a class="btn-primary" href="/check">Start de gratis check</a>
+        <a class="link-arrow" href="/testament/" data-testament-link>Testament regelen →</a>
       </div>
-      <p class="hero-more">
-        Twijfel je wat bij je past? <a href="/check">Doe eerst de gratis check (2 minuten)</a>
-        <span class="trust"> · Vaste prijzen · Vrije keuze van notaris</span>
-      </p>
+    </div>
+  </section>
+
+  <section class="section section-surface">
+    <div class="container narrow">
+      <h2>Van je antwoorden naar een gespreksagenda</h2>
+      <p>De gratis check geeft je vragen om thuis en met de notaris te bespreken. Je kunt de agenda kopiëren of printen zonder je aan te melden.</p>
+      <blockquote>Wat willen we dat er later met het ouderlijk huis gebeurt?</blockquote>
+      <a class="link-arrow" href="/voor-wie/je-ouders/">Erfenis bespreken met je ouders →</a>
     </div>
   </section>
 
@@ -287,9 +146,30 @@ const serviceSchema = {
       </div>
       <StepsAnimation id="stappen-home" />
       <p class="more small">
-        Daarna leg je het testament vast bij een notaris uit ons netwerk voor {euro(pricing.willSingle)}{' '}
-        ({euro(pricing.willCouple)} voor twee testamenten), of bij je eigen notaris met dezelfde instructie.
+        Wil je je testament laten opstellen of wijzigen? <a href="/testament/" data-testament-link>Bekijk hoe je je afspraak voorbereidt</a>.
       </p>
+    </div>
+  </section>
+
+  <section class="section section-surface" id="vervolg">
+    <div class="container">
+      <h2>Je wensen verder uitwerken</h2>
+      <DocumentExamples />
+      <div class="grid grid-2 routes">
+        {routes.map((route) => (
+          <article class="card route">
+            <span class="eyebrow">{route.label}</span>
+            <h3>{route.title}</h3>
+            <p class="route-price">{route.price}</p>
+            <ul>
+              {route.bullets.map((bullet) => (
+                <li><CheckIcon size={18} stroke-width={2} aria-hidden="true" />{bullet}</li>
+              ))}
+            </ul>
+            <a class={route.cta.primary ? 'btn-primary' : 'btn-secondary'} href={route.cta.href}>{route.cta.label}</a>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -352,25 +232,6 @@ const serviceSchema = {
     </div>
   </section>
 
-  <!-- 6. What you get -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <h2>Wat je krijgt: twee heldere documenten</h2>
-        <p class="lead">
-          Of je nu met de assistent of met een adviseur werkt, je krijgt dezelfde twee documenten. Daarna regel je het
-          testament bij een notaris naar keuze.
-        </p>
-      </div>
-      <div class="grid grid-2">
-        {documents.map((doc) => (
-          <DocumentCard number={doc.number} title={doc.title} bullets={doc.bullets.slice(0, 2)} />
-        ))}
-      </div>
-      <p class="more"><a class="link-arrow" href="/hoe-het-werkt">Zo werkt het precies →</a></p>
-    </div>
-  </section>
-
   <!-- 7. Prices -->
   <section class="section">
     <div class="container">
@@ -380,7 +241,7 @@ const serviceSchema = {
       <div class="grid grid-4">
         {priceCards.map((card) => <PriceCard {...card} />)}
       </div>
-      <p class="more">Liever je eigen notaris? Dat kan. Je krijgt dezelfde instructie mee.</p>
+      <p class="more">Bij je eigen notaris betaal je diens tarief en neem je je voorbereiding mee.</p>
       <p><a class="link-arrow" href="/tarieven">Alle tarieven en rekenvoorbeelden →</a></p>
     </div>
   </section>
@@ -427,6 +288,13 @@ const serviceSchema = {
   </section>
 </Layout>
 
+<script>
+  import { track } from '../lib/analytics';
+  document.querySelectorAll('[data-testament-link]').forEach((link) => {
+    link.addEventListener('click', () => track('check_option_testament'));
+  });
+</script>
+
 <style>
   .hero {
     padding: 20px 0 32px;
@@ -436,256 +304,6 @@ const serviceSchema = {
     .hero {
       padding: 32px 0 40px;
     }
-  }
-
-  /* Carousel slides: compact and equal height (the carousel stacks them in one cell),
-     so the two choices below stay in view. Headings use the h2 size, also the h1. */
-  .slide {
-    display: grid;
-    align-content: center;
-    background: var(--color-ground);
-    border-radius: var(--radius-panel);
-    padding: 20px 18px;
-    font-size: var(--fs-small); /* compact on mobile so the choices stay in view */
-  }
-
-  @media (min-width: 768px) {
-    .slide {
-      padding: 28px 36px;
-      font-size: var(--fs-body);
-    }
-  }
-
-  .slide h1,
-  .slide h2 {
-    font-size: var(--fs-h3);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin: 0;
-  }
-
-  @media (min-width: 768px) {
-    .slide h1,
-    .slide h2 {
-      font-size: var(--fs-h2);
-    }
-  }
-
-  .slide .eyebrow {
-    margin-bottom: 6px;
-  }
-
-  /* Slide 1 uses the full width of the block (owner 2026-09-29) */
-
-  .prices {
-    display: grid;
-    gap: 6px;
-    margin: 12px 0 8px;
-  }
-
-  @media (min-width: 768px) {
-    .prices {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin: 16px 0 10px;
-    }
-  }
-
-  .price-row {
-    background: var(--color-surface);
-    border-radius: var(--radius-small);
-    padding: 10px 12px;
-  }
-
-  @media (min-width: 768px) {
-    .price-row {
-      border-radius: var(--radius-card);
-      padding: 14px 16px;
-    }
-  }
-
-  .price-row dt {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 4px;
-  }
-
-  .price-name {
-    font-weight: 700;
-  }
-
-  .price-amount {
-    font-weight: 700;
-    color: var(--color-primary);
-    white-space: nowrap;
-  }
-
-  .price-row dd {
-    margin: 0;
-    font-size: var(--fs-small);
-    color: var(--color-muted);
-  }
-
-  .price-example {
-    margin: 0;
-    font-size: var(--fs-small);
-  }
-
-  /* Slide 1: how it works in four boxes, same look as the price boxes */
-  .boxes {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: 6px;
-    margin: 12px 0 8px;
-  }
-
-  @media (min-width: 768px) {
-    .boxes-4 {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin: 16px 0 10px;
-    }
-  }
-
-  .box {
-    background: var(--color-surface);
-    border-radius: var(--radius-small);
-    padding: 10px 12px;
-  }
-
-  /* Short texts (slide 2): two boxes side by side on mobile */
-  @media (max-width: 767px) {
-    .boxes-2-mobile {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .boxes-2-mobile .box-head {
-      align-items: flex-start;
-    }
-
-    .boxes-2-mobile .box-number {
-      display: none;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .box {
-      border-radius: var(--radius-card);
-      padding: 14px 16px;
-    }
-  }
-
-  .box-head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0 0 4px;
-  }
-
-  .box-number {
-    display: inline-grid;
-    place-items: center;
-    flex: 0 0 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--color-tint);
-    color: var(--color-primary);
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .box-name {
-    font-weight: 700;
-  }
-
-  .box-text {
-    margin: 0;
-    font-size: var(--fs-small);
-    color: var(--color-muted);
-  }
-
-  /* Mobile: one-line explanation per price, so the block stays compact */
-  .text-full {
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    .text-full {
-      display: inline;
-    }
-    .text-short {
-      display: none;
-    }
-  }
-
-  .slide .lead {
-    margin: 10px 0 0;
-    font-size: inherit;
-  }
-
-
-
-
-
-
-  .slide .stats {
-    display: grid;
-    gap: 6px;
-    margin: 12px 0 8px;
-  }
-
-  .slide .stat {
-    background: var(--color-surface);
-    border-top: 0;
-    border-radius: var(--radius-small);
-    padding: 8px 12px;
-  }
-
-  /* Mobile: compact rows, figure left and explanation right */
-  @media (max-width: 767px) {
-    .slide .stat {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-    }
-
-    .slide .stat dt {
-      flex: 0 0 96px;
-      font-size: var(--fs-body);
-    }
-
-    .slide .source {
-      font-size: 12px;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .slide .stats {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin: 16px 0 10px;
-    }
-
-    .slide .stat {
-      border-radius: var(--radius-card);
-      padding: 12px 14px;
-    }
-  }
-
-  .slide .source {
-    margin: 0;
-  }
-
-  .hero-more {
-    margin: 24px 0 0;
-    font-size: var(--fs-small);
-  }
-
-  .trust {
-    color: var(--color-muted);
   }
 
   .route ul {
@@ -707,7 +325,7 @@ const serviceSchema = {
     color: var(--color-primary);
   }
 
-  .route h2 {
+  .route h3 {
     font-size: var(--fs-h3);
     margin: 0;
   }
@@ -758,10 +376,6 @@ const serviceSchema = {
     padding: 20px 24px;
   }
 
-  .route h3 {
-    margin: 0;
-  }
-
   .route-price {
     font-size: var(--fs-h2);
     font-weight: 700;
@@ -809,23 +423,6 @@ const serviceSchema = {
     font-weight: 600;
   }
 
-  .split {
-    display: grid;
-    gap: 32px;
-    margin-bottom: 40px;
-  }
-
-  @media (min-width: 1024px) {
-    .split {
-      grid-template-columns: 3fr 2fr;
-      align-items: end;
-    }
-  }
-
-  .split .section-head {
-    margin-bottom: 0;
-  }
-
   .plain-list {
     list-style: none;
     padding: 0;
@@ -864,33 +461,8 @@ const serviceSchema = {
     margin-bottom: 40px;
   }
 
-  .stats {
-    margin: 0 0 12px;
-  }
-
-  .stat {
-    border-top: 1px solid var(--color-border);
-    padding-top: 16px;
-  }
-
-  .stat dt {
-    font-size: var(--fs-h3);
-    font-weight: 700;
-    color: var(--color-primary);
-  }
-
-  .stat dd {
-    margin: 0;
-    font-size: var(--fs-small);
-    color: var(--color-muted);
-  }
-
   .more {
     margin-top: 28px;
-  }
-
-  .documents {
-    margin-top: 40px;
   }
 
   .closing {

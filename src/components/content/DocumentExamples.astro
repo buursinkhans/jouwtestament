@@ -1,0 +1,52 @@
+---
+const examples = [
+  {
+    title: 'Je wensen en vragen voor de notaris',
+    intro: 'Sam wil bespreken wat er later met de woning gebeurt.',
+    sections: [{
+      heading: 'De woning',
+      paragraphs: ['Sam wil onderzoeken of een kind de woning kan overnemen.'],
+      bullets: ['Hoe kunnen we de waarde laten bepalen?', 'Hoe leggen we vast hoe de andere kinderen worden gecompenseerd?'],
+    }],
+  },
+  {
+    title: 'Uitleg voor je nabestaanden',
+    intro: 'Sam kan deze uitleg desgewenst met de kinderen delen.',
+    sections: [{
+      heading: 'Waarom ik het over het huis wilde hebben',
+      paragraphs: ['Ik wilde jullie eerst vragen wat jullie zelf met het huis zouden willen. Daarom heb ik dit op tijd met jullie besproken.'],
+      bullets: ['In mijn map met belangrijke papieren staat bij welke notaris jullie terechtkunnen.'],
+    }],
+  },
+];
+---
+
+<div class="grid grid-2 examples">
+  {examples.map((example) => (
+    <details class="card">
+      <summary>Fictief voorbeeld · {example.title}</summary>
+      <p>{example.intro}</p>
+      {example.sections.map((section) => (
+        <section>
+          <h3>{section.heading}</h3>
+          {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+        </section>
+      ))}
+    </details>
+  ))}
+</div>
+
+<style>
+  .examples {
+    margin-block: 24px;
+    align-items: start;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 700;
+  }
+  h3 {
+    margin-top: 16px;
+  }
+</style>

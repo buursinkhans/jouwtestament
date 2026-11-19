@@ -1,9 +1,11 @@
 // Analytics events (docs/09 section 8). No personal data and no check answers, only progress
-// and coarse, non-identifying labels (question key, segment, priority, page path).
+// and coarse, non-identifying labels.
 type EventName =
   | 'check_started'
-  | 'check_question_answered'
   | 'check_submitted'
+  | 'check_agenda_copied'
+  | 'check_agenda_printed'
+  | 'check_option_testament'
   | 'contact_requested'
   | 'segment_tile_clicked'
   | 'nav_voor_wie_opened'
