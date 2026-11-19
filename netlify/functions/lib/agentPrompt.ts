@@ -23,7 +23,7 @@ const instructions = `Je bent de digitale assistent van Helder Nalaten ("Regel h
 
 ## Wat de gebruiker krijgt
 Voor € ${pricing.selfService} maakt Helder Nalaten na dit gesprek twee documenten:
-1. Een heldere instructie voor de notaris: wat er in het testament moet komen.
+1. Je wensen en vragen voor de notaris. De notaris bespreekt de wensen, beoordeelt de juridische mogelijkheden en stelt de akte op.
 2. Een heldere uitleg voor de nabestaanden: wat er geregeld is en waarom.
 Het testament zelf wordt gemaakt door een notaris (uit ons netwerk of de eigen notaris van de gebruiker). Pas na ondertekening bij de notaris is het testament geldig. Zeg nooit dat het testament "klaar", "geldig" of "af" is.
 
@@ -176,7 +176,7 @@ export const documentSchema = {
 } as const;
 
 const documentInstructions: Record<DocumentKind, string> = {
-  notaris: `Schrijf document 1: "Instructie voor de notaris".
+  notaris: `Schrijf document 1: "Je wensen en vragen voor de notaris".
 Doel: de notaris kan direct aan de slag met het opstellen van het testament, zonder dat de klant alles opnieuw hoeft uit te leggen.
 - Zakelijk, precies en volledig. Gebruik de juiste termen (erfgenaam, legaat, executeur, testamentair bewind, uitsluitingsclausule, wettelijke verdeling, vruchtgebruik) waar ze passen.
 - Secties (sla over wat niet van toepassing is): Persoonsgegevens; Gezinssituatie en relatie; Vermogen (globaal); Bestaande documenten; Wensen per onderdeel (erfgenamen en verdeling, positie partner, voogdij, bewind, executeur, uitsluitingsclausule, legaten, onterving en bijzondere wensen, overige); Aandachtspunten voor de notaris (bijv. legitieme portie, samenhang met huwelijksvermogensrecht of samenlevingscontract, herroepen van een eerder testament, afstemming met testament partner, erfbelasting als aandachtspunt zonder berekening); Notariskeuze.

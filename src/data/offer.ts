@@ -3,15 +3,15 @@ import { pricing, euro, euroRange, coupleSaving } from '../config/pricing';
 import { devOnly } from '../config/site';
 
 export const steps = [
-  { title: 'Doe de check', text: 'Vier vragen, twee minuten. Direct je belangrijkste aandachtspunten.' },
+  { title: 'Doe de check', text: 'Maak een agenda met vragen voor thuis en voor de notaris.' },
   {
     // Two routes since 2026-09-28 (owner): the assistant (option 1) or an adviser (option 2)
     title: 'Je wensen op een rij',
-    text: `Met onze digitale assistent (${euro(pricing.selfService)}) of in een gesprek met een adviseur (vanaf ${euro(pricing.advice.min)}). Je hoort vooraf de prijs.`,
+    text: `Bereid je digitaal voor voor ${euro(pricing.selfService)}, inclusief twee documenten. Of vraag een adviesgesprek aan vanaf ${euro(pricing.advice.min)}. Notariskosten zijn apart.`,
   },
   {
     title: 'Twee documenten',
-    text: 'Je ontvangt de instructie voor de notaris en de uitleg voor je nabestaanden.',
+    text: 'Je krijgt een overzicht van je wensen en vragen voor de notaris en een uitleg voor je nabestaanden.',
   },
   {
     title: 'Naar de notaris',
@@ -28,11 +28,11 @@ export const optionalStep = {
 export const documents = [
   {
     number: 1 as const,
-    title: 'Heldere instructie voor de notaris',
-    text: 'Precies wat er in je testament moet komen. De notaris kan direct aan de slag, zonder dat je alles opnieuw hoeft uit te leggen.',
+    title: 'Je wensen en vragen voor de notaris',
+    text: 'De notaris bespreekt je wensen, beoordeelt de juridische mogelijkheden en stelt de akte op.',
     bullets: [
       'Jouw situatie en wensen op een rij',
-      'De gekozen oplossing per onderdeel',
+      'Je vragen en voorkeuren per onderwerp',
       'Wie erft, wie het regelt, wie beschermd wordt',
       'Aandachtspunten voor de akte',
     ],
@@ -52,9 +52,9 @@ export const documents = [
 
 // Compact price cards (home, /testament)
 export const priceCards = [
-  { title: 'Zelf regelen met de assistent', price: euro(pricing.selfService), note: 'twee documenten' },
+  { title: 'Zelf regelen met de assistent', price: euro(pricing.selfService), note: 'Digitale voorbereiding en twee documenten. Notariskosten apart.' },
   { title: 'Advies', price: euroRange(pricing.advice) },
-  { title: 'Testament', price: euro(pricing.willSingle) },
+  { title: 'Testament bij netwerknotaris', price: euro(pricing.willSingle) },
   { title: 'Voor partners', price: euro(pricing.willCouple), note: 'voor 2 testamenten', highlight: true },
 ];
 
@@ -63,13 +63,13 @@ const allPriceRows = [
     // Option 1 (owner 2026-09-27). TODO(owner): confirm what exactly is included
     item: 'Zelf regelen met de assistent',
     price: euro(pricing.selfService),
-    included: 'Gesprek met onze digitale assistent, instructie voor de notaris, uitleg voor nabestaanden (notaris niet inbegrepen)',
+    included: 'Digitale voorbereiding, je wensen en vragen voor de notaris en uitleg voor nabestaanden. Notariskosten zijn apart.',
   },
   {
     item: 'Financieel advies over je nalatenschap',
     price: euroRange(pricing.advice),
     included:
-      'Adviesgesprek, advies van een professional, instructie voor de notaris, uitleg voor nabestaanden',
+      'Adviesgesprek met een professional, je wensen en vragen voor de notaris en uitleg voor nabestaanden',
   },
   {
     item: 'Testament (netwerknotaris)',

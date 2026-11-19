@@ -1,31 +1,29 @@
 ---
-// /privacy. TODO(owner): privacy statement must be written and reviewed before leads are collected (docs/10):
-// purpose, legal basis (consent), retention period, recipient (adviser), rights.
-// Mention processors: Google (Sheets, lead storage), Netlify (hosting), Simple Analytics (cookieless statistics),
-// Anthropic (Claude, runs the self-service assistant; conversations are not stored by Helder Nalaten).
 import Layout from '../layouts/Layout.astro';
-import { site, devOnly } from '../config/site';
+import { site } from '../config/site';
 const breadcrumbs = [
   { name: 'Home', url: '/' },
   { name: 'Privacy', url: '/privacy' },
 ];
 ---
 
-<Layout title="Privacyverklaring" description="Hoe Helder Nalaten omgaat met je gegevens." breadcrumbs={breadcrumbs} noindex={!devOnly}>
-  <div class="container narrow page">
+<Layout title="Privacyverklaring" description="Hoe Helder Nalaten omgaat met je gegevens." breadcrumbs={breadcrumbs} noindex>
+  <div class="container narrow page prose">
     <h1>Privacyverklaring</h1>
-    {
-      devOnly ? (
-        <p><span class="placeholder">[PRIVACYVERKLARING: doel, grondslag, bewaartermijn, ontvangers, je rechten]</span></p>
-      ) : (
-        // TODO(owner): replace with the reviewed privacy statement
-        <>
-          <p>We werken nog aan onze volledige privacyverklaring. We gebruiken geen cookies.</p>
-          <p>
-            Heb je een vraag over je gegevens? Mail naar <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
-          </p>
-        </>
-      )
-    }
+    <h2>Gratis check</h2>
+    <p>De website maakt je gespreksagenda in je browser. Je kunt de agenda kopiëren of printen zonder contactgegevens op te geven. Als je vanuit je eigen check doorgaat naar de assistent of het afspraakformulier, bewaart de website je antwoorden tijdelijk in dit browsertabblad om ze daar opnieuw te gebruiken.</p>
+
+    <h2>Digitale assistent</h2>
+    <p>Als je doorgaat na de melding bij de assistent, verwerkt de assistent je intake, eventuele antwoorden uit de check en je gespreksgeschiedenis om je vragen te beantwoorden en twee documenten op te stellen. Die gegevens gaan via onze hosting bij Netlify naar Claude van Anthropic. De website bewaart het gesprek en de gemaakte documenten in dit browsertabblad. Je kunt het gesprek wissen of het tabblad sluiten. Gedownloade of geprinte kopieën beheer je zelf.</p>
+
+    <h2>Afspraak met een adviseur</h2>
+    <p>Met jouw toestemming gebruikt Helder Nalaten je naam, e-mailadres of telefoonnummer, de door jou gekozen momenten en eventuele checkantwoorden om contact op te nemen over een adviesgesprek en het voor te bereiden. De aanvraag gaat via Netlify naar Google Sheets, waar ook brongegevens zoals campagne en verwijzende pagina worden vastgelegd. Een adviseur van Helder Nalaten gebruikt de aanvraag om je te helpen.</p>
+
+    <h2>Statistieken</h2>
+    <p>Helder Nalaten gebruikt Simple Analytics voor bezoekstatistieken en om te meten welke acties op de site worden gebruikt, zoals het afronden van de check of het kopiëren van de agenda. Die actie-events bevatten geen checkantwoorden, contactgegevens of documentinhoud.</p>
+
+    <h2>Bewaartermijnen en je rechten</h2>
+    <p>Voor informatie over hoe lang gegevens van je aanvraag of assistentgesprek bij onze dienstverleners worden bewaard, kun je contact opnemen via <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.</p>
+    <p>Via hetzelfde adres kun je inzage, correctie of verwijdering vragen, bezwaar maken of vragen om beperking of overdracht van je gegevens. Je kunt je toestemming voor de verwerking van je afspraakaanvraag intrekken. Je kunt ook een klacht indienen bij de <a href="https://autoriteitpersoonsgegevens.nl/">Autoriteit Persoonsgegevens</a>.</p>
   </div>
 </Layout>

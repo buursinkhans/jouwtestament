@@ -36,9 +36,7 @@ const yesNo: [string, string][] = [
     <label class="consent">
       <input type="checkbox" data-consent />
       <span>
-        Ik begrijp dat mijn antwoorden naar een AI-dienst (Claude van Anthropic) worden gestuurd om het gesprek te
-        voeren. Anthropic gebruikt ze niet om modellen te trainen en verwijdert ze binnen 30 dagen. Helder Nalaten
-        bewaart het gesprek niet; het blijft alleen in dit browsertabblad staan tot je het tabblad sluit.{' '}
+        Ik begrijp dat mijn intake, gespreksgeschiedenis en eventuele antwoorden uit de check via Netlify naar Claude van Anthropic gaan om het gesprek te voeren en de documenten te maken. De website bewaart het gesprek en de documenten in dit browsertabblad.{' '}
         <a href="/privacy">Privacyverklaring</a>
       </span>
     </label>
@@ -266,7 +264,7 @@ const yesNo: [string, string][] = [
 
       <div class="banner ready" hidden data-ready-banner role="status">
         <p><strong>Je wensen staan op een rij.</strong> We maken nu twee documenten: een instructie voor de notaris en een uitleg voor je nabestaanden.</p>
-        <p class="price-line">Prijs: <strong>{price}</strong> <span class="test-badge">Testfase: je betaalt nu niets</span></p>
+        <p class="price-line">Prijs: <strong>{price}</strong> <span class="test-badge">Testfase: je betaalt nu niets</span> · Digitale voorbereiding met twee documenten. Notariskosten apart.</p>
         <button type="button" class="btn-primary" data-make-documents>Maak mijn documenten</button>
       </div>
 
@@ -666,7 +664,7 @@ const yesNo: [string, string][] = [
       el.textContent = text;
       return el;
     };
-    article.append(h('p', doc.kind === 'notaris' ? 'Document 1 · Instructie voor de notaris' : 'Document 2 · Uitleg voor nabestaanden'));
+    article.append(h('p', doc.kind === 'notaris' ? 'Document 1 · Je wensen en vragen voor de notaris' : 'Document 2 · Uitleg voor nabestaanden'));
     article.firstElementChild!.className = 'doc-label';
     article.append(h('h2', doc.title), h('p', doc.intro));
     for (const section of doc.sections) {

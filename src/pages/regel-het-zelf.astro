@@ -3,6 +3,7 @@
 // (owner 2026-09-27, docs/13-agent.md). Option 2 (adviser) goes via the check.
 import Layout from '../layouts/Layout.astro';
 import AgentChat from '../components/agent/AgentChat.astro';
+import DocumentExamples from '../components/content/DocumentExamples.astro';
 import { pricing, euro } from '../config/pricing';
 
 const breadcrumbs = [
@@ -23,9 +24,10 @@ const price = euro(pricing.selfService);
       <h1>Regel je testament zelf voor, met onze assistent</h1>
       <p class="lead">
         Onze digitale assistent stelt je de vragen en legt de keuzes uit. Voor {price} krijg je twee documenten: een
-        heldere instructie voor de notaris en een heldere uitleg voor je nabestaanden.
+        overzicht van je wensen en vragen voor de notaris en een uitleg voor je nabestaanden. Notariskosten zijn apart.
       </p>
     </div>
+    <DocumentExamples />
     <AgentChat />
   </div>
 </Layout>

@@ -36,12 +36,12 @@ export function getFlags(answers: Answers): FlagId[] {
 export const flagContent: Record<FlagId, FlagContent> = {
   partner_unprotected: {
     title: 'Je partner is financieel niet beschermd',
-    text: 'Als je samenwoont zonder huwelijk of geregistreerd partnerschap, erft je partner zonder testament niets. Zonder notarieel samenlevingscontract betaalt je partner bovendien vaak het hoogste tarief erfbelasting.',
+    text: 'Woon je ongehuwd samen zonder geregistreerd partnerschap? Dan erft je partner zonder testament niets. Voor partnerschap voor de erfbelasting gelden afzonderlijke voorwaarden.',
     href: '/voor-wie/samenwonen',
   },
   minor_children: {
     title: 'Regel voogdij en het geld van je kinderen',
-    text: 'Zonder testament wijst de rechter een voogd aan en krijgen je kinderen hun erfenis op hun 18e. Je kunt zelf een voogd en een beheerder kiezen.',
+    text: 'Je kunt een voogd aanwijzen in je testament of via het gezagsregister. Bespreek met de notaris wie het geërfde geld beheert en tot welke leeftijd.',
     href: '/voor-wie/jonge-kinderen',
   },
   blended_family: {

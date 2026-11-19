@@ -36,7 +36,7 @@ export const tips: Tip[] = [
     cardText: 'Anders wijst de rechter een voogd aan.',
     question: 'Wie zorgt er voor mijn kinderen als wij er niet meer zijn?',
     short:
-      'Als beide ouders overlijden, wijst de rechter een voogd aan, tenzij je dat zelf hebt vastgelegd. Dat kan in je testament of via het gezagsregister.',
+      'Als er geen ouder met gezag overblijft, kan iemand die je hebt aangewezen de voogdij aanvaarden. Je kunt een voogd aanwijzen in je testament of via het gezagsregister.',
     explanation:
       'De voogd zorgt voor de opvoeding. Het beheer van het geld kun je bij iemand anders leggen. Soms is dat verstandig: de beste opvoeder is niet altijd de beste beheerder.',
     action: 'Bespreek het eerst met de persoon die je in gedachten hebt, en benoem ook een vervanger.',
@@ -124,7 +124,7 @@ export const tips: Tip[] = [
     short:
       'Nee. De uitkering van een levens- of overlijdensrisicoverzekering gaat naar de begunstigde in de polis, niet via je testament. Staat daar nog een ex-partner in, dan krijgt die het geld.',
     explanation:
-      'Voor samenwoners is er nog een punt: met een kruislings afgesloten overlijdensrisicoverzekering kun je vaak erfbelasting over de uitkering voorkomen.',
+      'Vraag bij een overlijdensrisicoverzekering hoe de premie, de polis en jullie situatie doorwerken in de erfbelasting.',
     action: 'Controleer de begunstiging van al je polissen.',
     segments: ['samenwonen'],
     related: ['pensioen', 'actueel'],

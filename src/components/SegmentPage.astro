@@ -55,7 +55,12 @@ const webPageSchema = {
       <ReviewMeta />
       <ShortAnswer>
         <p>{segment.shortAnswer}</p>
+        {segment.slug === "samenwonen" && <p><a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/partners-voor-de-erfbelasting">Bekijk de actuele voorwaarden bij de Belastingdienst</a></p>}
       </ShortAnswer>
+
+      {segment.slug === "je-ouders" && (
+        <p><a class="btn-primary" href="/check?ref=kind">Bereid het gesprek met je ouders voor</a></p>
+      )}
 
       <div class="prose">
         <section id={slugify(segment.ifNothing.heading)}>
@@ -75,7 +80,7 @@ const webPageSchema = {
 
       {segment.share && (
         <div class="btn-row share-row">
-          <a class="btn-primary" href="/check?ref=kind" data-share data-share-title="Nalatenschapscheck">
+          <a class="btn-secondary" href="/check" data-share data-share-title="Nalatenschapscheck">
             Stuur de check naar je ouders
           </a>
           <a class="btn-secondary" href="/tips" data-share data-share-title="Tips">
@@ -121,7 +126,7 @@ const webPageSchema = {
     <section class="container narrow closing">
       <h2>Regel het nu, voor de mensen van wie je houdt.</h2>
       <div class="btn-row">
-        <a class="btn-primary" href="#check">Doe de gratis check (2 min)</a>
+        <a class="btn-primary" href={segment.slug === "je-ouders" ? "/check?ref=kind" : "#check"}>{segment.slug === "je-ouders" ? "Bereid het gesprek met je ouders voor" : "Doe de gratis check (2 min)"}</a>
         <a class="btn-secondary" href="/voor-wie">Bekijk andere situaties</a>
       </div>
     </section>

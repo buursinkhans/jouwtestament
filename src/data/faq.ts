@@ -35,12 +35,12 @@ export const homeFaq: FaqItem[] = [
 export const testamentFaq: FaqItem[] = [
   {
     question: 'Wat kost een testament?',
-    answer: `${euro(pricing.willSingle)} bij een netwerknotaris, ${euro(pricing.willCouple)} voor twee testamenten voor partners. Het advies vooraf kost ${euroRange(pricing.advice)}.`,
+    answer: `${euro(pricing.willSingle)} bij een netwerknotaris, ${euro(pricing.willCouple)} voor twee testamenten voor partners. Bij je eigen notaris geldt diens tarief. Voorbereiding betaal je apart.`,
   },
   {
     question: 'Kan ik een testament laten maken zonder advies?',
     answer:
-      'Ons aanbod bestaat uit advies én testament, omdat een goed testament begint met de juiste keuzes. Heb je al advies gehad? Neem dan contact op.',
+      `Je kunt je afspraak zelf voorbereiden. De digitale assistent kost ${euro(pricing.selfService)} inclusief twee documenten. Notariskosten zijn apart. Wil je persoonlijk advies, dan kun je een adviesgesprek aanvragen voor ${euroRange(pricing.advice)}.`,
   },
   {
     question: 'Kan ik mijn bestaande testament laten checken?',
