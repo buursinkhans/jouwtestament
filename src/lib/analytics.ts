@@ -2,6 +2,14 @@
 // and coarse, non-identifying labels.
 type EventName =
   | 'check_started'
+  | 'check_completed'
+  | 'agenda_viewed'
+  | 'agenda_edited'
+  | 'agenda_copied'
+  | 'agenda_printed'
+  | 'check_to_book_clicked'
+  | 'check_to_assistant_clicked'
+  | 'check_to_notary_clicked'
   | 'check_submitted'
   | 'check_agenda_copied'
   | 'check_agenda_printed'
