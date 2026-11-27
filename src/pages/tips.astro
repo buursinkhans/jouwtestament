@@ -1,6 +1,7 @@
 ---
 // /tips (docs/08): overview with all 12 tips. Individual tip pages are phase 2.
 // TODO(review-partner): all tips.
+import { writingEnabled, writingPath } from '../lib/writing-options';
 import Layout from '../layouts/Layout.astro';
 import ShortAnswer from '../components/content/ShortAnswer.astro';
 import ReviewMeta from '../components/content/ReviewMeta.astro';
@@ -62,6 +63,7 @@ const articleSchema = {
       <ul>{summary.map((item) => <li>{item}</li>)}</ul>
     </section>
 
+    {writingEnabled && <p>Wil je je keuzes in je eigen woorden toelichten? <a href={writingPath}>Maak een persoonlijk tekstvoorstel</a>.</p>}
     <nav class="toc" aria-labelledby="inhoud">
       <h2 id="inhoud">Inhoud</h2>
       <ol>

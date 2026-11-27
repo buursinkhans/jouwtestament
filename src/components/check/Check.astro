@@ -2,6 +2,7 @@
 // Reusable check block (docs/09): on /check, on home (#check) and on every segment page.
 // Server-rendered form with real radio inputs; the script adds prefill, validation and results.
 // TODO(review-partner): all texts.
+import { writingEnabled, writingPath } from '../../lib/writing-options';
 import LogoMark from '../layout/LogoMark.astro';
 import '../../styles/home-editorial.css';
 import ShareCheck from '../content/ShareCheck.astro';
@@ -176,7 +177,7 @@ const questions = [
         <p data-parents-next hidden>Je ouders kiezen zelf wat ze willen delen en vastleggen. Ze kunnen zelf verder met een adviseur of met de digitale assistent.</p>
         <ul>
           <li><a href="/#invulboek" data-check-book>Lees over het papieren invulboek</a></li>
-          <li>‘Mijn woorden voor later’, een gratis schrijfhulp, is in ontwikkeling.</li>
+          <li>{writingEnabled ? <a href={writingPath}>Schrijf een persoonlijke boodschap voor later</a> : "‘Mijn woorden voor later’, een gratis schrijfhulp, is in ontwikkeling."}</li>
           <li><a href="/regel-het-zelf" data-option-self>Bekijk de digitale voorbereiding</a></li>
           <li><a href="/afspraak" data-option-adviser>Vraag een kennismakingsgesprek aan</a></li>
           <li><a href="/testament/" data-check-notary>Lees over het vervolg bij de notaris</a></li>

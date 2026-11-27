@@ -1,6 +1,15 @@
 // Analytics events (docs/09 section 8). No personal data and no check answers, only progress
 // and coarse, non-identifying labels.
 type EventName =
+  | 'writing_assistant_viewed'
+  | 'writing_assistant_started'
+  | 'writing_assistant_generated'
+  | 'writing_assistant_regenerated'
+  | 'writing_assistant_edited'
+  | 'writing_assistant_copied'
+  | 'writing_assistant_printed'
+  | 'writing_assistant_to_book_clicked'
+  | 'writing_assistant_error'
   | 'check_started'
   | 'check_completed'
   | 'agenda_viewed'
