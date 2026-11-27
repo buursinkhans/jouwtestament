@@ -79,3 +79,18 @@ export async function appendRowWithId(
   if (!update.ok) throw new Error(`google_update_${update.status}`);
   return leadId;
 }
+
+/** Validation uses a client-generated receipt so a settled retry does not create another row. */
+export async function appendValidationRow(config: SheetConfig, row: string[]): Promise<void> {
+  const token = await getAccessToken(config);
+  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  const range = config.tab + '!A:A';
+  const existing = await fetch(sheetsUrl(config, range), { headers, signal: AbortSignal.timeout(7000) });
+  if (!existing.ok) throw new Error('validation lookup failed');
+  const { values } = await existing.json() as { values?: string[][] };
+  if (values?.some(([id]) => id === row[0])) return;
+  const result = await fetch(sheetsUrl(config, range, ':append?valueInputOption=RAW&insertDataOption=INSERT_ROWS'), {
+    method: 'POST', headers, body: JSON.stringify({ values: [row] }), signal: AbortSignal.timeout(7000),
+  });
+  if (!result.ok) throw new Error('validation append failed');
+}

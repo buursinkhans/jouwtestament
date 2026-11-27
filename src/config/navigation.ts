@@ -20,7 +20,7 @@ export const mainNav = [
 
 export const homeNav = [
   { label: 'Home', href: '/' },
-  { label: 'Invulboek', href: '/#invulboek' },
+  { label: 'Invulboek', href: '/invulboek/' },
   { label: 'Testament regelen', href: '/testament/' },
   { label: 'Kennisbank', href: '/tips' },
 ];

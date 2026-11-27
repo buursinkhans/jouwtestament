@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BookCover from '../components/book/BookCover.astro';
+import ValidationForm from '../components/book/ValidationForm.astro';
+import { bookPath, bookFormsEnabled } from '../config/book';
+import '../styles/home-editorial.css';
+import '../styles/book-validation.css';
+---
+<Layout title="Invulboek voor cliënten en medewerkers" description="Verken zakelijke afname van het papieren Helder Nalaten-invulboek voor cliënten of medewerkers. Een vrijblijvende interessepeiling." hideStickyCta>
+  <div class="editorial-home" data-book-page="business">
+    <section class="container home-section home-split book-hero">
+      <div><p class="home-note">Zakelijke interessepeiling · Boek in ontwikkeling</p>
+        <h1>Geef cliënten of medewerkers iets praktisch mee</h1>
+        <p>Met het Helder Nalaten-invulboek kunnen mensen thuis belangrijke papieren op een rij zetten en een gesprek met hun naasten voorbereiden.</p>
+        <div class="home-actions"><a href={bookPath}>Bekijk het boekconcept</a>{bookFormsEnabled && <a class="btn-primary" href="#aanvraag">Bespreek een zakelijke afname</a>}</div>
+      </div>
+      <BookCover />
+    </section>
+    <section class="home-wash"><div class="container home-section">
+      <h2>Hoe kun je het boek gebruiken?</h2>
+      <div class="home-columns">
+        <div class="home-item"><h3>Voor je cliënten</h3><p>Als voorbereiding op een gesprek over een woning, administratie of nalatenschap.</p></div>
+        <div class="home-item"><h3>Voor je medewerkers</h3><p>Als praktisch hulpmiddel binnen medewerkerswelzijn.</p></div>
+        <div class="home-item"><h3>Voor een familiegesprek</h3><p>Als startpunt om samen door te nemen waar papieren liggen en wat iemand wil bespreken.</p></div>
+      </div>
+      <p>Een eigen voorwoord, logo of omslag zijn mogelijkheden die we nog onderzoeken. Prijs en uitvoering hangen af van de kostprijs en gewenste oplage.</p>
+    </div></section>
+    <section class="container home-section" id="aanvraag">
+      <h2>Verken een zakelijke afname</h2>
+      <p>Laat weten hoeveel exemplaren je ongeveer wilt en hoe je ze zou gebruiken. Dit is een aanvraag om contact op te nemen.</p>
+      <ValidationForm kind="business" />
+    </section>
+  </div>
+</Layout>
+
+<script>
+  import { initBookValidation } from '../lib/book-validation-flow';
+  document.querySelectorAll<HTMLElement>('[data-book-page]').forEach(initBookValidation);
+</script>
