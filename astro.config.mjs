@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Pages with noindex (or no search value) stay out of the sitemap (docs/11).
+const writingPage = '/mijn-woorden-voor-later/';
 const EXCLUDED = ['/bedankt/', '/privacy/', '/voorwaarden/'];
 
 // Source files that make up each page, for an honest <lastmod>: the date of the last commit
@@ -38,7 +39,10 @@ export default defineConfig({
   site: 'https://heldernalaten.nl',
   integrations: [
     sitemap({
-      filter: (page) => !EXCLUDED.includes(new URL(page).pathname),
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        return !EXCLUDED.includes(path) && (path !== writingPage || process.env.PUBLIC_WRITING_ASSISTANT_ENABLED === 'true');
+      },
       serialize(item) {
         const lastmod = lastCommitDate(sourcesFor(new URL(item.url).pathname));
         return lastmod ? { ...item, lastmod } : item;

@@ -1,4 +1,5 @@
 ---
+import { writingEnabled, writingPath } from '../lib/writing-options';
 import Layout from '../layouts/Layout.astro';
 import Faq from '../components/content/Faq.astro';
 import '../styles/home-editorial.css';
@@ -69,9 +70,10 @@ const faq = [
 
     <section class="home-wash" aria-labelledby="woorden-title">
       <div class="container home-section home-split">
-        <div><p class="home-note">Mijn woorden voor later · In ontwikkeling</p>
+        <div><p class="home-note">Mijn woorden voor later{!writingEnabled && " · In ontwikkeling"}</p>
           <h2 id="woorden-title">Soms weet je precies wat je bedoelt. Maar niet hoe je het moet opschrijven.</h2>
           <p>Een paar steekwoorden kunnen genoeg zijn om iets persoonlijks te vertellen. Met ‘Mijn woorden voor later’ helpen we je om gedachten en wensen in natuurlijke zinnen te verwoorden. Voor jezelf, je partner, je kinderen of andere dierbaren.</p>
+          {writingEnabled && <a href={writingPath}>Probeer de gratis schrijfhulp</a>}
         </div>
         <div class="home-example"><p class="home-note">Fictief voorbeeld</p><p><strong>Steekwoorden</strong> · samen aan tafel, tijd voor elkaar</p><blockquote>Ik hoop dat jullie tijd blijven maken om samen aan tafel te zitten.</blockquote></div>
       </div>

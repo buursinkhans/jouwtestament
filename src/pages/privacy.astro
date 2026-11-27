@@ -1,4 +1,5 @@
 ---
+import { writingEnabled } from '../lib/writing-options';
 import Layout from '../layouts/Layout.astro';
 import { site } from '../config/site';
 const breadcrumbs = [
@@ -15,6 +16,12 @@ const breadcrumbs = [
 
     <h2>Digitale assistent</h2>
     <p>Als je doorgaat na de melding bij de assistent, verwerkt de assistent je intake, eventuele antwoorden uit de check en je gespreksgeschiedenis om je vragen te beantwoorden en twee documenten op te stellen. Die gegevens gaan via onze hosting bij Netlify naar Claude van Anthropic. De website bewaart het gesprek en de gemaakte documenten in dit browsertabblad. Je kunt het gesprek wissen of het tabblad sluiten. Gedownloade of geprinte kopieën beheer je zelf.</p>
+
+    {writingEnabled && <section aria-labelledby="privacy-woorden">
+      <h2 id="privacy-woorden">Mijn woorden voor later</h2>
+      <p>Bij ‘Maak mijn tekst’ gaan je steekwoorden, onderwerp en gekozen toon via Netlify naar Claude van Anthropic om een tekstvoorstel te maken. Helder Nalaten bewaart je woorden en de uitkomst niet in een dossier. Op de pagina blijven ze beschikbaar totdat je de pagina verlaat. Kopieën en afdrukken beheer je zelf.</p>
+      <p>De gebruiksstatistieken ontvangen alleen acties, zoals het maken of kopiëren van een tekst. Zie de <a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention">informatie van Anthropic over gegevensverwerking</a> voor wat de leverancier kan bewaren.</p>
+    </section>}
 
     <h2>Afspraak met een adviseur</h2>
     <p>Met jouw toestemming gebruikt Helder Nalaten je naam, e-mailadres of telefoonnummer, de door jou gekozen momenten en eventuele checkantwoorden om contact op te nemen over een adviesgesprek en het voor te bereiden. De aanvraag gaat via Netlify naar Google Sheets, waar ook brongegevens zoals campagne en verwijzende pagina worden vastgelegd. Een adviseur van Helder Nalaten gebruikt de aanvraag om je te helpen.</p>

@@ -1,0 +1,116 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LogoMark from '../components/layout/LogoMark.astro';
+import { writingEnabled, writingTopics, writingTones } from '../lib/writing-options';
+import '../styles/home-editorial.css';
+const title = 'Mijn woorden voor later';
+---
+
+<Layout title={title} description="Zet een paar steekwoorden om in een persoonlijke tekst voor later. Gratis en zonder account." noindex={!writingEnabled} hideStickyCta>
+  <div class="editorial-home">
+    <div class="container writing-page" data-writing data-enabled={writingEnabled ? 'true' : 'false'}>
+      <header>
+        <h1>{title}</h1>
+        <p>Jij vertelt wat je bedoelt. Wij helpen je het mooi op te schrijven.</p>
+        <p>Gratis en zonder account. Je kunt het voorstel zelf aanpassen, kopiëren en printen.</p>
+        {!writingEnabled && <p class="writing-notice">De schrijfhulp is nog in voorbereiding. Tekst laten maken is voorlopig niet beschikbaar.</p>}
+      </header>
+      <noscript><p>Voor de schrijfhulp is JavaScript nodig.</p></noscript>
+      <form class="writing-panel" data-writing-form hidden>
+        <p class="writing-progress" aria-live="polite" data-writing-progress>Stap 1 van 4</p>
+        <fieldset data-writing-step>
+          <legend>Wat wil je schrijven?</legend>
+          <div class="writing-options">
+            {Object.entries(writingTopics).map(([key, option]) => <label><input type="radio" name="topic" value={key} required /><span><strong>{option.title}</strong><small>{option.hint}</small></span></label>)}
+          </div>
+        </fieldset>
+        <fieldset data-writing-step hidden>
+          <legend>Wat zou je graag willen zeggen?</legend>
+          <p id="woorden-help">Een paar steekwoorden of korte zinnen zijn genoeg. Laat namen, wachtwoorden, rekeningnummers en andere gevoelige gegevens weg.</p>
+          <label for="writing-words">Jouw steekwoorden</label>
+          <textarea name="words" id="writing-words" aria-describedby="woorden-help woorden-count" minlength="3" maxlength="900" rows="6" required></textarea>
+          <p id="woorden-count" class="writing-small" data-count>0 van 900 tekens</p>
+          <details><summary>Bekijk voorbeeldwoorden</summary><ul data-examples></ul></details>
+        </fieldset>
+        <fieldset data-writing-step hidden>
+          <legend>Hoe wil je dat het klinkt?</legend>
+          <div class="writing-options">
+            {Object.entries(writingTones).map(([key, label]) => <label><input type="radio" name="tone" value={key} checked={key === 'warm'} /> {label}</label>)}
+          </div>
+        </fieldset>
+        <fieldset data-writing-step hidden>
+          <legend>Maak een tekstvoorstel</legend>
+          <p>Om je tekst te maken, sturen we de woorden die je invult naar onze AI-dienst Anthropic. Je hoeft geen namen of andere persoonlijke gegevens te gebruiken. Helder Nalaten bewaart je tekst niet als persoonlijk dossier.</p>
+          <p>Je woorden blijven in dit tabblad zolang je de pagina openhoudt. Kopieer of print je tekst als je hem wilt bewaren.</p>
+          <p><a href="/privacy">Privacy bij Helder Nalaten</a> · <a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention">Bewaartermijnen bij Anthropic</a></p>
+          {!writingEnabled && <p>Genereren is in deze omgeving uitgeschakeld.</p>}
+        </fieldset>
+        <p class="writing-error" data-writing-error role="alert"></p>
+        <p data-writing-status role="status"></p>
+        <div class="writing-actions">
+          <button type="button" data-writing-back hidden>Terug</button>
+          <button type="button" data-keep-draft hidden>Terug naar mijn tekst</button>
+          <button type="submit" class="btn-primary" data-writing-next>Volgende</button>
+        </div>
+      </form>
+      <section class="writing-panel" data-writing-result hidden>
+        <h2 tabindex="-1" data-result-heading>Jouw tekstvoorstel</h2>
+        <p>Dit is jouw tekst. Pas aan wat anders moet voordat je de tekst gebruikt.</p>
+        <label for="writing-result">Bewerk je tekst</label>
+        <textarea id="writing-result" data-draft rows="10"></textarea>
+        <label for="writing-date">Datum voor de afdruk (optioneel)</label>
+        <input id="writing-date" data-date type="text" maxlength="40" />
+        <div class="writing-actions">
+          <button class="btn-primary" type="button" data-copy>Kopieer mijn tekst</button>
+          <button type="button" data-print>Print mijn tekst</button>
+          <button type="button" data-revise>Andere stijl of nieuwe versie</button>
+          <button type="button" data-reset>Opnieuw beginnen</button>
+        </div>
+        <p data-use-status role="status"></p>
+        <p>Wil je deze woorden bewaren voor later? Print je tekst en bewaar hem bij je belangrijke documenten. <a href="/#invulboek" data-writing-book>Lees over het toekomstige papieren invulboek</a>.</p>
+      </section>
+      <aside><p>De schrijfhulp is bedoeld voor persoonlijke teksten. Voor juridische vastlegging van je wensen kun je terecht bij een <a href="/testament/">notaris</a>.</p></aside>
+      <section class="writing-print" data-writing-print hidden>
+        <div><LogoMark size={24} /> <strong>Helder Nalaten</strong></div>
+        <p data-print-date></p>
+        <p data-print-text></p>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { initWriting } from '../lib/writing-flow';
+  document.querySelectorAll<HTMLElement>('[data-writing]').forEach(initWriting);
+</script>
+
+<style>
+  .writing-page { max-width: 46rem; padding-block: 2rem; }
+  .writing-panel { padding: clamp(1rem, 4vw, 1.65rem); margin-block: 1rem; background: white; border: 1px solid #a8b9b5; border-radius: 12px; }
+  .writing-progress, .writing-small { font-size: .875rem; }
+  legend { font: 600 1.4rem/1.25 var(--home-heading); margin-bottom: .65rem; }
+  fieldset { min-width: 0; }
+  .writing-options { display: grid; gap: .4rem; }
+  .writing-options label { display: flex; align-items: center; min-height: 48px; gap: .65rem; border: 1px solid #a8b9b5; border-radius: 8px; padding: .55rem .65rem; cursor: pointer; }
+  .writing-options label:has(input:checked) { border-color: var(--home-accent); background: #f7e9e6; }
+  .writing-options input { accent-color: var(--home-accent); flex: none; }
+  small { display: block; font-size: .875rem; }
+  textarea, input[type=text] { display: block; width: 100%; min-height: 48px; border: 1px solid #738c85; border-radius: 7px; padding: .65rem; margin-block: .3rem .55rem; font: inherit; }
+  textarea { resize: vertical; }
+  :is(textarea, input, button, summary):focus-visible { outline: 3px solid var(--home-ink); outline-offset: 3px; }
+  summary { cursor: pointer; min-height: 44px; padding-block: .5rem; }
+  details ul { padding-inline-start: 1.25rem; }
+  .writing-actions { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .85rem; }
+  .writing-actions button:not(.btn-primary) { min-height: 44px; text-decoration: underline; border: 0; background: transparent; color: inherit; cursor: pointer; }
+  .editorial-home .btn-primary:disabled { background: #eeeae5; border-color: #a89e97; color: #59534f; cursor: not-allowed; }
+  .writing-error { color: #873125; }
+  .writing-notice { background: #e9f1ef; padding: .65rem .8rem; }
+  [hidden] { display: none !important; }
+  .writing-print { display: none; }
+  @media print {
+    @page { size: A4; margin: 20mm; }
+    :global(body:has(.writing-print.printing) :not(:has(.writing-print.printing), .writing-print.printing, .writing-print.printing *)) { display: none !important; }
+    .writing-print.printing { display: block; color: black; font: 12pt/1.6 Georgia, serif; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .writing-print div { display: flex; gap: .5rem; align-items: center; margin-bottom: 1rem; }
+  }
+</style>
