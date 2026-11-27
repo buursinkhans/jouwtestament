@@ -18,6 +18,13 @@ export const mainNav = [
   { label: 'Tips', href: '/tips' },
 ];
 
+export const homeNav = [
+  { label: 'Home', href: '/' },
+  { label: 'Invulboek', href: '/#invulboek' },
+  { label: 'Testament regelen', href: '/testament/' },
+  { label: 'Kennisbank', href: '/tips' },
+];
+
 export const cta = { label: 'Doe de gratis check', labelLong: 'Doe de gratis check (2 min)', href: '/check' };
 
 export const footerMore = [
