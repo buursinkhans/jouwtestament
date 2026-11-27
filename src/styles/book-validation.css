@@ -1,0 +1,7 @@
+#reserveren, #voorbeeldpagina, #aanvraag { scroll-margin-top: 6rem; }
+.book-hero { min-height: 0; }
+[data-book-success] { padding: 1rem; border: 1px solid #738c85; background: #fff; border-radius: 8px; }
+[data-book-receipt] { overflow-wrap: anywhere; }
+[data-book-page] :is(button, summary, input, select, textarea):focus-visible { outline: 3px solid #183b40; outline-offset: 3px; }
+[data-book-page] :is([type=radio], [type=checkbox]) { accent-color: #993f34; flex: none; }
+[data-book-page] .btn-primary:disabled { cursor: wait; opacity: .7; }

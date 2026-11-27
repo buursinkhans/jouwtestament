@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Faq from '../components/content/Faq.astro';
+import BookCover from '../components/book/BookCover.astro';
+import BookSamples from '../components/book/BookSamples.astro';
+import ValidationForm from '../components/book/ValidationForm.astro';
+import { bookTitle, bookVariants, bookFormsEnabled, businessPath } from '../config/book';
+import { writingEnabled, writingPath } from '../lib/writing-options';
+import '../styles/home-editorial.css';
+import '../styles/book-validation.css';
+
+const faq = [
+  { question: 'Is het boek al te koop?', answer: 'Het boek is in ontwikkeling. Een vrijblijvende reservering is een signaal van interesse en vraagt geen betaling.' },
+  { question: 'Wat staat er in het boek?', answer: 'Er is ruimte voor vindplaatsen van informatie, vragen voor het familiegesprek en praktische aanwijzingen voor je naasten.' },
+  { question: 'Moet ik gegevens online invullen?', answer: 'Je schrijft je informatie thuis in het boek. Bij een reservering vragen we alleen contactgegevens en je voorkeur voor één boek of het duo.' },
+  { question: 'Vervangt het boek mijn testament?', answer: 'Het boek helpt je naasten praktische informatie vinden. Voor een testament ga je naar de notaris.' },
+  { question: 'Kan ik het samen met mijn ouders invullen?', answer: 'Ja, als jullie dat willen. Spreek samen af welke informatie ieder wil delen.' },
+  { question: 'Hoe werkt de vrijblijvende reservering?', answer: 'Je kiest één boek of het duo en laat je e-mailadres achter. Als reserveren open is, bevestigen we je aanvraag op de pagina. Je kunt die per e-mail intrekken.' },
+];
+---
+<Layout title="Invulboek voor je nalatenschap en administratie" description="Bekijk het papieren invulboek Als jullie iets moeten regelen. Blader door de conceptpagina’s voor je administratie, familiegesprekken en naasten." faqItems={faq} hideStickyCta>
+  <div class="editorial-home" data-book-page="book">
+    <section class="container home-section home-split book-hero">
+      <div>
+        <p class="home-note">Papieren invulboek · In ontwikkeling</p>
+        <h1>{bookTitle}</h1>
+        <p>Een plek voor je belangrijke papieren, financiële gegevens en persoonlijke wensen. Zodat je naasten later niet hoeven te zoeken en je belangrijke zaken nu al samen kunt bespreken.</p>
+        <p><strong>Indicatieve testprijs {bookVariants.single.price}.</strong> Beoogd formaat A5. Je betaalt niets bij reservering en gaat geen aankoopverplichting aan.</p>
+        <div class="home-actions">
+          {bookFormsEnabled && <a class="btn-primary" href="#reserveren" data-book-cta>Reserveer vrijblijvend een exemplaar</a>}
+          <a class={bookFormsEnabled ? undefined : 'btn-primary'} href="#voorbeeldpagina">Bekijk de voorbeeldpagina’s</a>
+        </div>
+      </div>
+      <BookCover />
+    </section>
+
+    <section class="home-wash">
+      <div class="container home-section">
+        <h2>Waarom dit boek?</h2>
+        <div class="home-columns">
+          <div class="home-item"><h3>Waar liggen de polissen?</h3><p>Je partner weet waar jullie verzekeringspapieren te vinden zijn.</p></div>
+          <div class="home-item"><h3>Bij welke banken loop je?</h3><p>Je kinderen weten waar ze later kunnen beginnen met zoeken.</p></div>
+          <div class="home-item"><h3>Wat willen we met het huis?</h3><p>Je hebt vragen bij de hand om wensen thuis te bespreken.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container home-section" aria-labelledby="boek-delen">
+      <h2 id="boek-delen">Wat kun je invullen?</h2>
+      <div class="home-columns">
+        <div class="home-item"><h3>Waar vind je alles?</h3><p>Banken, verzekeringen, leningen en waar de papieren liggen.</p></div>
+        <div class="home-item"><h3>Wat willen we bespreken?</h3><p>Het huis, eerdere schenkingen en wat je elkaar wilt meegeven.</p></div>
+        <div class="home-item"><h3>Wat moeten nabestaanden weten?</h3><p>Wie je kunt bellen en waar je belangrijke documenten en wensen vindt.</p></div>
+      </div>
+    </section>
+
+    <section class="container home-section" id="voorbeeldpagina">
+      <h2>Blader door het boek</h2>
+      <p>Open een onderdeel om de conceptpagina’s en de schrijfruimte te zien. De voorbeelden gebruiken verzonnen namen van instellingen.</p>
+      <BookSamples />
+    </section>
+
+    <section class="home-wash"><div class="container home-section home-split">
+      <div><h2>Digitaal voorbereiden, thuis op papier</h2><p>De <a href="/check/">gratis check en gespreksagenda</a> helpen je op weg. {writingEnabled ? <a href={writingPath}>Mijn woorden voor later</a> : '‘Mijn woorden voor later’ is in ontwikkeling en'} kan helpen om je persoonlijke boodschap op te schrijven. Je kunt het boek ook zelfstandig invullen.</p><p>Bewaar het op een veilige plek en vertel iemand die je vertrouwt waar het ligt. Laat pincodes, wachtwoorden en herstelcodes weg.</p></div>
+      <div><h2>Voor jezelf of je ouders</h2><p>Vul het zelf in, ga er samen met je partner voor zitten of gebruik het als aanleiding voor een gesprek met je ouders. Ieder kiest zelf welke informatie die deelt.</p></div>
+    </div></section>
+
+    <section class="container home-section" id="reserveren" data-book-price>
+      <h2>Twee uitvoeringen om te testen</h2>
+      <p>Indicatieve testprijzen inclusief toepasselijke btw. Uitvoering, verzending en levertijd zijn nog niet vastgesteld.</p>
+      <div class="home-columns home-columns-two">
+        {Object.values(bookVariants).map(variant => <div class="home-item"><h3>{variant.title} · {variant.price}</h3><p>{variant.description}</p></div>)}
+      </div>
+      <p>Met je reservering geef je aan dat je interesse hebt in deze uitvoering en prijs. Je betaalt nu niets en hebt geen aankoopverplichting.</p>
+      <ValidationForm kind="book" />
+    </section>
+    <section class="home-wash"><div class="container home-section"><h2>Veelgestelde vragen</h2><Faq items={faq} /></div></section>
+    <section class="container home-section"><h2>Voor cliënten of medewerkers</h2><p>Wil je het boek binnen je organisatie inzetten? <a href={businessPath}>Bekijk de zakelijke mogelijkheden</a>.</p></section>
+  </div>
+</Layout>
+
+<script>
+  import { initBookValidation } from '../lib/book-validation-flow';
+  document.querySelectorAll<HTMLElement>('[data-book-page]').forEach(initBookValidation);
+</script>
