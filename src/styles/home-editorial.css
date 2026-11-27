@@ -10,12 +10,14 @@
   font-weight: 400 800;
   font-display: swap;
 }
-.editorial-home {
+.editorial-home, .editorial-check, .editorial-header {
   --home-paper: #faf9f5;
   --home-ink: #183b40;
   --home-accent: #993f34;
   --home-wash: #e9f1ef;
   --home-heading: 'Editorial Lora', Georgia, serif;
+}
+.editorial-home {
   background: var(--home-paper);
   color: var(--home-ink);
   font-family: 'Editorial Jakarta', system-ui, sans-serif;
