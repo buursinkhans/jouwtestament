@@ -2,7 +2,9 @@
 // Reusable check block (docs/09): on /check, on home (#check) and on every segment page.
 // Server-rendered form with real radio inputs; the script adds prefill, validation and results.
 // TODO(review-partner): all texts.
-import { pricing, euro } from '../../config/pricing';
+import { writingEnabled, writingPath } from '../../lib/writing-options';
+import LogoMark from '../layout/LogoMark.astro';
+import '../../styles/home-editorial.css';
 import ShareCheck from '../content/ShareCheck.astro';
 
 interface Props {
@@ -25,6 +27,7 @@ const questions = [
       ['married', 'Getrouwd / geregistreerd partner'],
       ['cohabiting', 'Samenwonend, niet getrouwd'],
       ['single', 'Alleenstaand'],
+      ['unknown', 'Zeg ik liever niet'],
     ],
   },
   {
@@ -34,6 +37,7 @@ const questions = [
       ['joint', 'Ja, samen'],
       ['blended', 'Ja, ook uit een eerdere relatie'],
       ['none', 'Nee'],
+      ['unknown', 'Zeg ik liever niet'],
     ],
   },
   {
@@ -47,10 +51,11 @@ const questions = [
   },
   {
     key: 'home',
-    legend: 'Heb je een koopwoning?',
+    legend: 'Hoe woon je?',
     options: [
-      ['yes', 'Ja'],
-      ['no', 'Nee'],
+      ['yes', 'Ik heb een koopwoning'],
+      ['no', 'Ik huur'],
+      ['unknown', 'Anders / weet ik niet'],
     ],
   },
   {
@@ -64,23 +69,23 @@ const questions = [
     ],
   },
   {
-    key: 'notary',
-    legend: 'Heb je al een notaris?',
+    key: 'goal',
+    legend: 'Wat wil je vooral bereiken?',
     options: [
-      ['network', 'Nee, graag via jullie netwerk'],
-      ['own', 'Ja, mijn eigen notaris'],
-      ['unknown', 'Weet ik nog niet'],
+      ['documents', 'Mijn administratie overzichtelijk maken'],
+      ['conversation', 'Met mijn familie praten over later'],
+      ['wishes', 'Mijn wensen op papier zetten'],
+      ['review', 'Mijn testament of levenstestament laten nakijken'],
+      ['help', 'Mijn naasten helpen als er iets gebeurt'],
     ],
     optional: true,
   },
 ] as const;
 
-const selfPrice = euro(pricing.selfService);
-const adviceFrom = euro(pricing.advice.min);
 ---
 
 <section
-  class="check"
+  class="check editorial-check"
   id={isPageTitle ? undefined : 'check'}
   aria-labelledby={id('title')}
   data-check
@@ -94,9 +99,10 @@ const adviceFrom = euro(pricing.advice.min);
     <p class="lead">
       Maak een gespreksagenda met vragen voor thuis en voor de notaris.
     </p>
-    <p class="small">De check geeft een eerste indicatie en is geen juridisch of financieel advies.</p>
+    <p class="small">Je krijgt praktische suggesties en vragen. De check geeft geen persoonlijk juridisch of financieel advies.</p>
   </div>
 
+  <noscript><p>Voor deze check is JavaScript nodig. Je kunt ook <a href="/voor-wie/je-ouders/">vragen voor een familiegesprek lezen</a>.</p></noscript>
   <form class="check-form" novalidate data-check-form>
     <fieldset class="question" data-check-route>
       <legend>Voor wie bereid je het gesprek voor?</legend>
@@ -104,14 +110,14 @@ const adviceFrom = euro(pricing.advice.min);
       <label><input type="radio" name="route" value="parents" /> Ik wil het gesprek met mijn ouders beginnen.</label>
     </fieldset>
     <p data-parents-intro hidden>Maak een agenda vanuit jouw rol. Je ouders kiezen zelf wat ze willen bespreken en vastleggen.</p>
-    {questions.map((question, index) => (
+    <p data-check-progress aria-live="polite"></p>
+    {questions.map((question) => (
       <fieldset
         class="question"
         data-question={question.key}
         data-conditional={'conditional' in question ? 'true' : undefined}
       >
         <legend>
-          <span class="q-number">{'conditional' in question ? `${index}b` : index < 2 ? index + 1 : index}.</span>
           {question.legend}
           {'optional' in question && <span class="optional"> (optioneel)</span>}
         </legend>
@@ -133,52 +139,50 @@ const adviceFrom = euro(pricing.advice.min);
     ))}
 
     <div class="step-actions" data-step-actions>
-      <p class="form-error error" hidden data-form-error role="alert">
-        Niet alle vragen zijn ingevuld. Kijk de gemarkeerde vragen na.
-      </p>
-      <button type="button" class="btn-primary submit" data-show-result>Bekijk mijn gespreksagenda</button>
+      <button type="button" class="link-button" data-step-back hidden>Terug</button>
+      <button type="button" class="btn-primary submit" data-show-result>Volgende</button>
     </div>
-
     <div class="result" hidden tabindex="-1" data-check-result>
-      <h3 data-flag-title>Jouw aandachtspunten</h3>
-      <ul class="flags" data-flag-list></ul>
-
-      <section class="agenda" data-agenda aria-label="Gespreksagenda">
-        <h3>Dit kun je thuis bespreken</h3>
-        <ul data-agenda-home></ul>
-        <h3>Dit kun je aan de notaris vragen</h3>
-        <ul data-agenda-notary></ul>
+      <h3 data-result-title>Jouw persoonlijke actieoverzicht</h3>
+      <div class="action-overview">
+        <section><h4>Dit kun je zelf op orde brengen</h4><ul data-overview="practical"></ul></section>
+        <section><h4>Dit kun je samen bespreken</h4><ul data-overview="home"></ul></section>
+        <section><h4>Dit kun je aan een notaris vragen</h4><ul data-overview="notary"></ul></section>
+      </div>
+      <section class="agenda" data-agenda aria-labelledby={id('agenda-title')}>
+        <div class="agenda-brand"><LogoMark size={24} /> Helder Nalaten</div>
+        <h3 id={id('agenda-title')}>Onze gespreksagenda voor later</h3>
+        <p>Je hoeft niet alles in één keer te regelen. Begin met de onderwerpen die voor jullie belangrijk zijn. Met deze vragen kun je samen het gesprek aangaan.</p>
+        <label class="agenda-field">Datum (optioneel)<input type="text" data-agenda-date maxlength="40" /></label>
+        <div data-agenda-edit></div>
+        <button type="button" class="link-button" data-agenda-add>Voeg een onderwerp toe</button>
+        <label class="agenda-field">Wat willen we nog uitzoeken?<textarea data-agenda-notes rows="3"></textarea></label>
+        <fieldset class="agenda-next">
+          <legend>Onze volgende stap</legend>
+          <label class="agenda-field">Wat willen we als eerste doen?<textarea data-agenda-step rows="2"></textarea></label>
+          <label class="agenda-field">Wie gaat dit oppakken?<input type="text" data-agenda-who /></label>
+          <label class="agenda-field">Wanneer praten we verder?<input type="text" data-agenda-when /></label>
+        </fieldset>
       </section>
+      <section class="agenda-print" data-agenda-output hidden></section>
       <div class="btn-row">
-        <button type="button" class="btn-secondary" data-agenda-copy>Kopieer de agenda</button>
-        <button type="button" class="btn-secondary" data-agenda-print>Print de agenda</button>
+        <button type="button" class="btn-primary" data-agenda-copy>Kopieer de agenda</button>
+        <button type="button" class="link-button" data-agenda-print>Print de agenda</button>
       </div>
       <p role="status" data-agenda-status></p>
-
-      <h3>Wat wil je nu doen?</h3>
-      <p data-parents-next hidden>Willen je ouders hun wensen verder uitwerken? Zij kunnen zelf de assistent gebruiken of een adviseur spreken.</p>
-      <div class="options">
-        <div class="option">
-          <h4>Regel het zelf met onze assistent</h4>
-          <p>
-            Onze digitale assistent stelt je de vragen en zet je wensen op een rij. Je krijgt een instructie voor de
-            notaris en een uitleg voor je nabestaanden.
-          </p>
-          <p class="option-price">{selfPrice} voor digitale voorbereiding en twee documenten. Notariskosten apart.</p>
-          <button type="button" class="btn-primary" data-option-self>Start met de assistent</button>
-        </div>
-        <div class="option" data-option-adviser-card>
-          <span class="recommended" hidden data-recommended>Aanbevolen voor jouw situatie</span>
-          <h4>Afspraak met een adviseur</h4>
-          <p>
-            Voor een ingewikkelde situatie, of als je het liever niet zelf doet. Kies een moment dat jou uitkomt; we
-            nemen binnen 24 uur contact op.
-          </p>
-          <p class="option-price">Advies vanaf {adviceFrom}</p>
-          <button type="button" class="btn-secondary" data-option-adviser>Plan een gesprek</button>
-        </div>
-      </div>
       <button type="button" class="link-button" data-check-reset>Antwoorden aanpassen</button>
+      <button type="button" class="link-button" data-check-restart>Opnieuw beginnen</button>
+      <section class="check-next-links">
+        <h3>Wil je verder?</h3>
+        <p data-parents-next hidden>Je ouders kiezen zelf wat ze willen delen en vastleggen. Ze kunnen zelf verder met een adviseur of met de digitale assistent.</p>
+        <ul>
+          <li><a href="/invulboek/" data-check-book>Lees over het papieren invulboek</a></li>
+          <li>{writingEnabled ? <a href={writingPath}>Schrijf een persoonlijke boodschap voor later</a> : "‘Mijn woorden voor later’, een gratis schrijfhulp, is in ontwikkeling."}</li>
+          <li><a href="/regel-het-zelf" data-option-self>Bekijk de digitale voorbereiding</a></li>
+          <li><a href="/afspraak" data-option-adviser>Vraag een kennismakingsgesprek aan</a></li>
+          <li><a href="/testament/" data-check-notary>Lees over het vervolg bij de notaris</a></li>
+        </ul>
+      </section>
       <ShareCheck />
     </div>
 
@@ -187,533 +191,44 @@ const adviceFrom = euro(pricing.advice.min);
 </section>
 
 <script>
-  import { getFlags, flagContent } from './getFlags.ts';
-  import { prefill } from './prefill.ts';
-  import { getAgenda } from './agenda.ts';
-  import { track } from '../../lib/analytics';
-  import type { Answers } from './types.ts';
-
-
-  document.querySelectorAll<HTMLElement>('[data-check]').forEach((root) => {
-    const form = root.querySelector<HTMLFormElement>('[data-check-form]')!;
-    const result = root.querySelector<HTMLElement>('[data-check-result]')!;
-    const flagList = root.querySelector<HTMLElement>('[data-flag-list]')!;
-    const formError = root.querySelector<HTMLElement>('[data-form-error]')!;
-    const minorsQuestion = root.querySelector<HTMLElement>('[data-question="minors"]')!;
-    const pageParams = new URLSearchParams(window.location.search);
-
-    const value = (name: string) =>
-      (form.elements.namedItem(name) as RadioNodeList | HTMLInputElement | null)?.value ?? '';
-
-    // Question 2b only when question 2 ≠ "none"
-    const updateMinors = () => {
-      const hide = value('children') === 'none';
-      minorsQuestion.hidden = hide;
-      if (hide) minorsQuestion.querySelectorAll('input').forEach((input) => (input.checked = false));
-    };
-
-    // Prefill: component prop first, then URL parameters of the page
-    const prefilled = {
-      ...prefill(new URLSearchParams(root.dataset.prefill ?? '')),
-      ...prefill(pageParams),
-    };
-    for (const [key, val] of Object.entries(prefilled)) {
-      const input = form.querySelector<HTMLInputElement>(`input[name="${key}"][value="${val}"]`);
-      if (input) input.checked = true;
-    }
-    const route = root.querySelector<HTMLElement>('[data-check-route]')!;
-    const questionSets = Array.from(root.querySelectorAll<HTMLElement>('fieldset[data-question]'));
-    const parents = () => value('route') === 'parents';
-    const updateRoute = () => {
-      questionSets.forEach((set) => (set.hidden = parents()));
-      root.querySelector<HTMLElement>('[data-parents-intro]')!.hidden = !parents();
-      if (!parents()) updateMinors();
-    };
-    if (pageParams.get('ref') === 'kind' || root.dataset.segmentPage === 'je-ouders') {
-      form.querySelector<HTMLInputElement>('[name="route"][value="parents"]')!.checked = true;
-    }
-    updateRoute();
-    let started = false;
-    const start = () => {
-      if (!started) {
-        started = true;
-        track('check_started');
-      }
-    };
-    form.addEventListener('change', (event) => {
-      const changed = (event.target as HTMLInputElement).name;
-      start();
-      if (changed === 'route') {
-        updateRoute();
-        formError.hidden = true;
-      }
-      if (changed === 'children') updateMinors();
-      const name = (event.target as HTMLInputElement).name;
-      root.querySelector<HTMLElement>(`[data-error-for="${name}"]`)?.setAttribute('hidden', '');
-    });
-
-    const showError = (name: string, show: boolean) => {
-      const error = root.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
-      if (error) error.hidden = !show;
-      const field = form.querySelector<HTMLInputElement>(`[name="${name}"]`);
-      if (field && field.type !== 'radio') field.setAttribute('aria-invalid', String(show));
-      return show;
-    };
-
-    const stepActions = root.querySelector<HTMLElement>('[data-step-actions]')!;
-    const agenda = root.querySelector<HTMLElement>('[data-agenda]')!;
-    const agendaStatus = root.querySelector<HTMLElement>('[data-agenda-status]')!;
-
-    root.querySelector('[data-agenda-copy]')!.addEventListener('click', async () => {
-      const text = Array.from(agenda.children, (element) =>
-        element.tagName === 'UL'
-          ? Array.from(element.children, (item) => `- ${item.textContent}`).join('\n')
-          : element.textContent
-      ).join('\n');
-      try {
-        await navigator.clipboard.writeText(text);
-        agendaStatus.textContent = 'Gespreksagenda gekopieerd.';
-        track('check_agenda_copied');
-      } catch {
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents(agenda);
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-        agendaStatus.textContent = 'De agenda is geselecteerd. Kopieer de tekst via je browser.';
-      }
-    });
-    root.querySelector('[data-agenda-print]')!.addEventListener('click', () => {
-      track('check_agenda_printed');
-      agenda.classList.add('printing');
-      window.print();
-      agenda.classList.remove('printing');
-    });
-
-    const validateQuestions = () => {
-      const invalid: string[] = [];
-      const required = ['situation', 'children', 'home', 'documents'];
-      if (!minorsQuestion.hidden) required.push('minors');
-      for (const name of required) if (showError(name, !value(name))) invalid.push(name);
-      return invalid;
-    };
-
-    const currentAnswers = () =>
-      ({
-        situation: value('situation'),
-        children: value('children'),
-        home: value('home'),
-        documents: value('documents'),
-        ...(value('minors') ? { minors: value('minors') } : {}),
-        ...(value('notary') ? { notary: value('notary') } : {}),
-      }) as Answers;
-
-    // Step 1: show the attention points and the two options
-    root.querySelector('[data-show-result]')!.addEventListener('click', () => {
-      start();
-      const invalid = parents() ? [] : validateQuestions();
-      formError.hidden = invalid.length === 0;
-      if (invalid.length > 0) {
-        form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
-        return;
-      }
-      const answers = parents() ? undefined : currentAnswers();
-      track('check_submitted');
-      for (const [list, questions] of Object.entries(getAgenda(answers))) {
-        agenda.querySelector(`[data-agenda-${list}]`)!.replaceChildren(...questions.map((question) =>
-          Object.assign(document.createElement('li'), { textContent: question })
-        ));
-      }
-      agendaStatus.textContent = '';
-      flagList.hidden = !answers;
-      root.querySelector<HTMLElement>('[data-flag-title]')!.hidden = !answers;
-      root.querySelector<HTMLElement>('[data-parents-next]')!.hidden = Boolean(answers);
-
-      flagList.replaceChildren(
-        ...(answers ? getFlags(answers) : []).map((flag) => {
-          const content = flagContent[flag];
-          const item = document.createElement('li');
-          item.className = 'flag';
-          const title = document.createElement('h4');
-          title.textContent = content.title;
-          const text = document.createElement('p');
-          text.textContent = content.text;
-          const link = document.createElement('a');
-          link.href = content.href;
-          link.className = 'link-arrow';
-          link.textContent = 'Lees meer →';
-          item.append(title, text, link);
-          if (flag === 'partner_unprotected') {
-            const taxLink = document.createElement('a');
-            taxLink.href = 'https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/partners-voor-de-erfbelasting';
-            taxLink.textContent = 'Actuele voorwaarden van de Belastingdienst';
-            const source = document.createElement('p');
-            source.append(taxLink);
-            item.append(source);
-          }
-          return item;
-        })
-      );
-      // A blended family is usually more complex: recommend the adviser
-      root.querySelector<HTMLElement>('[data-recommended]')!.hidden = answers?.children !== 'blended';
-
-      route.hidden = true;
-      root.querySelector<HTMLElement>('[data-parents-intro]')!.hidden = true;
-      questionSets.forEach((set) => (set.hidden = true));
-      stepActions.hidden = true;
-      result.hidden = false;
-      result.focus();
-    });
-
-    const handOff = () => {
-      try {
-        if (parents()) sessionStorage.removeItem('hn_check_answers');
-        else sessionStorage.setItem('hn_check_answers', JSON.stringify(currentAnswers()));
-      } catch {
-        // The destination works without prefilled answers.
-      }
-    };
-    root.querySelector('[data-option-self]')!.addEventListener('click', () => {
-      handOff();
-      track('check_option_selfservice');
-      window.location.href = '/regel-het-zelf';
-    });
-
-    // Option 2: adviser - plan a conversation on /afspraak (answers go along in this tab only)
-    root.querySelector('[data-option-adviser]')!.addEventListener('click', () => {
-      handOff();
-      track('check_option_adviser');
-      window.location.href = '/afspraak';
-    });
-
-    // Without JavaScript the form cannot be submitted; with JavaScript step 1 shows the results
-    form.addEventListener('submit', (event) => event.preventDefault());
-
-    root.querySelector('[data-check-reset]')?.addEventListener('click', () => {
-      route.hidden = false;
-      updateRoute();
-      stepActions.hidden = false;
-      result.hidden = true;
-      form.querySelector<HTMLInputElement>('input')?.focus();
-    });
-  });
+  import { initCheck } from './check-flow.ts';
+  document.querySelectorAll<HTMLElement>('[data-check]').forEach(initCheck);
 </script>
 
 <style>
-  [data-check-route] label {
-    display: block;
-    margin-block: 8px;
-  }
-
-  .agenda {
-    margin-block: 32px 20px;
-  }
-
-  .agenda ul {
-    padding-inline-start: 24px;
-  }
-
+  .editorial-check { color: var(--home-ink); max-width: 46rem; margin-inline: auto; padding-block: clamp(1.25rem, 4vw, 2.5rem); }
+  [hidden] { display: none !important; }
+  .check-intro { margin-bottom: 1rem; }
+  .check-intro h1, .check-intro h2 { font-family: 'Editorial Lora', Georgia, serif; }
+  .question, .agenda { border: 1px solid #a8b9b5; border-radius: 12px; background: white; padding: 1rem; }
+  .question legend, .agenda-next legend { font-weight: 700; }
+  .question label { display: flex; align-items: center; gap: .65rem; min-height: 48px; margin-block: .2rem; cursor: pointer; }
+  .question label:has(input:checked) { background: #f7e9e6; border-radius: 6px; }
+  .question input { accent-color: var(--home-accent); flex: none; }
+  .step-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; margin-block: 1rem; }
+  .step-actions .submit { margin-inline-start: auto; }
+  .editorial-check .btn-primary { background: var(--home-accent); color: white; border-color: var(--home-accent); min-height: 48px; border-radius: 8px; }
+  .editorial-check .btn-primary:hover { background: #763027; }
+  .editorial-check :is(a, button, input, textarea):focus-visible { outline: 3px solid #183b40; outline-offset: 3px; }
+  .error { color: #98382e; }
+  .link-button { text-decoration: underline; color: #183b40; min-height: 44px; cursor: pointer; padding: .35rem .15rem; }
+  .action-overview { display: grid; gap: .8rem; margin-block: 1rem; }
+  .action-overview section, .check-next-links { background: #e9f1ef; border-radius: 10px; padding: .85rem 1rem; }
+  .action-overview ul, .check-next-links ul { padding-inline-start: 1.2rem; }
+  .agenda { margin-block: 1rem; }
+  .agenda-brand { display: flex; align-items: center; gap: .5rem; font-weight: 700; }
+  .agenda-field { display: grid; gap: .3rem; margin-block: .65rem; font-weight: 650; }
+  .agenda-field :is(input, textarea), .agenda :global(.agenda-input) { display: block; width: 100%; border: 1px solid #738c85; border-radius: 6px; padding: .5rem; }
+  .agenda :global(.agenda-row) { margin-block: .6rem; }
+  .agenda :global(.agenda-row label) { display: block; font-weight: 650; }
+  .agenda :global(.agenda-row button) { min-height: 44px; text-decoration: underline; cursor: pointer; }
+  .agenda-next { margin-top: 1rem; }
+  .check-next-links { margin-block: 1rem; }
+  .agenda-print { display: none; white-space: pre-wrap; overflow-wrap: anywhere; }
   @media print {
-    :global(body:has([data-agenda].printing) :not(:has([data-agenda].printing, .printing *), .printing, .printing *)) {
-      display: none !important;
-    }
-  }
-  .check {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-panel);
-    padding: 32px 20px;
-    display: grid;
-    gap: 32px;
-  }
-
-  @media (min-width: 768px) {
-    .check {
-      padding: 48px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .check {
-      grid-template-columns: 5fr 7fr;
-      gap: 56px;
-    }
-  }
-
-  .check-intro .lead {
-    margin-bottom: 16px;
-  }
-
-  fieldset {
-    border: 0;
-    margin: 0 0 28px;
-    padding: 0;
-    min-width: 0;
-  }
-
-  fieldset[hidden] {
-    display: none;
-  }
-
-  legend {
-    font-weight: 700;
-    font-size: var(--fs-body);
-    color: var(--color-primary);
-    margin-bottom: 12px;
-    padding: 0;
-  }
-
-  .q-number {
-    color: var(--color-muted);
-    margin-right: 6px;
-  }
-
-  .optional {
-    font-weight: 400;
-    color: var(--color-muted);
-  }
-
-  .pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .pill {
-    position: relative;
-    cursor: pointer;
-  }
-
-  .pill input {
-    position: absolute;
-    opacity: 0;
-    inset: 0;
-    margin: 0;
-    cursor: pointer;
-  }
-
-  .pill span {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 10px 18px;
-    border: 1.5px solid var(--color-input-border);
-    border-radius: var(--radius-pill);
-    background: var(--color-surface);
-    color: var(--color-ink);
-    font-weight: 600;
-    transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease;
-  }
-
-  .pill:hover span {
-    border-color: var(--color-primary);
-  }
-
-  .pill input:checked + span {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: #fff;
-  }
-
-  .pill input:focus-visible + span {
-    outline: 3px solid var(--color-primary);
-    outline-offset: 3px;
-  }
-
-  .contact {
-    border-top: 1px solid var(--color-border);
-    padding-top: 24px;
-  }
-
-  .field {
-    margin-bottom: 16px;
-  }
-
-  .field label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
-  .field input {
-    width: 100%;
-    min-height: 48px;
-    padding: 10px 14px;
-    font: inherit;
-    border: 1.5px solid var(--color-input-border);
-    border-radius: var(--radius-input);
-    background: var(--color-surface);
-    color: var(--color-ink);
-  }
-
-  .field input:focus-visible {
-    border-color: var(--color-primary);
-  }
-
-  .field input[aria-invalid='true'] {
-    border-color: var(--color-accent-hover);
-  }
-
-  .honeypot {
-    position: absolute;
-    left: -10000px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-
-  .consent {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    font-size: var(--fs-small);
-    color: var(--color-ink-soft);
-    cursor: pointer;
-  }
-
-  .consent input {
-    width: 22px;
-    height: 22px;
-    margin-top: 2px;
-    flex-shrink: 0;
-    accent-color: var(--color-primary);
-  }
-
-  .error {
-    color: var(--color-accent-hover);
-    font-size: var(--fs-small);
-    font-weight: 600;
-    margin: 8px 0 0;
-  }
-
-  .form-error {
-    margin-bottom: 16px;
-  }
-
-  .submit {
-    width: 100%;
-  }
-
-  @media (min-width: 768px) {
-    .submit {
-      width: auto;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .sent {
-      grid-column: 2;
-    }
-  }
-
-  .result:focus {
-    outline: none;
-  }
-
-  .flags {
-    list-style: none;
-    margin: 0 0 24px;
-    padding: 0;
-    display: grid;
-    gap: 16px;
-  }
-
-  .flags :global(.flag) {
-    background: var(--color-ground);
-    border-radius: var(--radius-small);
-    padding: 20px 24px;
-  }
-
-  .flags :global(h4) {
-    margin: 0 0 6px;
-    font-size: var(--fs-body);
-    color: var(--color-primary);
-  }
-
-  .flags :global(p) {
-    margin: 0 0 8px;
-    color: var(--color-ink-soft);
-  }
-
-  .send-failed p {
-    color: var(--color-accent-hover);
-    font-weight: 600;
-  }
-
-  .result h3 {
-    font-size: var(--fs-h3);
-    margin: 0 0 16px;
-  }
-
-  .result h3 + .flags {
-    margin-bottom: 32px;
-  }
-
-  .options {
-    display: grid;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  @media (min-width: 640px) {
-    .options {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .option {
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-small);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .option h4 {
-    margin: 0;
-    font-size: var(--fs-body);
-    color: var(--color-primary);
-  }
-
-  .option p {
-    margin: 0;
-  }
-
-  .option-price {
-    font-weight: 700;
-    color: var(--color-primary);
-    flex-grow: 1;
-  }
-
-  .recommended {
-    font-size: var(--fs-small);
-    background: var(--color-tint);
-    color: var(--color-primary);
-    border-radius: var(--radius-pill);
-    padding: 2px 10px;
-  }
-
-  .link-button {
-    background: none;
-    border: 0;
-    padding: 0;
-    font: inherit;
-    color: var(--color-muted);
-    text-decoration: underline;
-    cursor: pointer;
-    margin-bottom: 24px;
-  }
-
-  .sent:focus {
-    outline: none;
-  }
-
-  .thanks,
-  .dev-notice {
-    margin-bottom: 8px;
+    @page { size: A4; margin: 14mm; }
+    :global(body:has(.agenda-print.printing) :not(:has(.agenda-print.printing), .agenda-print.printing, .agenda-print.printing *)) { display: none !important; }
+    .agenda-print.printing { display: block; color: #000; font: 11pt/1.35 Georgia, serif; }
+    .agenda-print :global(.agenda-print-brand) { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
   }
 </style>

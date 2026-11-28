@@ -66,7 +66,7 @@ Technische maatregelen:
 
 ## Problemen oplossen
 
-Open `https://<site>/api/agent/status` in je browser (ingelogd als je de site privé hebt gezet). Die pagina laat zien of `AGENT_ENABLED` en `ANTHROPIC_API_KEY` in de functie aankomen, in welke deploy context, en of Anthropic de sleutel accepteert (via de gratis Models API, zonder tokens). De sleutel zelf wordt nooit getoond. Onder `advies` staat wat je moet aanpassen.
+De statusroute `/api/agent/status` geeft alleen `available: true|false` op basis van de serverconfiguratie. Controleer sleutel, modeltoegang en deploycontext in de afgeschermde Netlify- en Anthropic-omgevingen.
 
 ## Nog te doen
 

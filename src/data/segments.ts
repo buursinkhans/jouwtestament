@@ -104,7 +104,7 @@ export const segments: Segment[] = [
     breadcrumb: 'Jonge kinderen',
     title: 'Jonge kinderen: voogdij en erfenis goed regelen | Helder Nalaten',
     description:
-      'Wie zorgt er voor je kinderen als jullie er niet meer zijn, en wie beheert hun geld? Zonder testament krijgen ze alles op hun 18e. Zo regel je het.',
+      'Wie zorgt er voor je kinderen als jullie er niet meer zijn, en wie beheert hun geld? Lees hoe je voogdij en het beheer van een erfenis kunt voorbereiden.',
     h1: 'We hebben jonge kinderen. Wat moeten we regelen?',
     shortAnswer:
       'Leg vast wie voogd wordt als jullie allebei overlijden, en wie het geld van je kinderen beheert. Je kunt een voogd aanwijzen in je testament of via het gezagsregister. In je testament kun je ook regelen wie de erfenis van je kinderen beheert en tot welke leeftijd.',
@@ -112,7 +112,7 @@ export const segments: Segment[] = [
       heading: 'Als je niets regelt',
       items: [
         'Als er geen ouder met gezag overblijft en er geen voogd is aangewezen, beslist de rechter over de voogdij.',
-        'Je kinderen krijgen hun erfenis op hun 18e, in één keer.',
+        'Vanaf 18 jaar kunnen kinderen in het algemeen zelf over geërfd vermogen beschikken. Bespreek zo nodig langer beheer met je notaris.',
         'Ben je gescheiden, dan beheert de andere ouder het geld van jullie minderjarige kinderen.',
       ],
     },

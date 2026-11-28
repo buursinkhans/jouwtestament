@@ -67,8 +67,8 @@ export default async (req: Request): Promise<Response> => {
   let id: string;
   try {
     id = await appendRowWithId(sheet, leadToRow(draft), (row) => formatLeadId(now.getFullYear(), row - 1));
-  } catch (error) {
-    console.error('lead_storage_failed', (error as Error).message); // message only, no lead data
+  } catch {
+    console.error('lead_storage_failed');
     return json({ error: 'storage_failed' }, 502);
   }
 

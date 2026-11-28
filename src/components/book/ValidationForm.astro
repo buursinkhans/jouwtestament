@@ -1,0 +1,63 @@
+---
+import { site } from '../../config/site';
+import { bookFormsEnabled, bookVariants, organizationTypes, printRuns } from '../../config/book';
+interface Props { kind: 'book' | 'business' }
+const { kind } = Astro.props;
+const isBook = kind === 'book';
+const interests = [
+  ['accounts', 'Overzicht van mijn bankzaken en verzekeringen'],
+  ['wishes', 'Mijn wensen voor later vastleggen'],
+  ['conversation', 'Het gesprek met mijn familie gemakkelijker maken'],
+  ['relatives', 'Praktische hulp voor mijn nabestaanden'],
+  ['other', 'Anders'],
+];
+---
+{bookFormsEnabled ? <div data-book-widget>
+  <form data-book-form data-kind={kind} method="post" hidden>
+    {isBook ? <fieldset>
+      <legend>Kies je uitvoering</legend>
+      {Object.entries(bookVariants).map(([key, variant]) => <label class="book-choice">
+        <input type="radio" name="variant" value={key} required />
+        <span><strong>{variant.title} · {variant.price}</strong><small>{variant.description}</small></span>
+      </label>)}
+    </fieldset> : <>
+      <label>Organisatienaam<input type="text" name="organization" autocomplete="organization" required maxlength="100" /></label>
+      <label>Type organisatie<select name="type" required><option value="">Maak een keuze</option>{organizationTypes.map(type => <option>{type}</option>)}</select></label>
+      <label>Indicatieve oplage<select name="quantity" required><option value="">Maak een keuze</option>{printRuns.map(size => <option>{size}</option>)}</select></label>
+    </>}
+    <label>{isBook ? 'Voornaam (optioneel)' : 'Contactpersoon'}<input type="text" name="name" autocomplete={isBook ? 'given-name' : 'name'} maxlength="80" required={!isBook} /></label>
+    <label>{isBook ? 'E-mailadres' : 'Zakelijk e-mailadres'}<input type="email" name="email" autocomplete="email" required maxlength="254" /></label>
+    {!isBook && <label>Toelichting (optioneel)<textarea name="note" maxlength="400" rows="3" placeholder="Laat persoonlijke gegevens van anderen weg."></textarea></label>}
+    <div hidden><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+    <label class="book-consent"><input type="checkbox" name="contact" required />{isBook ? 'Helder Nalaten mag mij mailen over deze reservering.' : 'Helder Nalaten mag contact met mij opnemen over deze aanvraag.'}</label>
+    <p class="book-small">We gebruiken deze gegevens voor je {isBook ? 'reservering' : 'aanvraag'}. Ze worden niet gebruikt om je in te schrijven voor algemene marketing. <a href="/privacy">Lees de privacyverklaring</a>.</p>
+    <button type="submit" class="btn-primary">{isBook ? 'Reserveer vrijblijvend' : 'Bespreek een zakelijke afname'}</button>
+    <p data-book-form-error role="alert"></p>
+  </form>
+  <noscript><p>Voor dit formulier is JavaScript nodig.</p></noscript>
+  <div data-book-success hidden>
+    <h3 tabindex="-1">{isBook ? 'Je reservering is ontvangen' : 'Je aanvraag is ontvangen'}</h3>
+    <p>{isBook ? 'Je hebt niets betaald en hoeft niets te kopen. We mailen je zodra er nieuws is over deze uitvoering.' : 'We nemen contact met je op over je interesse. Er is geen bestelling geplaatst.'}</p>
+    <p>Je referentie is <code data-book-receipt></code>. <a href={`mailto:${site.contact.email}`} data-book-withdraw>{isBook ? 'Trek je reservering per e-mail in' : 'Trek je aanvraag per e-mail in'}</a>.</p>
+    {isBook && <fieldset data-book-interest>
+      <legend>Wat spreekt je het meest aan? (optioneel)</legend>
+      {interests.map(([key, label]) => <label class="book-consent"><input type="radio" name="interest" value={key} /> {label}</label>)}
+      <p role="status" data-book-interest-status></p>
+    </fieldset>}
+  </div>
+</div> : <p class="book-notice">{isBook ? 'Reserveren is in deze omgeving nog niet beschikbaar. Je kunt de voorbeeldpagina’s al bekijken.' : 'Het zakelijke formulier is in deze omgeving nog niet beschikbaar.'}</p>}
+<style>
+form { display: grid; gap: .7rem; max-width: 39rem; }
+[hidden] { display: none !important; }
+fieldset { min-width: 0; margin-bottom: .4rem; }
+legend { font-weight: 700; margin-bottom: .5rem; }
+form > label { display: grid; gap: .3rem; }
+:is(input, select, textarea):not([type=radio],[type=checkbox]) { width: 100%; border: 1px solid #738c85; border-radius: 7px; padding: .55rem; min-height: 48px; background: white; }
+.book-choice, .book-consent, form > .book-consent { display: flex; align-items: center; min-height: 48px; gap: .6rem; cursor: pointer; }
+.book-choice { margin-block: .45rem; border: 1px solid #738c85; border-radius: 7px; padding: .55rem; }
+.book-choice:has(input:checked) { border-color: #993f34; background: #f7e9e6; }
+.book-choice small { display: block; }
+.book-small { font-size: .9rem; }
+[data-book-form-error] { color: #873125; }
+.book-notice { border-inline-start: 3px solid #993f34; background: #e9f1ef; padding: .7rem .9rem; }
+</style>

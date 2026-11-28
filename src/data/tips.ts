@@ -18,11 +18,11 @@ export const tips: Tip[] = [
   {
     slug: 'jonge-kinderen',
     number: 1,
-    cardTitle: 'Jonge kinderen erven op hun 18e alles in één keer',
+    cardTitle: 'Wie beheert een erfenis voor jonge kinderen?',
     cardText: 'Tenzij je in je testament regelt dat iemand het geld beheert tot ze bijvoorbeeld 25 zijn.',
-    question: 'Wanneer krijgen jonge kinderen hun erfenis?',
+    question: 'Wanneer kunnen kinderen zelf over een erfenis beschikken?',
     short:
-      'Zonder testament mogen kinderen vanaf hun 18e vrij over hun erfenis beschikken. In je testament kun je regelen dat iemand het geld beheert tot een leeftijd die jij kiest, bijvoorbeeld 25 jaar.',
+      'Ook minderjarige kinderen kunnen erven. Vanaf 18 jaar kunnen zij in het algemeen zelf over geërfd vermogen beschikken. Je kunt bij de notaris bespreken of iemand het geld langer kan beheren.',
     explanation:
       'Dit heet een testamentair bewind. De beheerder mag het geld gebruiken voor bijvoorbeeld studie of levensonderhoud, maar je kind kan het niet in één keer uitgeven. Veel ouders vinden 18 te jong voor een bedrag dat, met een koophuis erbij, al snel flink is.',
     action: 'Bepaal tot welke leeftijd het beheer loopt en wie je daarvoor vertrouwt.',
@@ -180,7 +180,7 @@ export const tips: Tip[] = [
     short:
       'Bij grote veranderingen: trouwen, scheiden, een geboorte, een overlijden in de familie, verhuizen naar het buitenland of het verkopen van je huis of bedrijf. En verder om de paar jaar.',
     explanation:
-      'Een testament dat klopte toen je het maakte, kan jaren later onbedoeld verkeerd uitpakken. Ook regels veranderen: het kabinet werkt bijvoorbeeld aan wijzigingen in de schenk- en erfbelasting.',
+      'Een testament dat klopte toen je het maakte, kan jaren later onbedoeld verkeerd uitpakken. Bespreek met je notaris welke veranderingen in jouw leven reden zijn om je testament te bekijken.',
     action: 'Zet een herinnering om je regeling elke paar jaar te laten checken.',
     segments: ['55-plus', 'je-ouders'],
     related: ['executeur', 'uitsluitingsclausule'],

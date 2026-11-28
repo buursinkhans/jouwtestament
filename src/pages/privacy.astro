@@ -1,4 +1,5 @@
 ---
+import { writingEnabled } from '../lib/writing-options';
 import Layout from '../layouts/Layout.astro';
 import { site } from '../config/site';
 const breadcrumbs = [
@@ -11,16 +12,26 @@ const breadcrumbs = [
   <div class="container narrow page prose">
     <h1>Privacyverklaring</h1>
     <h2>Gratis check</h2>
-    <p>De website maakt je gespreksagenda in je browser. Je kunt de agenda kopiëren of printen zonder contactgegevens op te geven. Als je vanuit je eigen check doorgaat naar de assistent of het afspraakformulier, bewaart de website je antwoorden tijdelijk in dit browsertabblad om ze daar opnieuw te gebruiken.</p>
+    <p>De website maakt je gespreksagenda in je browser. Je kunt de agenda kopiëren of printen zonder contactgegevens op te geven. Als je vanuit je eigen check doorgaat naar de bestaande digitale assistent, bewaart de website je antwoorden tijdelijk in dit browsertabblad om ze daar opnieuw te gebruiken.</p>
 
     <h2>Digitale assistent</h2>
     <p>Als je doorgaat na de melding bij de assistent, verwerkt de assistent je intake, eventuele antwoorden uit de check en je gespreksgeschiedenis om je vragen te beantwoorden en twee documenten op te stellen. Die gegevens gaan via onze hosting bij Netlify naar Claude van Anthropic. De website bewaart het gesprek en de gemaakte documenten in dit browsertabblad. Je kunt het gesprek wissen of het tabblad sluiten. Gedownloade of geprinte kopieën beheer je zelf.</p>
 
+    {writingEnabled && <section aria-labelledby="privacy-woorden">
+      <h2 id="privacy-woorden">Mijn woorden voor later</h2>
+      <p>Bij ‘Maak mijn tekst’ gaan je steekwoorden, onderwerp en gekozen toon via Netlify naar Claude van Anthropic om een tekstvoorstel te maken. Helder Nalaten bewaart je woorden en de uitkomst niet in een dossier. Op de pagina blijven ze beschikbaar totdat je de pagina verlaat. Kopieën en afdrukken beheer je zelf.</p>
+      <p>De gebruiksstatistieken ontvangen alleen acties, zoals het maken of kopiëren van een tekst. Zie de <a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention">informatie van Anthropic over gegevensverwerking</a> voor wat de leverancier kan bewaren.</p>
+    </section>}
+
     <h2>Afspraak met een adviseur</h2>
     <p>Met jouw toestemming gebruikt Helder Nalaten je naam, e-mailadres of telefoonnummer, de door jou gekozen momenten en eventuele checkantwoorden om contact op te nemen over een adviesgesprek en het voor te bereiden. De aanvraag gaat via Netlify naar Google Sheets, waar ook brongegevens zoals campagne en verwijzende pagina worden vastgelegd. Een adviseur van Helder Nalaten gebruikt de aanvraag om je te helpen.</p>
 
+    <h2>Boekreservering of zakelijke interesse</h2>
+    <p>Als je vrijwillig een reservering of zakelijke aanvraag verstuurt, gebruiken we je gegevens om hierover contact met je op te nemen. We bewaren de aanvraag via Netlify in een afgeschermd Google-spreadsheet, gescheiden van de statistieken. Je ontvangt geen algemene marketing door dit formulier in te vullen.</p>
+    <p>Je kunt je aanvraag intrekken door een e-mail te sturen naar <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>. Vermeld je referentie of het e-mailadres waarmee je het formulier invulde. We bewaren deze gegevens tot intrekking of tot uiterlijk zes maanden na afloop van de validatie.</p>
+
     <h2>Statistieken</h2>
-    <p>Helder Nalaten gebruikt Simple Analytics voor bezoekstatistieken en om te meten welke acties op de site worden gebruikt, zoals het afronden van de check of het kopiëren van de agenda. Die actie-events bevatten geen checkantwoorden, contactgegevens of documentinhoud.</p>
+    <p>Helder Nalaten gebruikt Simple Analytics voor bezoekstatistieken en om te meten welke acties op de site worden gebruikt, zoals het afronden van de check, het kopiëren van de agenda of het reserveren van een boek. Die actie-events bevatten geen checkantwoorden, contactgegevens, reserveringsreferenties of tekstinhoud.</p>
 
     <h2>Bewaartermijnen en je rechten</h2>
     <p>Voor informatie over hoe lang gegevens van je aanvraag of assistentgesprek bij onze dienstverleners worden bewaard, kun je contact opnemen via <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.</p>

@@ -1,0 +1,25 @@
+---
+import { bookTitle } from '../../config/book';
+interface Props { back?: boolean }
+const { back = false } = Astro.props;
+---
+<figure class:list={['book-concept', { 'book-back': back }]}>
+  <div class="cover-paper">
+    <span>Helder Nalaten</span>
+    {back ? <><strong>Maak het later makkelijker.</strong><p>Een plek voor belangrijke vindplaatsen, gesprekken en woorden voor later.</p><ol><li>Waar vind je alles?</li><li>Wat willen we bespreken?</li><li>Wat moeten nabestaanden weten?</li></ol></> :
+      <><strong>{bookTitle}</strong><p>Een praktisch invulboek voor je geldzaken, belangrijke papieren en persoonlijke wensen.</p></>}
+    <span class="cover-tag">Voorstel · A5</span>
+  </div>
+  <figcaption>{back ? 'Conceptvisualisatie achteromslag' : 'Conceptvisualisatie omslag'}</figcaption>
+</figure>
+<style>
+.book-concept { margin: 0; justify-self: center; width: min(100%, 19rem); }
+.cover-paper { display: flex; flex-direction: column; justify-content: space-between; min-height: 20rem; gap: .85rem; background: #183b40; border-radius: 3px 12px 12px 3px; border-inline-start: 8px solid #993f34; padding: 1.4rem; color: white; box-shadow: .4rem .65rem 0 #c8d9d5; }
+.cover-paper strong { font: 600 clamp(1.8rem, 4vw, 2.5rem)/1.12 var(--home-heading); }
+.cover-paper p, .cover-paper li { font-size: .9rem; }
+.cover-paper ol { padding-inline-start: 1.2rem; }
+.cover-tag, figcaption { font-size: .83rem; }
+figcaption { margin-top: 1rem; }
+.book-back .cover-paper { background: #e9f1ef; color: #183b40; }
+.book-back .cover-paper strong { font-size: 1.65rem; }
+</style>

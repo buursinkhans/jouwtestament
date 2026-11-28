@@ -1,0 +1,70 @@
+---
+import BookCover from './BookCover.astro';
+const contents = [
+  ['Waar vind je alles?', 'Banken, verzekeringen, beleggingen en pensioen', 'Woning, hypotheek, leningen en vaste lasten', 'Vindplaatsen, notaris en andere contactpersonen'],
+  ['Wat willen we bespreken?', 'Het huis, schenkingen en familieleningen', 'Dierbare spullen, wensen en vragen voor de notaris', 'Mijn woorden voor later'],
+  ['Wat moeten nabestaanden weten?', 'Wie kan helpen en wie informeren we eerst?', 'Belangrijke documenten, instellingen en uitvaartwensen', 'Vragen die nog openstaan'],
+];
+const samples = [
+  {
+    title: 'Bankrekeningen en verzekeringen', pages: [
+      { title: 'Bij welke banken loop je?', info: 'Voorbeeld: Voorbeeldbank · spaarrekening · blauwe map, tabblad Bank. Houd toegangscodes apart.', fields: ['Naam bank en type rekening', 'Waar liggen de documenten?', 'Wie kan helpen?'] },
+      { title: 'Waar lopen je verzekeringen?', info: 'Voorbeeld: Voorbeeldverzekeraar · woonverzekering · map Verzekeringen.', fields: ['Naam verzekeraar en type polis', 'Vindplaats van de polis', 'Contactpersoon of algemeen contactnummer'] },
+    ],
+  },
+  {
+    title: 'Het familiegesprek', pages: [
+      { title: 'Het huis en de familie', info: 'Schrijf op wat jullie willen bespreken. Iedereen bepaalt zelf wat die deelt.', fields: ['Wat hopen we dat er met het huis gebeurt?', 'Welke schenkingen of leningen willen we bespreken?', 'Welke vraag nemen we mee naar de notaris?'] },
+      { title: 'Wat spreken we af over het vervolg?', info: 'Gebruik deze pagina voor gesprekspunten. Formele wensen bespreek je met een notaris.', fields: ['Wat willen we nog uitzoeken?', 'Wie wil dit oppakken?', 'Wanneer praten we verder?'] },
+    ],
+  },
+  {
+    title: 'Een persoonlijke boodschap', pages: [
+      { title: 'Mijn woorden voor later', info: 'Schrijf een herinnering of een boodschap op. Je kunt hier ook een geprinte tekst bewaren.', fields: ['Voor wie en datum', 'Wat wil ik meegeven?'], long: true },
+    ],
+  },
+  {
+    title: 'Een wegwijzer voor naasten', pages: [
+      { title: 'Hier kunnen jullie beginnen', info: 'Vertel een vertrouwd persoon waar dit boek ligt. Werk de vindplaatsen bij als iets verandert.', fields: ['Laatst bijgewerkt op', 'Wie kan als eerste helpen?', 'Waar liggen de belangrijkste documenten en uitvaartwensen?', 'Contactgegevens van de notaris of adviseur'] },
+    ],
+  },
+];
+---
+<div class="sample-list">
+  <details data-book-preview>
+    <summary>Inhoudsopgave en achteromslag</summary>
+    <div class="sample-spread">
+      <div class="sample-paper"><h3>Voorlopige inhoudsopgave</h3>
+        {contents.map(([title, ...items]) => <section><h4>{title}</h4><ul>{items.map(item => <li>{item}</li>)}</ul></section>)}
+      </div>
+      <BookCover back />
+    </div>
+  </details>
+  {samples.map(sample => <details data-book-preview>
+    <summary>{sample.title}</summary>
+    <div class="sample-spread">
+      {sample.pages.map(page => <article class="sample-paper">
+        <p class="sample-label">Helder Nalaten · Voorbeeldpagina</p>
+        <h3>{page.title}</h3><p>{page.info}</p>
+        {page.fields.map((label, index) => <div class="sample-field">
+          <strong>{label}</strong>
+          <div aria-hidden="true" class:list={['writing-lines', { 'writing-lines-long': 'long' in page && index === 1 }]}></div>
+        </div>)}
+      </article>)}
+    </div>
+  </details>)}
+</div>
+<style>
+.sample-list { display: grid; gap: .65rem; }
+details { border: 1px solid #a8b9b5; border-radius: 8px; background: white; }
+summary { padding: .65rem 1rem; min-height: 48px; cursor: pointer; font-weight: 700; }
+.sample-spread { display: grid; gap: .9rem; padding: .85rem; background: #e9f1ef; }
+.sample-paper { background: white; border: 1px solid #bacbc7; padding: clamp(.85rem, 3vw, 1.4rem); border-radius: 4px; min-width: 0; }
+.sample-paper h4 { margin-bottom: .3rem; }
+.sample-paper ul { padding-inline-start: 1.1rem; margin-bottom: .65rem; }
+.sample-field { margin-top: .7rem; }
+.sample-label { font-size: .8rem; }
+.writing-lines { height: 3.5rem; background: repeating-linear-gradient(transparent 0 1.06rem, #899d97 1.06rem 1.12rem); }
+.writing-lines-long { height: 11rem; }
+@media(min-width: 700px) { .sample-spread { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+</style>
