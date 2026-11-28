@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { bookSubmission, validationHandler } from './book-validation.ts';
+import { bookSubmission, validationHandler } from '../../netlify/functions/book-validation.ts';
 
 const book = { id: '82e3c742-49b2-4664-9fc3-618f30feca49', kind: 'book', email: 'fictief@example.test', variant: 'single', contact: true };
 const business = { ...book, kind: 'business', name: 'Fictief', organization: 'Voorbeeldbedrijf', type: 'Werkgever', quantity: '50–99' };
