@@ -18,7 +18,7 @@ const faq = [
   { question: 'Hoe werkt de vrijblijvende reservering?', answer: 'Je kiest één boek of het duo en laat je e-mailadres achter. Als reserveren open is, bevestigen we je aanvraag op de pagina. Je kunt die per e-mail intrekken.' },
 ];
 ---
-<Layout title="Invulboek voor je nalatenschap en administratie" description="Bekijk het papieren invulboek Als jullie iets moeten regelen. Blader door de conceptpagina’s voor je administratie, familiegesprekken en naasten." faqItems={faq} hideStickyCta>
+<Layout title="Invulboek voor je nalatenschap en administratie" description="Bekijk het papieren invulboek Als jullie iets moeten regelen. Blader door de conceptpagina’s voor je administratie, familiegesprekken en naasten." faqItems={faq} breadcrumbs={[{ name: "Home", url: "/" }, { name: "Invulboek", url: "/invulboek/" }]} hideStickyCta>
   <div class="editorial-home" data-book-page="book">
     <section class="container home-section home-split book-hero">
       <div>

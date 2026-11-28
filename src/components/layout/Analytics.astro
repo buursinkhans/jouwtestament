@@ -1,7 +1,7 @@
 ---
 // Simple Analytics (owner decision 2026-09-27): EU, cookieless, no consent banner needed.
 // Loaded in production builds only. Never send personal data or check answers (docs/09 §8, docs/10).
-const enabled = import.meta.env.PROD;
+const enabled = import.meta.env.PROD && process.env.CONTEXT === 'production';
 ---
 
 {

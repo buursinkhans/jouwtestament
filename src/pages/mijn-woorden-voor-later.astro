@@ -6,7 +6,7 @@ import '../styles/home-editorial.css';
 const title = 'Mijn woorden voor later';
 ---
 
-<Layout title={title} description="Zet een paar steekwoorden om in een persoonlijke tekst voor later. Gratis en zonder account." noindex={!writingEnabled} hideStickyCta>
+<Layout title={title} description="Zet een paar steekwoorden om in een persoonlijke tekst voor later. Gratis en zonder account." breadcrumbs={[{ name: "Home", url: "/" }, { name: title, url: "/mijn-woorden-voor-later/" }]} noindex={!writingEnabled} hideStickyCta>
   <div class="editorial-home">
     <div class="container writing-page" data-writing data-enabled={writingEnabled ? 'true' : 'false'}>
       <header>

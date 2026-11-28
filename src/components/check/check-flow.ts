@@ -26,7 +26,7 @@ export function initCheck(root: HTMLElement) {
   let previousPlan = '';
   let answers: Partial<Answers> | undefined;
   const recorded = new Set<string>();
-  const once = (event: 'check_started' | 'check_completed' | 'check_submitted' | 'agenda_viewed' | 'agenda_edited') => {
+  const once = (event: 'check_started' | 'check_completed' | 'agenda_viewed' | 'agenda_edited') => {
     if (recorded.has(event)) return;
     recorded.add(event);
     track(event);
@@ -198,7 +198,6 @@ export function initCheck(root: HTMLElement) {
     result.hidden = false;
     result.focus();
     once('check_completed');
-    once('check_submitted');
     if (!agendaObserver) once('agenda_viewed');
   });
 
@@ -209,7 +208,6 @@ export function initCheck(root: HTMLElement) {
       await navigator.clipboard.writeText(text);
       status.textContent = 'Gespreksagenda gekopieerd.';
       track('agenda_copied');
-      track('check_agenda_copied');
     } catch {
       const copy = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
       copy.setAttribute('aria-label', 'Gespreksagenda om te kopiëren');
@@ -225,7 +223,6 @@ export function initCheck(root: HTMLElement) {
     print.hidden = false;
     print.classList.add('printing');
     track('agenda_printed');
-    track('check_agenda_printed');
     try { window.print(); } finally {
       print.classList.remove('printing');
       print.hidden = true;
@@ -248,11 +245,9 @@ export function initCheck(root: HTMLElement) {
   find('[data-option-self]').addEventListener('click', () => {
     handOff();
     track('check_to_assistant_clicked');
-    track('check_option_selfservice');
   });
   find('[data-option-adviser]').addEventListener('click', () => {
     try { sessionStorage.removeItem('hn_check_answers'); } catch { /* Booking works without storage. */ }
-    track('check_to_notary_clicked');
     track('check_option_adviser');
   });
   find('[data-check-notary]').addEventListener('click', () => track('check_to_notary_clicked'));

@@ -8,7 +8,6 @@ import ReviewMeta from '../components/content/ReviewMeta.astro';
 import { tips, tipBySlug } from '../data/tips';
 import { segments } from '../data/segments';
 import { site } from '../config/site';
-import { pricing, euro } from '../config/pricing';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -20,7 +19,7 @@ const description =
   'Van het uitstellen van de erfenis voor jonge kinderen tot het benoemen van een executeur: 12 punten die mensen vaak vergeten, met kort antwoord en wat je kunt doen.';
 
 const summary = [
-  'Kinderen krijgen hun erfenis zonder testament op hun 18e. Met een testament kun je dat uitstellen.',
+  'Ook minderjarige kinderen kunnen erven. Bespreek met de notaris wie het geërfde vermogen beheert.',
   'Wijs een voogd aan via je testament of het gezagsregister. Bespreek met de notaris wie het geërfde geld beheert.',
   'Een executeur voorkomt dat alle erfgenamen samen alles moeten regelen.',
   'Uitleggen wat er in je testament staat, voorkomt veel onbegrip en ruzie.',
@@ -104,8 +103,12 @@ const articleSchema = {
 
     <section class="sources">
       <h2>Bronnen</h2>
-      {/* TODO(owner): link the specific source page per tip */}
-      <p>Rijksoverheid.nl; Notaris.nl (KNB); Belastingdienst.</p>
+      <ul>
+        <li><a href="https://www.notaris.nl/samen-verder/kinderen-krijgen">Notaris.nl over voogdij en beheer van geërfd vermogen</a></li>
+        <li><a href="https://www.notaris.nl/bij-overlijden/verklaring-van-erfrecht">Notaris.nl over de verklaring van erfrecht</a></li>
+        <li><a href="https://www.rijksoverheid.nl/themas/belastingen-uitkeringen-en-toeslagen/belasting-betalen/vraag-en-antwoord/erven/hoe-kan-ik-de-erfenis-regelen-als-ik-samenwoon">Rijksoverheid over erven als je samenwoont</a></li>
+        <li><a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/erfbelasting/content/partners-voor-de-erfbelasting">Belastingdienst over partners voor de erfbelasting</a></li>
+      </ul>
       <p class="small">
         Deze informatie is algemeen en geen persoonlijk juridisch of financieel advies. Je persoonlijke situatie
         bespreek je in het adviesgesprek.
@@ -117,9 +120,10 @@ const articleSchema = {
     <div class="container narrow">
       <h2>Welke punten gelden voor jou?</h2>
       <p class="lead">
-        Doe de gratis check van twee minuten. Daarna bespreek je het met een adviseur, vanaf {euro(pricing.advice.min)}.
+        Doe de gratis check en neem je gespreksagenda mee naar huis. Wil je daarna begeleiding? Bekijk de mogelijkheden en tarieven.
       </p>
       <a class="btn-primary" href="/check">Doe de gratis check</a>
+      <p><a href="/tarieven">Bekijk de tarieven</a></p>
     </div>
   </section>
 </Layout>

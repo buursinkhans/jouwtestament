@@ -40,7 +40,9 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const pathname = Astro.url.pathname.replace(/\/?$/, '/');
+const canonicalUrl = new URL(pathname, Astro.site);
+const preview = Boolean(process.env.CONTEXT && process.env.CONTEXT !== 'production');
 // Google cuts titles off at about 60 characters. The brand suffix goes first when a title is
 // long; Google shows the site name separately anyway (WebSite schema, og:site_name).
 const MAX_TITLE = 60;
@@ -133,7 +135,7 @@ const jsonLd = [organizationSchema, websiteSchema, breadcrumbSchema, faqSchema, 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {(noindex || preview) && <meta name="robots" content="noindex" />}
     <meta property="og:title" content={fullTitle ?? title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
