@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import liveHandler, { validateWritingInput, writingHandler } from './writing-assistant.ts';
-import { toneInstructions, writingPrompt } from './lib/writingPrompt.ts';
+import liveHandler, { validateWritingInput, writingHandler } from '../../netlify/functions/writing-assistant.ts';
+import { toneInstructions, writingPrompt } from '../../netlify/functions/lib/writingPrompt.ts';
 
 const sample = { topic: 'message', tone: 'plain', words: 'Trots op kinderen, geld is niet het belangrijkste.' };
 const origin = 'https://example.test';

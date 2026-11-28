@@ -1,9 +1,9 @@
 // Unit tests for the agent's server logic (docs/13-agent.md). Run with: npm run test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { deriveState, intakeHistory, toolResult, transcript, validateHistory, type History } from './agentCore.ts';
-import { INTAKE_MESSAGES, validateIntake } from '../../../src/components/agent/intake.ts';
-import { requiredKeys } from '../../../src/components/agent/dossier.ts';
+import { deriveState, intakeHistory, toolResult, transcript, validateHistory, type History } from '../../netlify/functions/lib/agentCore.ts';
+import { INTAKE_MESSAGES, validateIntake } from '../../src/components/agent/intake.ts';
+import { requiredKeys } from '../../src/components/agent/dossier.ts';
 
 const toolUse = (name: string, input: unknown, id = 't1') => ({ type: 'tool_use' as const, id, name, input });
 const assistant = (...content: unknown[]) => ({ role: 'assistant' as const, content }) as History[number];

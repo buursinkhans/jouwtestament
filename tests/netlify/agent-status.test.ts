@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import status from './agent-status.ts';
+import status from '../../netlify/functions/agent-status.ts';
 
 test('public readiness only exposes a boolean, regardless of configuration', async () => {
   const result = status(new Request('https://example.test/api/agent/status'));

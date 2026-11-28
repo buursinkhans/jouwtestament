@@ -27,7 +27,7 @@ Bij een samengesteld gezin toont de check "Aanbevolen voor jouw situatie" bij de
 | Documenten (1 per aanroep) | `netlify/functions/agent-documents.ts` → `POST /api/agent/documents` |
 | Systeemprompt, tools, documentprompts | `netlify/functions/lib/agentPrompt.ts` |
 | Kennisbank met bronnen | `netlify/functions/lib/agentKnowledge.ts` |
-| Gedeelde serverlogica + tests | `netlify/functions/lib/agentCore.ts`, `agentCore.test.ts` |
+| Gedeelde serverlogica + tests | `netlify/functions/lib/agentCore.ts`, `tests/netlify/agentCore.test.ts` |
 
 - **Model:** Claude Opus 5 (`claude-opus-5`) via de officiële SDK `@anthropic-ai/sdk`, adaptief nadenken, effort `medium` voor het gesprek en `high` voor de documenten (instelbaar). Server-side fallback (`fallbacks: "default"`) als het model een verzoek weigert.
 - **Tools van de assistent:** `update_dossier` (legt feiten en keuzes vast), `recommend_adviser` (optie 2), `mark_ready` (alleen na bevestiging van de samenvatting én als alle verplichte velden zijn ingevuld).
